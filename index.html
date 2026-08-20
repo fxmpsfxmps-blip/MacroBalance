@@ -332,8 +332,38 @@
   .wrap{width:100%;max-width:720px;}
   .top-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;opacity:0;animation:riseIn .5s ease .2s forwards;}
   .eyebrow{font-size:11px;letter-spacing:.3em;text-transform:uppercase;color:var(--red);font-weight:600;}
-  .avatar-badge{width:52px;height:52px;border-radius:50%;overflow:hidden;background:var(--panel);border:2px solid var(--red);box-shadow:0 0 0 3px rgba(216,27,63,.15);flex-shrink:0;}
+  .avatar-badge{position:relative;width:52px;height:52px;border-radius:50%;overflow:hidden;background:var(--panel);border:2px solid var(--red);box-shadow:0 0 0 3px rgba(216,27,63,.15);flex-shrink:0;cursor:pointer;}
   .avatar-badge img{width:100%;height:100%;object-fit:cover;display:block;}
+  .avatar-badge .avatar-lapiz{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,.55);opacity:0;transition:opacity .15s ease;color:#fff;font-size:18px;}
+  .avatar-badge:hover .avatar-lapiz, .avatar-badge:active .avatar-lapiz{opacity:1;}
+
+  /* ===== Modales de cuenta e historial ===== */
+  .modal-overlay-cuenta{position:fixed;inset:0;z-index:80;background:rgba(0,0,0,.72);display:flex;align-items:center;justify-content:center;padding:20px;}
+  .modal-cuenta-box{background:var(--panel);border:1px solid var(--panel-line);border-radius:16px;padding:28px;max-width:420px;width:100%;max-height:86vh;overflow-y:auto;}
+  .modal-cuenta-box h3{margin-bottom:16px;}
+  .cuenta-avatar-edit{display:flex;flex-direction:column;align-items:center;gap:10px;margin-bottom:20px;}
+  .cuenta-avatar-edit img{width:96px;height:96px;border-radius:50%;object-fit:cover;border:2px solid var(--red);}
+  .cuenta-avatar-botones{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;}
+  .cuenta-avatar-botones label, .cuenta-avatar-botones button{font-size:13px;padding:8px 14px;border-radius:8px;border:1px solid var(--panel-line);background:transparent;color:var(--ink);cursor:pointer;}
+  .cuenta-avatar-botones input[type=file]{display:none;}
+  #cuenta-foto-estado{font-size:12px;color:var(--ink-dim);text-align:center;min-height:16px;}
+  .cuenta-field{margin-bottom:14px;}
+  .cuenta-field label{display:block;font-size:13px;color:var(--ink-dim);margin-bottom:6px;}
+  .cuenta-field input{width:100%;padding:10px;border-radius:8px;border:1px solid var(--panel-line);background:#0a0a0a;color:var(--ink);}
+  .cuenta-field input[disabled]{opacity:.6;}
+  .modal-cuenta-botones{display:flex;gap:10px;margin-top:18px;}
+  .modal-cuenta-botones button{flex:1;padding:12px;border-radius:8px;border:none;cursor:pointer;font-weight:600;}
+  .btn-cuenta-guardar{background:var(--red);color:#fff;}
+  .btn-cuenta-cancelar{background:transparent;border:1px solid var(--panel-line) !important;color:var(--ink);}
+  #cuenta-estado-guardado{font-size:12px;color:var(--ink-dim);margin-top:8px;text-align:center;min-height:16px;}
+
+  .historial-lista-box{max-height:50vh;overflow-y:auto;margin-top:10px;}
+  .historial-item{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--panel-line);}
+  .historial-kcal{font-weight:700;}
+  .historial-fecha{color:var(--ink-dim);font-size:13px;flex:1;}
+  .historial-activo{background:var(--red);color:#fff;font-size:11px;padding:2px 8px;border-radius:6px;}
+  .historial-vacio{color:var(--ink-dim);font-size:13px;padding:10px 0;}
+  .link-historial{font-size:12px;color:var(--ink-dim);text-decoration:underline;cursor:pointer;background:none;border:none;}
   h1{font-weight:300;font-size:clamp(30px,4.5vw,42px);margin:0 0 8px;opacity:0;animation:riseIn .5s ease .32s forwards;}
   p.sub{color:var(--ink-dim);margin:0 0 40px;max-width:48ch;line-height:1.6;font-size:14.5px;opacity:0;animation:riseIn .5s ease .42s forwards;}
   .grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
@@ -550,7 +580,14 @@
 <div class="wrap">
   <div class="top-row">
     <div class="eyebrow">MacroBalance</div>
-    <div class="avatar-badge"><img id="avatar-img" src="" alt=""></div>
+    <div id="objetivo-actual-badge" class="tip-chica" style="margin:0;"></div>
+    <div class="avatar-badge" onclick="abrirModalCuenta()" title="Editar cuenta">
+      <img id="avatar-img" src="" alt="">
+      <div class="avatar-lapiz">&#9998;</div>
+    </div>
+  </div>
+  <div style="text-align:right;margin-top:-8px;">
+    <button type="button" class="link-historial" onclick="abrirModalHistorial()">Ver historial de objetivos</button>
   </div>
   <h1>Calculadora de macros</h1>
   <p class="sub">Ingresa tus datos y obtén tu gasto calórico, el reparto de macros, tu agua recomendada y una guía de cardio realista.</p>
@@ -661,431 +698,59 @@
     <div class="carrusel-dots" id="dots"></div>
 
     <div class="detalle-plan" id="detalle"></div>
+
+    <button class="primary" id="btn-guardar-objetivo" style="margin-top:16px;" onclick="guardarObjetivoActual()">Usar este plan como mi objetivo</button>
+    <div class="tip-chica" id="guardar-status" style="text-align:center;margin-top:8px;"></div>
   </section>
 </div>
 </div>
 
-<script>
-let planes = [];
-let activo = 1;
-let objetivoPreferidoIdx = 1;
-let vaAlGym = false;
-let ultimoContexto = null;
+<!-- MODAL: Editar cuenta -->
+<div class="modal-overlay-cuenta hidden" id="modal-cuenta">
+  <div class="modal-cuenta-box">
+    <h3>Editar cuenta</h3>
+    <div class="cuenta-avatar-edit">
+      <img id="cuenta-avatar-preview" src="" alt="">
+      <div class="cuenta-avatar-botones">
+        <label for="cuenta-foto-input">Cambiar foto</label>
+        <input type="file" id="cuenta-foto-input" accept="image/*" onchange="seleccionarNuevaFoto(this)">
+        <button type="button" id="cuenta-eliminar-foto" style="display:none;" onclick="marcarEliminarFotoPendiente()">Quitar foto</button>
+      </div>
+      <div id="cuenta-foto-estado"></div>
+    </div>
 
-function setGym(valor){
-  vaAlGym = valor;
-  document.getElementById('gym-si').classList.toggle('selected', valor === true);
-  document.getElementById('gym-no').classList.toggle('selected', valor === false);
-  document.getElementById('dias-gym-wrap').style.display = valor ? 'block' : 'none';
-  document.getElementById('gym-kcal-box').style.display = valor ? 'block' : 'none';
-  if(valor) actualizarKcalGym();
-}
+    <div class="cuenta-field">
+      <label for="cuenta-nombre">Nombre</label>
+      <input type="text" id="cuenta-nombre" placeholder="Tu nombre">
+    </div>
+    <div class="cuenta-field">
+      <label for="cuenta-email">Correo electrónico</label>
+      <input type="text" id="cuenta-email" disabled>
+    </div>
 
-function actualizarKcalGym(){
-  const peso = parseFloat(document.getElementById('peso').value) || 70;
-  const dias = parseInt(document.getElementById('dias-gym').value, 10);
-  const FACTOR_DESCANSO_SERIES = 0.65;
-  const kcalPorSesion = (6 * FACTOR_DESCANSO_SERIES * 3.5 * peso / 200) * 60;
-  const promedioDiario = Math.round((kcalPorSesion * dias) / 7);
-  document.getElementById('gym-kcal-valor').textContent = promedioDiario;
-}
+    <div class="modal-cuenta-botones">
+      <button class="btn-cuenta-cancelar" onclick="cerrarModalCuenta()">Cancelar</button>
+      <button class="btn-cuenta-guardar" onclick="guardarCuenta()">Guardar</button>
+    </div>
+    <div id="cuenta-estado-guardado"></div>
+  </div>
+</div>
 
-// Muestra el sufijo L o ml en vivo, según la misma regla que usa el cálculo real
-function actualizarUnidadAgua(){
-  const input = document.getElementById('agua');
-  const span = document.getElementById('agua-unidad');
-  const texto = input.value.trim();
-  if(texto === ''){ span.textContent = ''; return; }
-  const limpio = texto.toLowerCase().replace(',', '.');
-  const numero = parseFloat(limpio.replace(/[^0-9.]/g, ''));
-  if(isNaN(numero)){ span.textContent = ''; return; }
-  if(limpio.includes('ml')){ span.textContent = 'ml'; return; }
-  if(limpio.includes('l')){ span.textContent = 'L'; return; }
-  if(numero % 1 !== 0 || numero < 10){ span.textContent = 'L'; }
-  else { span.textContent = 'ml'; }
-}
+<!-- MODAL: Historial de objetivos -->
+<div class="modal-overlay-cuenta hidden" id="modal-historial">
+  <div class="modal-cuenta-box">
+    <h3>Historial de objetivos</h3>
+    <div class="historial-lista-box" id="historial-lista"></div>
+    <div class="modal-cuenta-botones">
+      <button class="btn-cuenta-cancelar" style="flex:none;width:100%;" onclick="cerrarModalHistorial()">Cerrar</button>
+    </div>
+  </div>
+</div>
 
-function esMobile(){
-  return window.innerWidth <= 760;
-}
-
-function rutaGate(sexo){
-  if(sexo === 'M'){
-    return esMobile() ? 'media/mujer-v.jpg' : 'media/mujer-h.jpg';
-  }
-  return esMobile() ? 'media/hombre-v.jpg' : 'media/hombre-h.jpg';
-}
-
-function cargarFotosGate(){
-  document.getElementById('foto-mujer').src = rutaGate('M');
-  document.getElementById('foto-hombre').src = rutaGate('H');
-}
-cargarFotosGate();
-window.addEventListener('resize', cargarFotosGate);
-
-function marcarCampoLleno(input){
-  const tieneValor = input.value.toString().trim() !== '';
-  input.classList.toggle('lleno', tieneValor);
-}
-document.querySelectorAll('.grid input').forEach(function(campo){
-  marcarCampoLleno(campo);
-  campo.addEventListener('input', function(){
-    marcarCampoLleno(campo);
-    if(campo.id === 'agua') actualizarUnidadAgua();
-    if(campo.id === 'peso' && vaAlGym) actualizarKcalGym();
-  });
-});
-document.querySelectorAll('.grid select').forEach(function(campo){
-  marcarCampoLleno(campo);
-  campo.addEventListener('change', function(){ marcarCampoLleno(campo); });
-});
-actualizarUnidadAgua();
-
-function abrirModal(){
-  document.getElementById('modal-overlay').classList.remove('hidden');
-}
-
-// Esta es la función que solo se activará SI Firebase confirma el inicio de sesión
-window.avanzarApp = function(){
-  document.getElementById('modal-overlay').classList.add('hidden');
-  const landing = document.getElementById('landing');
-  landing.classList.add('leaving');
-  setTimeout(function(){
-    landing.style.display = 'none';
-    document.getElementById('gate').classList.remove('hidden');
-  }, 500);
-}
-
-function elegir(sexo){
-  document.getElementById('sexo').value = sexo;
-  const rutaFoto = rutaGate(sexo);
-  const rutaAvatarRespaldo = sexo === 'M' ? 'media/mujer-v.jpg' : 'media/hombre-v.jpg';
-
-  document.getElementById('foto-mujer').classList.toggle('active', sexo === 'M');
-  document.getElementById('foto-hombre').classList.toggle('active', sexo === 'H');
-
-  const avatarImg = document.getElementById('avatar-img');
-  avatarImg.onerror = function(){ avatarImg.onerror = null; avatarImg.src = rutaAvatarRespaldo; };
-  avatarImg.src = window.fotoPerfilUsuario || rutaAvatarRespaldo;
-
-  const gate = document.getElementById('gate');
-  gate.classList.add('leaving');
-  setTimeout(function(){
-    gate.style.display = 'none';
-    const loading = document.getElementById('loading');
-    document.getElementById('loading-photo').src = rutaFoto;
-    loading.classList.remove('hidden');
-    setTimeout(function(){
-      loading.style.display = 'none';
-      document.getElementById('app').style.display = 'flex';
-    }, 3500);
-  }, 500);
-}
-
-function interpretarAgua(texto){
-  if(!texto) return 0;
-  texto = texto.toString().trim().toLowerCase().replace(',', '.');
-  const esMl = texto.includes('ml');
-  const esL = texto.includes('l') && !esMl;
-  const numero = parseFloat(texto.replace(/[^0-9.]/g, ''));
-  if(isNaN(numero)) return 0;
-
-  if(esMl) return numero / 1000;
-  if(esL) return numero;
-
-  if(numero % 1 !== 0) return numero;
-  if(numero >= 10) return numero / 1000;
-  return numero;
-}
-
-function calcular(){
-  const peso = parseFloat(document.getElementById('peso').value);
-  const altura = parseFloat(document.getElementById('altura').value);
-  const edad = parseFloat(document.getElementById('edad').value);
-  const sexo = document.getElementById('sexo').value;
-  const factorNeat = parseFloat(document.getElementById('actividad').value) || 1.2;
-  const grasaPct = parseFloat(document.getElementById('grasa').value);
-  const horasSueno = parseFloat(document.getElementById('sueno').value);
-  const aguaTexto = document.getElementById('agua').value;
-  const errorBox = document.getElementById('error');
-  const carruselSection = document.getElementById('carrusel-section');
-
-  errorBox.style.display = 'none';
-  carruselSection.style.display = 'none';
-
-  if(!peso || !altura || !edad || peso <= 0 || altura <= 0 || edad <= 0){
-    errorBox.textContent = 'Completa peso, altura y edad con valores válidos.';
-    errorBox.style.display = 'block';
-    return;
-  }
-  const alturaM = altura / 100;
-  if(alturaM > 1.99){
-    errorBox.textContent = 'Error: la altura no puede ser mayor a 1.99 m.';
-    errorBox.style.display = 'block';
-    return;
-  }
-  if(alturaM < 1.45){
-    errorBox.textContent = 'Error: con una altura menor a 1.45 m el cálculo no es confiable.';
-    errorBox.style.display = 'block';
-    return;
-  }
-
-  objetivoPreferidoIdx = parseInt(document.getElementById('objetivoPreferido').value, 10);
-  if(isNaN(objetivoPreferidoIdx)) objetivoPreferidoIdx = 1;
-
-  // 1) BMR: Katch-McArdle si hay % de grasa (usa masa magra, más preciso), si no Mifflin-St Jeor
-  let bmr, metodo;
-  if(grasaPct && grasaPct > 3 && grasaPct < 60){
-    const masaMagra = peso * (1 - grasaPct/100);
-    bmr = 370 + (21.6 * masaMagra);
-    metodo = 'Katch-McArdle (usando tu % de grasa)';
-  } else {
-    bmr = sexo === 'H'
-      ? (10*peso + 6.25*altura - 5*edad + 5)
-      : (10*peso + 6.25*altura - 5*edad - 161);
-    metodo = 'Mifflin-St Jeor (estimado sin % de grasa)';
-  }
-
-  // 2) NEAT: SOLO movimiento cotidiano, sin ejercicio incluido (evita doble conteo con gym/cardio)
-  let metabolismoBase = bmr * factorNeat;
-
-  // 3) Sueño: afecta cortisol/grelina y el gasto de fondo (NO el gasto mecánico del ejercicio)
-  let factorSueno = 1, tagSueno = 'Sin datos', tipSueno = '';
-  if(horasSueno){
-    if(horasSueno < 6){
-      factorSueno = 0.95;
-      tagSueno = 'Impacto alto';
-      tipSueno = '<b>Duermes poco (&lt;6h):</b> tu cortisol y grelina (hormona del hambre) tienden a subir, y tu gasto de fondo baja un poco porque te mueves menos sin notarlo (NEAT). Ajustamos tu metabolismo base -5% — y ojo, esto también suele aumentar el apetito por encima de lo calculado.';
-    } else if(horasSueno < 7){
-      factorSueno = 0.98;
-      tagSueno = 'Impacto leve';
-      tipSueno = '<b>Duermes un poco por debajo del rango ideal (6-7h):</b> ligero impacto en cortisol y gasto energético. Ajustamos -2%.';
-    } else if(horasSueno <= 9){
-      factorSueno = 1;
-      tagSueno = 'Óptimo';
-      tipSueno = '<b>Buen rango de sueño (7-9h):</b> sin penalización — tu cuerpo regula mejor el cortisol y el apetito.';
-    } else {
-      factorSueno = 1;
-      tagSueno = 'Largo';
-      tipSueno = 'Duermes más de 9h. No aplicamos penalización, pero si te sientes cansado igual, vale la pena revisar calidad de sueño, no solo cantidad.';
-    }
-  }
-  metabolismoBase = metabolismoBase * factorSueno;
-
-  // 4) Estrés: cortisol elevado sostenido = más antojos y tendencia a acumular grasa (mismo principio que sueño)
-  const nivelEstres = parseInt(document.getElementById('estres').value, 10) || 0;
-  let factorEstres = 1, tagEstres = 'Sin datos', tipEstres = '';
-  if(nivelEstres === 1 || nivelEstres === 2){
-    factorEstres = 1;
-    tagEstres = 'Bajo';
-    tipEstres = '<b>Estrés bajo:</b> tu cortisol se mantiene estable, sin impacto relevante en tu gasto ni en tu apetito.';
-  } else if(nivelEstres === 3){
-    factorEstres = 0.99;
-    tagEstres = 'Medio';
-    tipEstres = '<b>Estrés medio:</b> ligero repunte de cortisol. Ajustamos -1% y vale la pena vigilar antojos por ansiedad.';
-  } else if(nivelEstres === 4){
-    factorEstres = 0.96;
-    tagEstres = 'Alto';
-    tipEstres = '<b>Estrés alto:</b> el cortisol sostenido eleva el apetito (sobre todo por azúcar/grasa) y favorece que tu cuerpo retenga más grasa, en especial abdominal. Ajustamos -4%.';
-  } else if(nivelEstres === 5){
-    factorEstres = 0.93;
-    tagEstres = 'Muy alto';
-    tipEstres = '<b>Estrés muy alto:</b> cortisol crónicamente elevado — mayor apetito, peor calidad de sueño y más facilidad para acumular grasa visceral. Ajustamos -7%. Si esto es constante, vale más atender el estrés que solo ajustar la dieta.';
-  }
-  metabolismoBase = metabolismoBase * factorEstres;
-
-  // 5) EAT: el ejercicio real, calculado aparte y NUNCA tocado por sueño/estrés (es gasto mecánico)
-  //    Gym: MET 6.0 = entrenamiento de fuerza vigoroso (Compendium of Physical Activities, Ainsworth et al. 2011, código 02050)
-  //    × 0.65 = factor de descanso entre series (una sesión real no es esfuerzo continuo como asume el MET de tabla)
-  let diasGym = 0, gastoGymDiario = 0, tipGym = '';
-  const FACTOR_DESCANSO_SERIES = 0.65;
-  if(vaAlGym){
-    diasGym = parseInt(document.getElementById('dias-gym').value, 10);
-    const kcalPorSesion = (6 * FACTOR_DESCANSO_SERIES * 3.5 * peso / 200) * 60;
-    gastoGymDiario = (kcalPorSesion * diasGym) / 7;
-    tipGym = 'Entrenas ' + diasGym + ' día(s) por semana. Sumamos un promedio de ' + Math.round(gastoGymDiario) + ' kcal/día por tu entrenamiento de fuerza (60 min/sesión, MET 6.0 con descanso entre series incluido).';
-  } else {
-    tipGym = 'No marcaste entrenamiento de fuerza — si empiezas a ir al gym, tu gasto calórico real sube y podrías necesitar más calorías de las que ves aquí.';
-  }
-
-  const defs = [
-    // Ajuste de objetivo PROPORCIONAL al gasto (no un número fijo), rango recomendado por
-    // literatura de nutrición deportiva (Helms/Aragon/Schoenfeld): déficit 15-25%, superávit 5-15%
-    {id:'deficit', nombre:'Déficit', factorObjetivo:0.80, icon:'down', minCardio:30},
-    {id:'mantenimiento', nombre:'Mantenimiento', factorObjetivo:1.00, icon:'equal', minCardio:25},
-    {id:'volumen', nombre:'Volumen', factorObjetivo:1.10, icon:'up', minCardio:15}
-  ];
-
-  const metaAgua = (peso * 0.035) + ((defs[0].minCardio) * 0.003);
-  const consumoActual = interpretarAgua(aguaTexto);
-  const faltanteAgua = metaAgua - consumoActual;
-
-  planes = defs.map(function(d){
-    // Cardio: MET 3.5 = caminata moderada 4.8-5.5km/h (mismo Compendium)
-    const gastoCardio = (3.5 * 3.5 * peso / 200) * d.minCardio;
-    const eat = gastoGymDiario + gastoCardio;
-    const subtotal = metabolismoBase + eat;
-    // 6) TEF: efecto térmico de los alimentos, ~10% de la energía manejada (Westerterp 2004; Jéquier 2002)
-    const tef = subtotal * 0.10;
-    const tdeeTotal = subtotal + tef;
-    let kcal = Math.max(1500, tdeeTotal * d.factorObjetivo);
-
-    const proteina = peso * 2;
-    const grasaG = (kcal * 0.25) / 9;
-    const kcalProt = proteina*4, kcalGrasaCal = grasaG*9;
-    const carbos = (kcal - kcalProt - kcalGrasaCal) / 4;
-    return {
-      id: d.id, nombre: d.nombre, icon: d.icon, cardio: d.minCardio + ' min',
-      kcal: Math.round(kcal),
-      proteina: Math.round(proteina), grasa: Math.round(grasaG), carbos: Math.round(carbos)
-    };
-  });
-
-  activo = objetivoPreferidoIdx;
-  carruselSection.style.display = 'block';
-  renderCarrusel({
-    metodo: metodo, tagSueno: tagSueno, tipSueno: tipSueno,
-    metaAgua: metaAgua.toFixed(1), consumoActual: consumoActual, faltanteAgua: faltanteAgua,
-    horasSueno: horasSueno, vaAlGym: vaAlGym, diasGym: diasGym, tipGym: tipGym,
-    nivelEstres: nivelEstres, tagEstres: tagEstres, tipEstres: tipEstres
-  });
-  carruselSection.scrollIntoView({behavior:'smooth', block:'start'});
-}
-
-function iconoSvg(tipo){
-  if(tipo === 'down') return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 4v14M6 12l6 6 6-6"/></svg>';
-  if(tipo === 'up') return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 20V6M6 12l6-6 6 6"/></svg>';
-  return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 9h14M5 15h14"/></svg>';
-}
-
-function renderCarrusel(contexto){
-  if(contexto) ultimoContexto = contexto;
-  const track = document.getElementById('track');
-  const dots = document.getElementById('dots');
-  track.innerHTML = '';
-  dots.innerHTML = '';
-
-  planes.forEach(function(p, i){
-    let posClass = 'pos-hidden-right';
-    const diff = i - activo;
-    if(diff === 0) posClass = 'pos-center';
-    else if(diff === -1 || diff === planes.length-1) posClass = 'pos-left';
-    else if(diff === 1 || diff === -(planes.length-1)) posClass = 'pos-right';
-    else if(diff < 0) posClass = 'pos-hidden-left';
-
-    const card = document.createElement('div');
-    card.className = 'plan-card ' + posClass;
-    card.onclick = function(){ activo = i; renderCarrusel(); };
-    const badge = (i === objetivoPreferidoIdx)
-      ? '<div class="marca-objetivo"><svg viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="10"/></svg>Tu objetivo</div>'
-      : '';
-    card.innerHTML = badge +
-      '<div class="tag">' + iconoSvg(p.icon) + p.nombre + '</div>' +
-      '<h3>' + p.kcal + ' kcal</h3>' +
-      '<div class="kcal">por día</div>' +
-      '<div class="macros-mini">' + p.proteina + 'P · ' + p.grasa + 'G · ' + p.carbos + 'C</div>';
-    track.appendChild(card);
-
-    const dot = document.createElement('div');
-    dot.className = 'dot' + (i === activo ? ' active' : '');
-    dot.onclick = function(){ activo = i; renderCarrusel(); };
-    dots.appendChild(dot);
-  });
-
-  renderDetalle();
-}
-
-function renderDetalle(){
-  const p = planes[activo];
-  const c = ultimoContexto || {};
-  const detalle = document.getElementById('detalle');
-
-  let aguaVal = c.metaAgua ? c.metaAgua + ' L' : '—';
-  let aguaClase = '';
-  let aguaSub = '';
-  if(c.consumoActual){
-    if(c.faltanteAgua > 0){ aguaSub = 'Te faltan ' + c.faltanteAgua.toFixed(1) + ' L hoy'; aguaClase='warn'; }
-    else { aguaSub = 'Ya cumpliste tu meta de hoy'; }
-  }
-
-  detalle.innerHTML =
-    '<div class="label-top">Plan seleccionado — ' + p.nombre + '</div>' +
-    '<div class="kcal-grande">' + p.kcal + ' kcal / día</div>' +
-    '<div class="macros">' +
-      '<div class="macro"><div class="g">' + p.proteina + 'g</div><div class="l">Proteína</div></div>' +
-      '<div class="macro"><div class="g">' + p.grasa + 'g</div><div class="l">Grasa</div></div>' +
-      '<div class="macro"><div class="g">' + p.carbos + 'g</div><div class="l">Carbohidratos</div></div>' +
-    '</div>' +
-    '<div class="extra-row">' +
-      '<div class="box"><div class="l">Agua meta</div><div class="v ' + aguaClase + '">' + aguaVal + '</div>' + (aguaSub ? '<div class="l" style="margin-top:4px;">'+aguaSub+'</div>' : '') + '</div>' +
-      '<div class="box"><div class="l">Cardio</div><div class="v">' + p.cardio + '</div></div>' +
-      '<div class="box"><div class="l">Sueño</div><div class="v">' + (c.horasSueno ? c.horasSueno+'h · '+c.tagSueno : '—') + '</div></div>' +
-    '</div>' +
-    '<div class="extra-row" style="margin-top:10px;">' +
-      '<div class="box"><div class="l">Gym</div><div class="v">' + (c.vaAlGym ? c.diasGym + ' día(s)/sem' : 'No entrena') + '</div></div>' +
-      '<div class="box"><div class="l">Estrés</div><div class="v">' + (c.nivelEstres ? c.nivelEstres+'/5 · '+c.tagEstres : '—') + '</div></div>' +
-    '</div>' +
-    (c.tipSueno ? '<div class="sueno-tip">'+c.tipSueno+'</div>' : '') +
-    (c.tipGym ? '<div class="sueno-tip">'+c.tipGym+'</div>' : '') +
-    (c.tipEstres ? '<div class="sueno-tip">'+c.tipEstres+'</div>' : '') +
-    (c.metodo ? '<div class="sueno-tip" style="border-top:none;padding-top:0;">Cálculo base: '+c.metodo+'</div>' : '');
-}
-
-function mover(dir){
-  activo = (activo + dir + planes.length) % planes.length;
-  renderCarrusel();
-}
-</script>
+<script src="calculadora.js"></script>
 
 <!-- CÓDIGO FIREBASE DE AUTENTICACIÓN AÑADIDO -->
-<script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-  import { getAuth, signInWithPopup, GoogleAuthProvider, FacebookAuthProvider } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
-
-  // Las credenciales que configuraste en Firebase Console
-  const firebaseConfig = {
-    apiKey: "AIzaSyASE9zpAiwwYuKeImEBgjaW-RC0CPaTx6I",
-    authDomain: "macrobalance-502bb.firebaseapp.com",
-    projectId: "macrobalance-502bb",
-    storageBucket: "macrobalance-502bb.firebasestorage.app",
-    messagingSenderId: "618429309223",
-    appId: "1:618429309223:web:2e40a76de8e315b8080902",
-    measurementId: "G-11DKCSLVXV"
-  };
-
-  // Inicializa la App y la Autenticación
-  const app = initializeApp(firebaseConfig);
-  const auth = getAuth(app);
-
-  const googleProvider = new GoogleAuthProvider();
-  const facebookProvider = new FacebookAuthProvider();
-
-  // Exponemos la función al HTML para que el botón la encuentre
-  window.loginConFirebase = function(proveedor) {
-    let providerParaUsar;
-
-    if (proveedor === 'Google') {
-      providerParaUsar = googleProvider;
-    } else if (proveedor === 'Facebook') {
-      providerParaUsar = facebookProvider;
-    }
-
-    // Se abre la ventana emergente para registrarse/iniciar sesión
-    signInWithPopup(auth, providerParaUsar)
-      .then((result) => {
-        // SI ES EXITOSO, se ejecuta la función de arriba que avanza la pantalla
-        console.log("Éxito. Usuario ingresado:", result.user.email);
-        window.fotoPerfilUsuario = result.user.photoURL || null;
-        window.avanzarApp();
-      }).catch((error) => {
-        // SI CIERRAN LA VENTANA O HAY ERROR, no avanza. Se queda atorado en el modal.
-        console.error("Error al iniciar sesión:", error.message);
-        if(error.code !== 'auth/popup-closed-by-user'){
-            alert("No se pudo iniciar sesión. Motivo: " + error.message);
-        }
-      });
-  };
-</script>
+<script type="module" src="firebase-init.js"></script>
 
 </body>
 </html>
