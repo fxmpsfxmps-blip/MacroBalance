@@ -1,0 +1,1091 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MacroBalance</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' width='24' height='24'%3E%3Ccircle cx='12' cy='12' r='12' fill='%23d81b3f'/%3E%3Cpath d='M6 5v14M18 5v14M6 12h12M3 9v6M21 9v6' stroke='%23ffffff' stroke-width='2.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+
+  :root{
+    --bg: #050505; --panel: #101010; --panel-line: #1c1c1c;
+    --ink: #f2f2f2; --ink-dim: #8a8a8a;
+    --red: #d81b3f; --red-bright: #ff2a4b; --red-deep: #4d0e1c;
+    --protein: #d81b3f; --fat: #cfcfcf; --carbs: #4d0e1c;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:'Inter',sans-serif;min-height:100vh;}
+  .screen{position:fixed;inset:0;z-index:40;display:flex;overflow-y:auto;}
+  .hidden{display:none !important;}
+
+ /* ===== NUEVA PORTADA (HERO INTEGRADO CORREGIDO) ===== */
+  #landing{
+    background:#080808;
+    flex-direction:column;
+    justify-content:space-between;
+    padding:32px 5vw;
+    position:fixed;
+    inset:0;
+    width:100vw;
+    height:100vh;
+    overflow:hidden;
+    animation:fadeIn .7s ease both;
+  }
+  @keyframes fadeIn{from{opacity:0;}to{opacity:1;}}
+  #landing.leaving{animation:fadeOut .5s ease forwards;}
+  @keyframes fadeOut{to{opacity:0;pointer-events:none;}}
+
+  /* Capa de imagen de fondo con encuadre milimétrico */
+  .hero-background {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    background-image: url('media/cover-pc.png');
+    background-size: cover;
+    background-position: 62% 38%;
+    background-repeat: no-repeat;
+  }
+
+  /* Sombra / Gradiente para lectura */
+  .hero-overlay {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    background: linear-gradient(
+      90deg, 
+      rgba(8, 8, 8, 0.92) 0%, 
+      rgba(8, 8, 8, 0.5) 45%, 
+      rgba(8, 8, 8, 0.75) 100%
+    );
+  }
+
+  /* Header & Logos */
+  .hero-header {
+    position: relative;
+    z-index: 10;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .brand-logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .logo-badge {
+    background: var(--red);
+    color: #fff;
+    border-radius: 50%;
+    width: 36px;
+    height: 36px;
+    display: grid;
+    place-items: center;
+    box-shadow: 0 0 15px rgba(216, 27, 63, 0.5);
+  }
+
+  .logo-text {
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 0.25em;
+    color: #ffffff;
+    text-transform: uppercase;
+  }
+
+  .header-actions {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .btn-icon {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: #cccccc;
+    border-radius: 8px;
+    width: 40px;
+    height: 40px;
+    display: grid;
+    place-items: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .btn-icon:hover {
+    background: rgba(255, 255, 255, 0.15);
+    color: #ffffff;
+  }
+
+  /* Cuerpo Principal de la Portada */
+  .hero-body {
+    position: relative;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    margin: auto 0;
+  }
+
+  .hero-content {
+    display: flex;
+    align-items: center;
+    gap: 32px;
+    max-width: 650px;
+  }
+
+  .tag-vertical {
+    writing-mode: vertical-rl;
+    transform: rotate(180deg);
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 0.4em;
+    color: var(--red);
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .tag-vertical::after {
+    content: '';
+    width: 2px;
+    height: 45px;
+    background: var(--red);
+  }
+
+  .main-title {
+    font-size: clamp(42px, 6.5vw, 80px);
+    font-weight: 900;
+    line-height: 0.9;
+    letter-spacing: -0.03em;
+    text-transform: uppercase;
+    color: #ffffff;
+  }
+
+  .main-title span {
+    color: #ffffff;
+    display: block;
+  }
+
+  .sub-title {
+    color: var(--red);
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 0.45em;
+    margin: 18px 0 32px 0;
+    text-transform: uppercase;
+  }
+
+  .btn-cta {
+    background: var(--red);
+    color: #ffffff;
+    border: none;
+    padding: 18px 40px;
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 0.25em;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 16px;
+    border-radius: 2px;
+    transition: all 0.25s ease;
+    box-shadow: 0 10px 30px rgba(216, 27, 63, 0.4);
+    animation: btnPulse 2.6s ease-out infinite;
+  }
+
+  @keyframes btnPulse{
+    0%{box-shadow:0 0 0 0 rgba(216,27,63,.45);}
+    70%{box-shadow:0 0 0 14px rgba(216,27,63,0);}
+    100%{box-shadow:0 0 0 0 rgba(216,27,63,0);}
+  }
+
+  .btn-cta:hover {
+    background: var(--red-bright);
+    transform: translateY(-2px);
+    box-shadow: 0 15px 35px rgba(216, 27, 63, 0.6);
+    animation-play-state: paused;
+  }
+
+  .btn-cta:active {
+    transform: scale(0.96);
+  }
+
+  /* Banner "Próximamente" */
+  .coming-soon{
+    position: relative;
+    z-index: 10;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 28px;
+    padding: 10px 18px;
+    border: 1px solid rgba(216,27,63,.4);
+    background: rgba(216,27,63,.07);
+    backdrop-filter: blur(6px);
+    border-radius: 999px;
+    max-width: fit-content;
+  }
+  .coming-soon .dot-live{
+    width: 7px; height: 7px; border-radius: 50%;
+    background: var(--red-bright);
+    box-shadow: 0 0 8px var(--red-bright);
+    animation: dotBlink 1.6s ease-in-out infinite;
+    flex-shrink: 0;
+  }
+  @keyframes dotBlink{0%,100%{opacity:1;}50%{opacity:.35;}}
+  .coming-soon span{
+    font-size: 11.5px;
+    font-weight: 600;
+    letter-spacing: .02em;
+    color: #e8e8e8;
+    line-height: 1.4;
+  }
+  .coming-soon b{
+    color: var(--red-bright);
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: .12em;
+    font-size: 10.5px;
+    margin-right: 4px;
+  }
+  @media (max-width:768px){
+    .coming-soon{margin-top:20px;padding:9px 14px;}
+    .coming-soon span{font-size:11px;}
+  }
+
+  /* Responsivo Móviles */
+  @media (max-width: 768px) {
+    #landing {
+      padding: 24px;
+    }
+    .hero-background {
+      background-position: 68% 38%;
+    }
+    .hero-content {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 16px;
+    }
+    .tag-vertical {
+      writing-mode: horizontal-tb;
+      transform: none;
+    }
+    .tag-vertical::after {
+      display: none;
+    }
+  }
+
+  /* ===== MODAL registro obligatorio ===== */
+  #modal-overlay{position:fixed;inset:0;z-index:60;background:rgba(0,0,0,.85);display:flex;align-items:center;justify-content:center;padding:20px;}
+  .modal-box{background:var(--panel);border:1px solid var(--panel-line);padding:36px 28px;max-width:380px;width:100%;text-align:center;box-shadow:0 20px 50px rgba(0,0,0,0.8);}
+  .modal-box h3{font-weight:700;font-size:20px;margin:0 0 8px;}
+  .modal-box p{color:var(--ink-dim);font-size:13.5px;margin:0 0 22px;line-height:1.5;}
+  
+  .auth-buttons{display:flex;flex-direction:column;gap:10px;margin-bottom:12px;}
+  .btn-social{width:100%;border:none;padding:12px;font-size:13.5px;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px;border-radius:3px;transition:opacity 0.2s ease;}
+  .btn-social:hover{opacity:0.9;}
+  .btn-social svg{width:18px;height:18px;}
+  
+  .btn-google{background:#ffffff;color:#1a1a1a;}
+  .btn-instagram{background:linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);color:#ffffff;}
+  .btn-facebook{background:#1877f2;color:#ffffff;}
+  
+  .modal-note{font-size:11px;color:#5c5c5c;margin-top:16px;line-height:1.5;}
+
+  /* ===== GATE elegir sexo ===== */
+  #gate{background:#050505;display:grid;grid-template-columns:0.82fr 1.18fr;animation:fadeIn .6s ease both;}
+  @media (max-width:760px){
+    #gate{grid-template-columns:1fr;grid-template-rows:auto 1fr;}
+    .gate-right{height:58vh;order:2;}
+    .gate-left{order:1;padding:40px 30px 26px;}
+  }
+  #gate.leaving{animation:fadeOut .5s ease forwards;}
+  .gate-left{display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:60px;position:relative;}
+  .gate-eyebrow{letter-spacing:.32em;font-size:11px;color:var(--red);text-transform:uppercase;font-weight:600;margin-bottom:22px;opacity:0;animation:riseIn .6s ease .1s forwards;}
+  .gate-title{font-weight:300;font-size:clamp(36px,5.5vw,56px);line-height:1.02;margin:0 0 18px;opacity:0;animation:riseIn .6s ease .22s forwards;}
+  .gate-title b{font-weight:700;color:var(--red-bright);}
+  .gate-sub{color:var(--ink-dim);font-size:14px;margin-bottom:36px;max-width:32ch;line-height:1.6;opacity:0;animation:riseIn .6s ease .34s forwards;}
+  .gate-options{display:flex;gap:14px;opacity:0;animation:riseIn .6s ease .46s forwards;}
+  @keyframes riseIn{from{opacity:0;transform:translateY(14px);}to{opacity:1;transform:translateY(0);}}
+  .gate-btn{background:transparent;color:var(--ink);border:1px solid var(--panel-line);padding:16px 30px;cursor:pointer;font-size:12px;letter-spacing:.18em;text-transform:uppercase;font-weight:600;transition:border-color .25s ease, color .25s ease, transform .12s ease, background .25s ease;}
+  .gate-btn:hover{border-color:var(--red);color:var(--red-bright);background:rgba(216,27,63,.06);}
+  .gate-btn:active{transform:scale(0.93);}
+  .gate-right{position:relative;overflow:hidden;background:linear-gradient(160deg,#1a1a1a,#0a0a0a);}
+  .gate-photo{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:grayscale(100%) contrast(1.15);opacity:0;transform:scale(1.08);transition:opacity 1s ease, transform 6s ease;}
+  .gate-photo.active{opacity:1;transform:scale(1);}
+  .gate-right::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg, rgba(5,5,5,.85), transparent 45%);}
+
+  /* ===== TRANSICIÓN de carga ===== */
+  #loading{background:#000;flex-direction:column;align-items:center;justify-content:flex-end;padding-bottom:14vh;z-index:70;}
+  .loading-photo{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:grayscale(100%) contrast(1.15);opacity:0;transform:scale(1);animation:loadFade 3.5s ease forwards, loadZoom 3.5s ease forwards;}
+  @keyframes loadFade{0%{opacity:0;}25%{opacity:.9;}75%{opacity:.9;}100%{opacity:0;}}
+  @keyframes loadZoom{from{transform:scale(1.12);}to{transform:scale(1);}}
+  .loading-text{position:relative;z-index:2;color:#fff;font-size:12px;letter-spacing:.3em;text-transform:uppercase;font-weight:600;animation:textPulse 1.6s ease-in-out infinite;}
+  @keyframes textPulse{0%,100%{opacity:.55;}50%{opacity:1;}}
+  .loading-bar{position:relative;z-index:2;width:180px;height:2px;background:#2a2a2a;margin-top:18px;overflow:hidden;border-radius:2px;}
+  .loading-bar-fill{height:100%;background:var(--red);width:0%;animation:fillBar 3.5s ease forwards;box-shadow:0 0 10px var(--red-bright);}
+  @keyframes fillBar{to{width:100%;}}
+
+  /* ===== APP ===== */
+  #app{display:none;justify-content:center;padding:56px 20px;}
+  .wrap{width:100%;max-width:720px;}
+  .top-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;opacity:0;animation:riseIn .5s ease .2s forwards;}
+  .eyebrow{font-size:11px;letter-spacing:.3em;text-transform:uppercase;color:var(--red);font-weight:600;}
+  .avatar-badge{width:52px;height:52px;border-radius:50%;overflow:hidden;background:var(--panel);border:2px solid var(--red);box-shadow:0 0 0 3px rgba(216,27,63,.15);flex-shrink:0;}
+  .avatar-badge img{width:100%;height:100%;object-fit:cover;display:block;}
+  h1{font-weight:300;font-size:clamp(30px,4.5vw,42px);margin:0 0 8px;opacity:0;animation:riseIn .5s ease .32s forwards;}
+  p.sub{color:var(--ink-dim);margin:0 0 40px;max-width:48ch;line-height:1.6;font-size:14.5px;opacity:0;animation:riseIn .5s ease .42s forwards;}
+  .grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+  @media (max-width:560px){.grid{grid-template-columns:1fr;}}
+  label{display:block;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-dim);margin-bottom:7px;}
+  input,select{width:100%;padding:13px 14px;border-radius:2px;border:1px solid var(--panel-line);background:var(--panel);color:var(--ink);font-size:14.5px;font-family:'Inter',sans-serif;transition:border-color .2s ease, box-shadow .2s ease;}
+  input:focus,select:focus{outline:none;border-color:var(--red);box-shadow:0 0 0 3px rgba(216,27,63,.15);}
+  input.lleno{border-color:var(--red);}
+  .field{margin-bottom:16px;opacity:0;animation:riseIn .5s ease forwards;}
+  .grid .field:nth-of-type(1){animation-delay:.55s;}
+  .grid .field:nth-of-type(2){animation-delay:.62s;}
+  .grid .field:nth-of-type(3){animation-delay:.69s;}
+  .grid .field:nth-of-type(4){animation-delay:.76s;}
+  .grid .field:nth-of-type(5){animation-delay:.83s;}
+  .grid .field:nth-of-type(6){animation-delay:.9s;}
+  .grid .field:nth-of-type(7){animation-delay:.97s;}
+  .grid .field:nth-of-type(8){animation-delay:1.04s;}
+  .grid .field:nth-of-type(9){animation-delay:1.11s;}
+  .grid .field:nth-of-type(10){animation-delay:1.18s;}
+  .grid .field:nth-of-type(11){animation-delay:1.25s;}
+  .radio-row{display:flex;gap:10px;}
+  .radio-opt{flex:1;text-align:center;padding:13px;border:1px solid var(--panel-line);cursor:pointer;font-size:13px;letter-spacing:.05em;color:var(--ink-dim);transition:all .15s ease;}
+  .radio-opt.selected{border-color:var(--red);color:var(--ink);background:rgba(216,27,63,.08);}
+  button.primary{margin-top:12px;width:100%;padding:15px;border:none;border-radius:2px;background:var(--red);color:#f5f5f5;font-weight:600;font-size:12.5px;letter-spacing:.16em;text-transform:uppercase;cursor:pointer;transition:background .2s ease, transform .12s ease;opacity:0;animation:riseIn .5s ease .97s forwards;}
+  button.primary:hover{background:var(--red-bright);}
+  button.primary:active{transform:scale(0.97);}
+  .error{display:none;margin-top:14px;padding:13px 14px;border-radius:2px;background:rgba(216,27,63,0.12);border:1px solid var(--red);color:#ffb8c4;font-size:13.5px;}
+  .results{display:none;margin-top:44px;}
+  .plate{display:flex;height:6px;border-radius:999px;overflow:hidden;margin-bottom:26px;}
+  .plate div{height:100%;transition:width .5s ease;}
+  .kcal-line{font-weight:300;font-size:26px;margin-bottom:6px;}
+  .macros{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-top:22px;}
+  .macro{border:1px solid var(--panel-line);border-radius:2px;padding:18px;background:var(--panel);}
+  .macro .dot{width:8px;height:8px;border-radius:50%;display:inline-block;margin-right:7px;}
+  .macro .label{font-size:11px;color:var(--ink-dim);letter-spacing:.06em;text-transform:uppercase;}
+  .macro .grams{font-weight:300;font-size:26px;margin-top:6px;}
+  .info-card{margin-top:14px;border:1px solid var(--panel-line);border-radius:2px;padding:18px;background:var(--panel);}
+  .info-card .label{font-size:11px;color:var(--ink-dim);letter-spacing:.06em;text-transform:uppercase;margin-bottom:6px;}
+  .info-card .big{font-weight:300;font-size:24px;}
+  .info-card .tip{color:var(--ink-dim);font-size:13px;margin-top:8px;line-height:1.5;}
+
+  /* ===== NUEVOS CAMPOS DEL FORMULARIO (agua con unidad, toggle gym) ===== */
+  input.lleno, select.lleno{border-color:var(--red);}
+  .input-unidad{position:relative;}
+  .input-unidad input{padding-right:42px;}
+  .input-unidad .unidad{position:absolute;right:14px;top:50%;transform:translateY(-50%);font-size:12.5px;color:var(--ink-dim);pointer-events:none;transition:color .2s ease;}
+  .input-unidad input.lleno + .unidad{color:var(--red-bright);}
+  .tip-chica{font-size:11px;color:var(--ink-dim);margin-top:6px;line-height:1.4;}
+  .toggle-row{display:flex;gap:10px;}
+  .toggle-opt{flex:1;text-align:center;padding:13px;border:1px solid var(--panel-line);cursor:pointer;font-size:13px;letter-spacing:.05em;color:var(--ink-dim);background:var(--panel);transition:all .15s ease;}
+  .toggle-opt.selected{border-color:var(--red);color:var(--ink);background:rgba(216,27,63,.08);}
+  .dias-gym-field{animation: fadeUp .3s ease both;}
+  .gym-kcal-box{margin-top:10px;padding:10px 12px;border:1px solid var(--panel-line);background:var(--panel);border-radius:2px;font-size:12.5px;color:var(--ink-dim);display:none;user-select:none;}
+  .gym-kcal-box b{color:var(--red-bright);font-weight:700;}
+
+  /* ===== CARRUSEL DE RESULTADOS ===== */
+  @keyframes fadeUp{from{opacity:0;transform:translateY(18px);}to{opacity:1;transform:translateY(0);}}
+  .carrusel-section{display:none;margin-top:44px;animation: fadeUp .5s ease both;}
+  .carrusel-titulo{text-align:center;margin-bottom:26px;}
+  .carrusel-titulo .eyebrow{margin-bottom:6px;}
+  .carrusel-titulo p{color:var(--ink-dim);font-size:13px;margin:0;}
+  .carrusel-viewport{position:relative;height:280px;display:flex;align-items:center;justify-content:center;perspective:1000px;}
+  .carrusel-track{position:relative;width:100%;height:100%;display:flex;align-items:center;justify-content:center;}
+  .plan-card{
+    position:absolute;width:210px;height:250px;border-radius:6px;padding:26px 20px;
+    background:rgba(20,20,20,.55);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);
+    border:1px solid rgba(255,255,255,.08);display:flex;flex-direction:column;cursor:pointer;
+    transition: transform .32s ease, opacity .32s ease, filter .32s ease, border-color .32s ease, box-shadow .32s ease;
+    color: var(--ink);
+  }
+  .plan-card .tag{font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-dim);font-weight:700;margin-bottom:14px;display:flex;align-items:center;gap:6px;}
+  .plan-card .tag svg{width:13px;height:13px;}
+  .plan-card h3{font-size:19px;font-weight:600;margin:0 0 4px;}
+  .plan-card .kcal{font-size:13px;color:var(--ink-dim);margin-bottom:auto;}
+  .plan-card .macros-mini{font-size:11px;color:var(--ink-dim);letter-spacing:.02em;padding-top:14px;border-top:1px solid rgba(255,255,255,.08);}
+  .plan-card.pos-center{transform: translateX(0) scale(1);opacity:1;z-index:3;border-color: rgba(216,27,63,.55);box-shadow: 0 0 0 1px rgba(216,27,63,.15), 0 20px 50px -10px rgba(216,27,63,.25);filter:none;}
+  .plan-card.pos-center .tag{color:var(--red-bright);}
+  .plan-card.pos-left{transform: translateX(-142px) scale(.88);opacity:.55;z-index:2;filter: blur(.3px);}
+  .plan-card.pos-right{transform: translateX(142px) scale(.88);opacity:.55;z-index:2;filter: blur(.3px);}
+  .plan-card.pos-hidden-left{transform: translateX(-230px) scale(.7);opacity:0;z-index:1;}
+  .plan-card.pos-hidden-right{transform: translateX(230px) scale(.7);opacity:0;z-index:1;}
+  .plan-card:hover.pos-left, .plan-card:hover.pos-right{opacity:.8;}
+  .carrusel-arrows{display:flex;justify-content:center;gap:14px;margin-top:18px;}
+  .arrow-btn{width:34px;height:34px;border-radius:50%;border:1px solid var(--panel-line);background:var(--panel);color:var(--ink-dim);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:border-color .2s ease,color .2s ease,transform .12s ease;}
+  .arrow-btn:hover{border-color:var(--red);color:var(--red-bright);}
+  .arrow-btn:active{transform:scale(.9);}
+  .carrusel-dots{display:flex;justify-content:center;gap:7px;margin-top:16px;}
+  .carrusel-dots .dot{width:6px;height:6px;border-radius:50%;background:var(--panel-line);transition:background .25s ease, transform .25s ease;}
+  .carrusel-dots .dot.active{background:var(--red-bright);transform:scale(1.3);}
+  .detalle-plan{margin-top:34px;border:1px solid rgba(216,27,63,.35);background:rgba(216,27,63,.05);border-radius:6px;padding:26px;animation: fadeUp .4s ease both;}
+  .detalle-plan .label-top{font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-dim);margin-bottom:4px;}
+  .detalle-plan .kcal-grande{font-size:30px;font-weight:300;margin-bottom:20px;}
+  .detalle-plan .macros{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:20px;}
+  .detalle-plan .macro{border:1px solid var(--panel-line);border-radius:2px;padding:14px 10px;background:var(--panel);text-align:center;}
+  .detalle-plan .macro .g{font-size:20px;font-weight:300;}
+  .detalle-plan .macro .l{font-size:10px;color:var(--ink-dim);letter-spacing:.05em;text-transform:uppercase;margin-top:4px;}
+  .extra-row{display:flex;gap:12px;flex-wrap:wrap;}
+  .extra-row .box{flex:1;min-width:120px;border:1px solid var(--panel-line);border-radius:2px;padding:12px 14px;background:var(--panel);}
+  .extra-row .box .l{font-size:10px;color:var(--ink-dim);letter-spacing:.05em;text-transform:uppercase;}
+  .extra-row .box .v{font-size:15px;margin-top:4px;}
+  .extra-row .box .v.warn{color:var(--red-bright);}
+  .sueno-tip{margin-top:14px;font-size:12.5px;color:var(--ink-dim);line-height:1.55;padding-top:14px;border-top:1px solid rgba(255,255,255,.08);}
+  .sueno-tip b{color:var(--red-bright);}
+  .marca-objetivo{position:absolute; top:-9px; right:14px; z-index:5;background:var(--red); color:#fff; font-size:9px; font-weight:700;letter-spacing:.06em; text-transform:uppercase; padding:4px 8px;border-radius:999px; box-shadow:0 3px 8px rgba(0,0,0,.4);display:flex; align-items:center; gap:4px;}
+  .marca-objetivo svg{width:9px;height:9px;}
+  @media (max-width:520px){
+    .plan-card{width:172px;height:236px;padding:20px 16px;}
+    .plan-card.pos-left{transform: translateX(-108px) scale(.85);}
+    .plan-card.pos-right{transform: translateX(108px) scale(.85);}
+    .plan-card.pos-hidden-left{transform: translateX(-180px) scale(.7);}
+    .plan-card.pos-hidden-right{transform: translateX(180px) scale(.7);}
+  }
+</style>
+</head>
+<body>
+
+<!-- LANDING CON CSS HERO INTEGRADO -->
+<div class="screen" id="landing">
+  <div class="hero-background"></div>
+  <div class="hero-overlay"></div>
+
+  <header class="hero-header">
+    <div class="brand-logo">
+      <div class="logo-badge">
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5">
+          <path d="M6 5v14M18 5v14M6 12h12M3 9v6M21 9v6"/>
+        </svg>
+      </div>
+      <span class="logo-text">INICIO</span>
+    </div>
+
+    <div class="header-actions">
+      <button class="btn-icon" aria-label="Cuenta">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>
+        </svg>
+      </button>
+      <button class="btn-icon" aria-label="Menú">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
+          <circle cx="5" cy="5" r="2"/><circle cx="12" cy="5" r="2"/><circle cx="19" cy="5" r="2"/>
+          <circle cx="5" cy="12" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="19" cy="12" r="2"/>
+        </svg>
+      </button>
+    </div>
+  </header>
+
+  <main class="hero-body">
+    <div class="hero-content">
+      <div class="tag-vertical">SALUD</div>
+      <div class="text-block">
+        <h1 class="main-title">MACRO<span>BALANCE</span></h1>
+        <p class="sub-title">PERSONALIZACIÓN</p>
+        <button class="btn-cta" onclick="abrirModal()">
+          EMPEZAR <span>&rarr;</span>
+        </button>
+        <div class="coming-soon">
+          <span class="dot-live"></span>
+          <span><b>Próximamente</b>un menú interactivo en tiempo real, adaptable a ti — no tú a él.</span>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<!-- MODAL registro obligatorio (Google, Instagram, Facebook) -->
+<div id="modal-overlay" class="hidden">
+  <div class="modal-box">
+    <h3>Crea tu cuenta</h3>
+    <p>Necesitas iniciar sesión para guardar tu progreso y continuar.</p>
+    
+    <div class="auth-buttons">
+      <!-- Cambiado el evento a loginConFirebase -->
+      <button class="btn-social btn-google" onclick="window.loginConFirebase('Google')">
+        <svg viewBox="0 0 48 48"><path fill="#FFC107" d="M43.6 20.5H42V20H24v8h11.3C33.7 32.9 29.3 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.8 1.1 8 3l5.7-5.7C34.6 6.5 29.6 4.5 24 4.5 12.9 4.5 4 13.4 4 24.5S12.9 44.5 24 44.5 44 35.6 44 24.5c0-1.4-.1-2.7-.4-4z"/><path fill="#FF3D00" d="M6.3 14.7l6.6 4.8C14.7 16 19 13.5 24 13.5c3.1 0 5.8 1.1 8 3l5.7-5.7C34.6 7.5 29.6 5.5 24 5.5c-7.5 0-14 4.2-17.4 10.4z"/><path fill="#4CAF50" d="M24 44.5c5.5 0 10.4-1.9 14.1-5.1l-6.5-5.5c-2 1.4-4.6 2.3-7.6 2.3-5.3 0-9.7-3.6-11.3-8.4l-6.6 5.1C9.8 40.2 16.3 44.5 24 44.5z"/><path fill="#1976D2" d="M43.6 20.5H42V20H24v8h11.3c-.8 2.3-2.3 4.2-4.2 5.6l6.5 5.5C41 36.4 44 30.9 44 24.5c0-1.4-.1-2.7-.4-4z"/></svg>
+        Registrarme con Google
+      </button>
+
+      <button class="btn-social btn-facebook" onclick="window.loginConFirebase('Facebook')">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+        Registrarme con Facebook
+      </button>
+    </div>
+
+    <div class="modal-note">Al registrarte aceptas que se vinculará tu cuenta para darte seguimiento. No puedes avanzar sin registrarte.</div>
+  </div>
+</div>
+
+<!-- GATE elegir sexo -->
+<div class="screen hidden" id="gate">
+  <div class="gate-left">
+    <div class="gate-eyebrow">MacroBalance</div>
+    <h2 class="gate-title">Tu balance,<br><b>a tu medida.</b></h2>
+    <div class="gate-sub">Elige un perfil para ajustar el cálculo de calorías y macros.</div>
+    <div class="gate-options">
+      <button class="gate-btn" onclick="elegir('M')">Mujer</button>
+      <button class="gate-btn" onclick="elegir('H')">Hombre</button>
+    </div>
+  </div>
+  <div class="gate-right">
+    <img class="gate-photo" id="foto-mujer" alt="">
+    <img class="gate-photo" id="foto-hombre" alt="">
+  </div>
+</div>
+
+<!-- TRANSICIÓN de carga -->
+<div class="screen hidden" id="loading">
+  <img class="loading-photo" id="loading-photo" src="" alt="">
+  <div class="loading-text">Preparando tu calculadora</div>
+  <div class="loading-bar"><div class="loading-bar-fill"></div></div>
+</div>
+
+<!-- APP -->
+<div id="app">
+<div class="wrap">
+  <div class="top-row">
+    <div class="eyebrow">MacroBalance</div>
+    <div class="avatar-badge"><img id="avatar-img" src="" alt=""></div>
+  </div>
+  <h1>Calculadora de macros</h1>
+  <p class="sub">Ingresa tus datos y obtén tu gasto calórico, el reparto de macros, tu agua recomendada y una guía de cardio realista.</p>
+
+ <div class="grid">
+    <div class="field">
+      <label for="peso">Peso (kg)</label>
+      <div class="input-unidad"><input type="number" id="peso" placeholder="0"><span class="unidad">kg</span></div>
+    </div>
+    <div class="field">
+      <label for="altura">Altura (cm)</label>
+      <div class="input-unidad"><input type="number" id="altura" placeholder="0"><span class="unidad">cm</span></div>
+    </div>
+    <div class="field">
+      <label for="edad">Edad (años)</label>
+      <input type="number" id="edad" placeholder="0">
+    </div>
+    <div class="field">
+      <label for="grasa">% Grasa corporal (Opcional)</label>
+      <input type="number" id="grasa" placeholder="ej: 18">
+    </div>
+    <select id="sexo" style="display:none;">
+      <option value="H">Hombre</option>
+      <option value="M">Mujer</option>
+    </select>
+    <div class="field">
+      <label for="objetivoPreferido">Tu objetivo</label>
+      <select id="objetivoPreferido">
+        <option value="" disabled selected>Selecciona...</option>
+        <option value="0">Bajar grasa (déficit)</option>
+        <option value="1">Mantenimiento</option>
+        <option value="2">Subir masa muscular</option>
+      </select>
+    </div>
+    <div class="field">
+      <label for="actividad">Movimiento diario (sin contar entrenar)</label>
+      <select id="actividad">
+        <option value="" disabled selected>Selecciona...</option>
+        <option value="1.2">Sedentario (oficina, poco caminar)</option>
+        <option value="1.35">Moderado (de pie, caminas harto)</option>
+        <option value="1.5">Trabajo físico demandante</option>
+      </select>
+    </div>
+    <div class="field">
+      <label for="estres">Nivel de estrés (1-5)</label>
+      <select id="estres">
+        <option value="" disabled selected>Selecciona...</option>
+        <option value="1">1 — Muy bajo</option>
+        <option value="2">2 — Bajo</option>
+        <option value="3">3 — Medio</option>
+        <option value="4">4 — Alto</option>
+        <option value="5">5 — Muy alto</option>
+      </select>
+    </div>
+    <div class="field">
+      <label for="sueno">Horas de sueño (promedio)</label>
+      <input type="number" id="sueno" step="0.5" placeholder="ej: 7">
+    </div>
+    <div class="field" style="grid-column:1 / -1;">
+      <label for="agua">¿Cuánta agua tomas hoy?</label>
+      <div class="input-unidad"><input type="text" id="agua" placeholder="0"><span class="unidad" id="agua-unidad"></span></div>
+      <div class="tip-chica">Ej: 1, 1.5, 2 (litros) ó 300, 500, 1000 (ml). Un vaso en promedio es 250ml.</div>
+    </div>
+    <div class="field" style="grid-column:1 / -1;">
+      <label>¿Vas al gym?</label>
+      <div class="toggle-row">
+        <div class="toggle-opt" id="gym-si" onclick="setGym(true)">Sí</div>
+        <div class="toggle-opt selected" id="gym-no" onclick="setGym(false)">No</div>
+      </div>
+    </div>
+    <div class="field dias-gym-field" id="dias-gym-wrap" style="display:none;grid-column:1 / -1;">
+      <label for="dias-gym">¿Cuántos días a la semana?</label>
+      <select id="dias-gym" onchange="actualizarKcalGym()">
+        <option value="1">1 día</option>
+        <option value="2">2 días</option>
+        <option value="3" selected>3 días</option>
+        <option value="4">4 días</option>
+        <option value="5">5 días</option>
+        <option value="6">6 días</option>
+        <option value="7">7 días</option>
+      </select>
+      <div class="gym-kcal-box" id="gym-kcal-box">+<b id="gym-kcal-valor">0</b> kcal/día promedio por tu entrenamiento</div>
+    </div>
+  </div>
+
+  <button class="primary" onclick="calcular()">Calcular</button>
+  <div class="error" id="error"></div>
+
+  <!-- ========== CARRUSEL DE RESULTADOS ========== -->
+  <section class="carrusel-section" id="carrusel-section">
+    <div class="carrusel-titulo">
+      <div class="eyebrow">Tus planes posibles</div>
+      <p>Toca una tarjeta lateral o usa las flechas para comparar</p>
+    </div>
+
+    <div class="carrusel-viewport">
+      <div class="carrusel-track" id="track"></div>
+    </div>
+
+    <div class="carrusel-arrows">
+      <div class="arrow-btn" onclick="mover(-1)">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg>
+      </div>
+      <div class="arrow-btn" onclick="mover(1)">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+      </div>
+    </div>
+    <div class="carrusel-dots" id="dots"></div>
+
+    <div class="detalle-plan" id="detalle"></div>
+  </section>
+</div>
+</div>
+
+<script>
+let planes = [];
+let activo = 1;
+let objetivoPreferidoIdx = 1;
+let vaAlGym = false;
+let ultimoContexto = null;
+
+function setGym(valor){
+  vaAlGym = valor;
+  document.getElementById('gym-si').classList.toggle('selected', valor === true);
+  document.getElementById('gym-no').classList.toggle('selected', valor === false);
+  document.getElementById('dias-gym-wrap').style.display = valor ? 'block' : 'none';
+  document.getElementById('gym-kcal-box').style.display = valor ? 'block' : 'none';
+  if(valor) actualizarKcalGym();
+}
+
+function actualizarKcalGym(){
+  const peso = parseFloat(document.getElementById('peso').value) || 70;
+  const dias = parseInt(document.getElementById('dias-gym').value, 10);
+  const FACTOR_DESCANSO_SERIES = 0.65;
+  const kcalPorSesion = (6 * FACTOR_DESCANSO_SERIES * 3.5 * peso / 200) * 60;
+  const promedioDiario = Math.round((kcalPorSesion * dias) / 7);
+  document.getElementById('gym-kcal-valor').textContent = promedioDiario;
+}
+
+// Muestra el sufijo L o ml en vivo, según la misma regla que usa el cálculo real
+function actualizarUnidadAgua(){
+  const input = document.getElementById('agua');
+  const span = document.getElementById('agua-unidad');
+  const texto = input.value.trim();
+  if(texto === ''){ span.textContent = ''; return; }
+  const limpio = texto.toLowerCase().replace(',', '.');
+  const numero = parseFloat(limpio.replace(/[^0-9.]/g, ''));
+  if(isNaN(numero)){ span.textContent = ''; return; }
+  if(limpio.includes('ml')){ span.textContent = 'ml'; return; }
+  if(limpio.includes('l')){ span.textContent = 'L'; return; }
+  if(numero % 1 !== 0 || numero < 10){ span.textContent = 'L'; }
+  else { span.textContent = 'ml'; }
+}
+
+function esMobile(){
+  return window.innerWidth <= 760;
+}
+
+function rutaGate(sexo){
+  if(sexo === 'M'){
+    return esMobile() ? 'media/mujer-v.jpg' : 'media/mujer-h.jpg';
+  }
+  return esMobile() ? 'media/hombre-v.jpg' : 'media/hombre-h.jpg';
+}
+
+function cargarFotosGate(){
+  document.getElementById('foto-mujer').src = rutaGate('M');
+  document.getElementById('foto-hombre').src = rutaGate('H');
+}
+cargarFotosGate();
+window.addEventListener('resize', cargarFotosGate);
+
+function marcarCampoLleno(input){
+  const tieneValor = input.value.toString().trim() !== '';
+  input.classList.toggle('lleno', tieneValor);
+}
+document.querySelectorAll('.grid input').forEach(function(campo){
+  marcarCampoLleno(campo);
+  campo.addEventListener('input', function(){
+    marcarCampoLleno(campo);
+    if(campo.id === 'agua') actualizarUnidadAgua();
+    if(campo.id === 'peso' && vaAlGym) actualizarKcalGym();
+  });
+});
+document.querySelectorAll('.grid select').forEach(function(campo){
+  marcarCampoLleno(campo);
+  campo.addEventListener('change', function(){ marcarCampoLleno(campo); });
+});
+actualizarUnidadAgua();
+
+function abrirModal(){
+  document.getElementById('modal-overlay').classList.remove('hidden');
+}
+
+// Esta es la función que solo se activará SI Firebase confirma el inicio de sesión
+window.avanzarApp = function(){
+  document.getElementById('modal-overlay').classList.add('hidden');
+  const landing = document.getElementById('landing');
+  landing.classList.add('leaving');
+  setTimeout(function(){
+    landing.style.display = 'none';
+    document.getElementById('gate').classList.remove('hidden');
+  }, 500);
+}
+
+function elegir(sexo){
+  document.getElementById('sexo').value = sexo;
+  const rutaFoto = rutaGate(sexo);
+  const rutaAvatarRespaldo = sexo === 'M' ? 'media/mujer-v.jpg' : 'media/hombre-v.jpg';
+
+  document.getElementById('foto-mujer').classList.toggle('active', sexo === 'M');
+  document.getElementById('foto-hombre').classList.toggle('active', sexo === 'H');
+
+  const avatarImg = document.getElementById('avatar-img');
+  avatarImg.onerror = function(){ avatarImg.onerror = null; avatarImg.src = rutaAvatarRespaldo; };
+  avatarImg.src = window.fotoPerfilUsuario || rutaAvatarRespaldo;
+
+  const gate = document.getElementById('gate');
+  gate.classList.add('leaving');
+  setTimeout(function(){
+    gate.style.display = 'none';
+    const loading = document.getElementById('loading');
+    document.getElementById('loading-photo').src = rutaFoto;
+    loading.classList.remove('hidden');
+    setTimeout(function(){
+      loading.style.display = 'none';
+      document.getElementById('app').style.display = 'flex';
+    }, 3500);
+  }, 500);
+}
+
+function interpretarAgua(texto){
+  if(!texto) return 0;
+  texto = texto.toString().trim().toLowerCase().replace(',', '.');
+  const esMl = texto.includes('ml');
+  const esL = texto.includes('l') && !esMl;
+  const numero = parseFloat(texto.replace(/[^0-9.]/g, ''));
+  if(isNaN(numero)) return 0;
+
+  if(esMl) return numero / 1000;
+  if(esL) return numero;
+
+  if(numero % 1 !== 0) return numero;
+  if(numero >= 10) return numero / 1000;
+  return numero;
+}
+
+function calcular(){
+  const peso = parseFloat(document.getElementById('peso').value);
+  const altura = parseFloat(document.getElementById('altura').value);
+  const edad = parseFloat(document.getElementById('edad').value);
+  const sexo = document.getElementById('sexo').value;
+  const factorNeat = parseFloat(document.getElementById('actividad').value) || 1.2;
+  const grasaPct = parseFloat(document.getElementById('grasa').value);
+  const horasSueno = parseFloat(document.getElementById('sueno').value);
+  const aguaTexto = document.getElementById('agua').value;
+  const errorBox = document.getElementById('error');
+  const carruselSection = document.getElementById('carrusel-section');
+
+  errorBox.style.display = 'none';
+  carruselSection.style.display = 'none';
+
+  if(!peso || !altura || !edad || peso <= 0 || altura <= 0 || edad <= 0){
+    errorBox.textContent = 'Completa peso, altura y edad con valores válidos.';
+    errorBox.style.display = 'block';
+    return;
+  }
+  const alturaM = altura / 100;
+  if(alturaM > 1.99){
+    errorBox.textContent = 'Error: la altura no puede ser mayor a 1.99 m.';
+    errorBox.style.display = 'block';
+    return;
+  }
+  if(alturaM < 1.45){
+    errorBox.textContent = 'Error: con una altura menor a 1.45 m el cálculo no es confiable.';
+    errorBox.style.display = 'block';
+    return;
+  }
+
+  objetivoPreferidoIdx = parseInt(document.getElementById('objetivoPreferido').value, 10);
+  if(isNaN(objetivoPreferidoIdx)) objetivoPreferidoIdx = 1;
+
+  // 1) BMR: Katch-McArdle si hay % de grasa (usa masa magra, más preciso), si no Mifflin-St Jeor
+  let bmr, metodo;
+  if(grasaPct && grasaPct > 3 && grasaPct < 60){
+    const masaMagra = peso * (1 - grasaPct/100);
+    bmr = 370 + (21.6 * masaMagra);
+    metodo = 'Katch-McArdle (usando tu % de grasa)';
+  } else {
+    bmr = sexo === 'H'
+      ? (10*peso + 6.25*altura - 5*edad + 5)
+      : (10*peso + 6.25*altura - 5*edad - 161);
+    metodo = 'Mifflin-St Jeor (estimado sin % de grasa)';
+  }
+
+  // 2) NEAT: SOLO movimiento cotidiano, sin ejercicio incluido (evita doble conteo con gym/cardio)
+  let metabolismoBase = bmr * factorNeat;
+
+  // 3) Sueño: afecta cortisol/grelina y el gasto de fondo (NO el gasto mecánico del ejercicio)
+  let factorSueno = 1, tagSueno = 'Sin datos', tipSueno = '';
+  if(horasSueno){
+    if(horasSueno < 6){
+      factorSueno = 0.95;
+      tagSueno = 'Impacto alto';
+      tipSueno = '<b>Duermes poco (&lt;6h):</b> tu cortisol y grelina (hormona del hambre) tienden a subir, y tu gasto de fondo baja un poco porque te mueves menos sin notarlo (NEAT). Ajustamos tu metabolismo base -5% — y ojo, esto también suele aumentar el apetito por encima de lo calculado.';
+    } else if(horasSueno < 7){
+      factorSueno = 0.98;
+      tagSueno = 'Impacto leve';
+      tipSueno = '<b>Duermes un poco por debajo del rango ideal (6-7h):</b> ligero impacto en cortisol y gasto energético. Ajustamos -2%.';
+    } else if(horasSueno <= 9){
+      factorSueno = 1;
+      tagSueno = 'Óptimo';
+      tipSueno = '<b>Buen rango de sueño (7-9h):</b> sin penalización — tu cuerpo regula mejor el cortisol y el apetito.';
+    } else {
+      factorSueno = 1;
+      tagSueno = 'Largo';
+      tipSueno = 'Duermes más de 9h. No aplicamos penalización, pero si te sientes cansado igual, vale la pena revisar calidad de sueño, no solo cantidad.';
+    }
+  }
+  metabolismoBase = metabolismoBase * factorSueno;
+
+  // 4) Estrés: cortisol elevado sostenido = más antojos y tendencia a acumular grasa (mismo principio que sueño)
+  const nivelEstres = parseInt(document.getElementById('estres').value, 10) || 0;
+  let factorEstres = 1, tagEstres = 'Sin datos', tipEstres = '';
+  if(nivelEstres === 1 || nivelEstres === 2){
+    factorEstres = 1;
+    tagEstres = 'Bajo';
+    tipEstres = '<b>Estrés bajo:</b> tu cortisol se mantiene estable, sin impacto relevante en tu gasto ni en tu apetito.';
+  } else if(nivelEstres === 3){
+    factorEstres = 0.99;
+    tagEstres = 'Medio';
+    tipEstres = '<b>Estrés medio:</b> ligero repunte de cortisol. Ajustamos -1% y vale la pena vigilar antojos por ansiedad.';
+  } else if(nivelEstres === 4){
+    factorEstres = 0.96;
+    tagEstres = 'Alto';
+    tipEstres = '<b>Estrés alto:</b> el cortisol sostenido eleva el apetito (sobre todo por azúcar/grasa) y favorece que tu cuerpo retenga más grasa, en especial abdominal. Ajustamos -4%.';
+  } else if(nivelEstres === 5){
+    factorEstres = 0.93;
+    tagEstres = 'Muy alto';
+    tipEstres = '<b>Estrés muy alto:</b> cortisol crónicamente elevado — mayor apetito, peor calidad de sueño y más facilidad para acumular grasa visceral. Ajustamos -7%. Si esto es constante, vale más atender el estrés que solo ajustar la dieta.';
+  }
+  metabolismoBase = metabolismoBase * factorEstres;
+
+  // 5) EAT: el ejercicio real, calculado aparte y NUNCA tocado por sueño/estrés (es gasto mecánico)
+  //    Gym: MET 6.0 = entrenamiento de fuerza vigoroso (Compendium of Physical Activities, Ainsworth et al. 2011, código 02050)
+  //    × 0.65 = factor de descanso entre series (una sesión real no es esfuerzo continuo como asume el MET de tabla)
+  let diasGym = 0, gastoGymDiario = 0, tipGym = '';
+  const FACTOR_DESCANSO_SERIES = 0.65;
+  if(vaAlGym){
+    diasGym = parseInt(document.getElementById('dias-gym').value, 10);
+    const kcalPorSesion = (6 * FACTOR_DESCANSO_SERIES * 3.5 * peso / 200) * 60;
+    gastoGymDiario = (kcalPorSesion * diasGym) / 7;
+    tipGym = 'Entrenas ' + diasGym + ' día(s) por semana. Sumamos un promedio de ' + Math.round(gastoGymDiario) + ' kcal/día por tu entrenamiento de fuerza (60 min/sesión, MET 6.0 con descanso entre series incluido).';
+  } else {
+    tipGym = 'No marcaste entrenamiento de fuerza — si empiezas a ir al gym, tu gasto calórico real sube y podrías necesitar más calorías de las que ves aquí.';
+  }
+
+  const defs = [
+    // Ajuste de objetivo PROPORCIONAL al gasto (no un número fijo), rango recomendado por
+    // literatura de nutrición deportiva (Helms/Aragon/Schoenfeld): déficit 15-25%, superávit 5-15%
+    {id:'deficit', nombre:'Déficit', factorObjetivo:0.80, icon:'down', minCardio:30},
+    {id:'mantenimiento', nombre:'Mantenimiento', factorObjetivo:1.00, icon:'equal', minCardio:25},
+    {id:'volumen', nombre:'Volumen', factorObjetivo:1.10, icon:'up', minCardio:15}
+  ];
+
+  const metaAgua = (peso * 0.035) + ((defs[0].minCardio) * 0.003);
+  const consumoActual = interpretarAgua(aguaTexto);
+  const faltanteAgua = metaAgua - consumoActual;
+
+  planes = defs.map(function(d){
+    // Cardio: MET 3.5 = caminata moderada 4.8-5.5km/h (mismo Compendium)
+    const gastoCardio = (3.5 * 3.5 * peso / 200) * d.minCardio;
+    const eat = gastoGymDiario + gastoCardio;
+    const subtotal = metabolismoBase + eat;
+    // 6) TEF: efecto térmico de los alimentos, ~10% de la energía manejada (Westerterp 2004; Jéquier 2002)
+    const tef = subtotal * 0.10;
+    const tdeeTotal = subtotal + tef;
+    let kcal = Math.max(1500, tdeeTotal * d.factorObjetivo);
+
+    const proteina = peso * 2;
+    const grasaG = (kcal * 0.25) / 9;
+    const kcalProt = proteina*4, kcalGrasaCal = grasaG*9;
+    const carbos = (kcal - kcalProt - kcalGrasaCal) / 4;
+    return {
+      id: d.id, nombre: d.nombre, icon: d.icon, cardio: d.minCardio + ' min',
+      kcal: Math.round(kcal),
+      proteina: Math.round(proteina), grasa: Math.round(grasaG), carbos: Math.round(carbos)
+    };
+  });
+
+  activo = objetivoPreferidoIdx;
+  carruselSection.style.display = 'block';
+  renderCarrusel({
+    metodo: metodo, tagSueno: tagSueno, tipSueno: tipSueno,
+    metaAgua: metaAgua.toFixed(1), consumoActual: consumoActual, faltanteAgua: faltanteAgua,
+    horasSueno: horasSueno, vaAlGym: vaAlGym, diasGym: diasGym, tipGym: tipGym,
+    nivelEstres: nivelEstres, tagEstres: tagEstres, tipEstres: tipEstres
+  });
+  carruselSection.scrollIntoView({behavior:'smooth', block:'start'});
+}
+
+function iconoSvg(tipo){
+  if(tipo === 'down') return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 4v14M6 12l6 6 6-6"/></svg>';
+  if(tipo === 'up') return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 20V6M6 12l6-6 6 6"/></svg>';
+  return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 9h14M5 15h14"/></svg>';
+}
+
+function renderCarrusel(contexto){
+  if(contexto) ultimoContexto = contexto;
+  const track = document.getElementById('track');
+  const dots = document.getElementById('dots');
+  track.innerHTML = '';
+  dots.innerHTML = '';
+
+  planes.forEach(function(p, i){
+    let posClass = 'pos-hidden-right';
+    const diff = i - activo;
+    if(diff === 0) posClass = 'pos-center';
+    else if(diff === -1 || diff === planes.length-1) posClass = 'pos-left';
+    else if(diff === 1 || diff === -(planes.length-1)) posClass = 'pos-right';
+    else if(diff < 0) posClass = 'pos-hidden-left';
+
+    const card = document.createElement('div');
+    card.className = 'plan-card ' + posClass;
+    card.onclick = function(){ activo = i; renderCarrusel(); };
+    const badge = (i === objetivoPreferidoIdx)
+      ? '<div class="marca-objetivo"><svg viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="10"/></svg>Tu objetivo</div>'
+      : '';
+    card.innerHTML = badge +
+      '<div class="tag">' + iconoSvg(p.icon) + p.nombre + '</div>' +
+      '<h3>' + p.kcal + ' kcal</h3>' +
+      '<div class="kcal">por día</div>' +
+      '<div class="macros-mini">' + p.proteina + 'P · ' + p.grasa + 'G · ' + p.carbos + 'C</div>';
+    track.appendChild(card);
+
+    const dot = document.createElement('div');
+    dot.className = 'dot' + (i === activo ? ' active' : '');
+    dot.onclick = function(){ activo = i; renderCarrusel(); };
+    dots.appendChild(dot);
+  });
+
+  renderDetalle();
+}
+
+function renderDetalle(){
+  const p = planes[activo];
+  const c = ultimoContexto || {};
+  const detalle = document.getElementById('detalle');
+
+  let aguaVal = c.metaAgua ? c.metaAgua + ' L' : '—';
+  let aguaClase = '';
+  let aguaSub = '';
+  if(c.consumoActual){
+    if(c.faltanteAgua > 0){ aguaSub = 'Te faltan ' + c.faltanteAgua.toFixed(1) + ' L hoy'; aguaClase='warn'; }
+    else { aguaSub = 'Ya cumpliste tu meta de hoy'; }
+  }
+
+  detalle.innerHTML =
+    '<div class="label-top">Plan seleccionado — ' + p.nombre + '</div>' +
+    '<div class="kcal-grande">' + p.kcal + ' kcal / día</div>' +
+    '<div class="macros">' +
+      '<div class="macro"><div class="g">' + p.proteina + 'g</div><div class="l">Proteína</div></div>' +
+      '<div class="macro"><div class="g">' + p.grasa + 'g</div><div class="l">Grasa</div></div>' +
+      '<div class="macro"><div class="g">' + p.carbos + 'g</div><div class="l">Carbohidratos</div></div>' +
+    '</div>' +
+    '<div class="extra-row">' +
+      '<div class="box"><div class="l">Agua meta</div><div class="v ' + aguaClase + '">' + aguaVal + '</div>' + (aguaSub ? '<div class="l" style="margin-top:4px;">'+aguaSub+'</div>' : '') + '</div>' +
+      '<div class="box"><div class="l">Cardio</div><div class="v">' + p.cardio + '</div></div>' +
+      '<div class="box"><div class="l">Sueño</div><div class="v">' + (c.horasSueno ? c.horasSueno+'h · '+c.tagSueno : '—') + '</div></div>' +
+    '</div>' +
+    '<div class="extra-row" style="margin-top:10px;">' +
+      '<div class="box"><div class="l">Gym</div><div class="v">' + (c.vaAlGym ? c.diasGym + ' día(s)/sem' : 'No entrena') + '</div></div>' +
+      '<div class="box"><div class="l">Estrés</div><div class="v">' + (c.nivelEstres ? c.nivelEstres+'/5 · '+c.tagEstres : '—') + '</div></div>' +
+    '</div>' +
+    (c.tipSueno ? '<div class="sueno-tip">'+c.tipSueno+'</div>' : '') +
+    (c.tipGym ? '<div class="sueno-tip">'+c.tipGym+'</div>' : '') +
+    (c.tipEstres ? '<div class="sueno-tip">'+c.tipEstres+'</div>' : '') +
+    (c.metodo ? '<div class="sueno-tip" style="border-top:none;padding-top:0;">Cálculo base: '+c.metodo+'</div>' : '');
+}
+
+function mover(dir){
+  activo = (activo + dir + planes.length) % planes.length;
+  renderCarrusel();
+}
+</script>
+
+<!-- CÓDIGO FIREBASE DE AUTENTICACIÓN AÑADIDO -->
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+  import { getAuth, signInWithPopup, GoogleAuthProvider, FacebookAuthProvider } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+
+  // Las credenciales que configuraste en Firebase Console
+  const firebaseConfig = {
+    apiKey: "AIzaSyASE9zpAiwwYuKeImEBgjaW-RC0CPaTx6I",
+    authDomain: "macrobalance-502bb.firebaseapp.com",
+    projectId: "macrobalance-502bb",
+    storageBucket: "macrobalance-502bb.firebasestorage.app",
+    messagingSenderId: "618429309223",
+    appId: "1:618429309223:web:2e40a76de8e315b8080902",
+    measurementId: "G-11DKCSLVXV"
+  };
+
+  // Inicializa la App y la Autenticación
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+
+  const googleProvider = new GoogleAuthProvider();
+  const facebookProvider = new FacebookAuthProvider();
+
+  // Exponemos la función al HTML para que el botón la encuentre
+  window.loginConFirebase = function(proveedor) {
+    let providerParaUsar;
+
+    if (proveedor === 'Google') {
+      providerParaUsar = googleProvider;
+    } else if (proveedor === 'Facebook') {
+      providerParaUsar = facebookProvider;
+    }
+
+    // Se abre la ventana emergente para registrarse/iniciar sesión
+    signInWithPopup(auth, providerParaUsar)
+      .then((result) => {
+        // SI ES EXITOSO, se ejecuta la función de arriba que avanza la pantalla
+        console.log("Éxito. Usuario ingresado:", result.user.email);
+        window.fotoPerfilUsuario = result.user.photoURL || null;
+        window.avanzarApp();
+      }).catch((error) => {
+        // SI CIERRAN LA VENTANA O HAY ERROR, no avanza. Se queda atorado en el modal.
+        console.error("Error al iniciar sesión:", error.message);
+        if(error.code !== 'auth/popup-closed-by-user'){
+            alert("No se pudo iniciar sesión. Motivo: " + error.message);
+        }
+      });
+  };
+</script>
+
+</body>
+</html>
