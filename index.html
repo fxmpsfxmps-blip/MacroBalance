@@ -259,6 +259,43 @@
     .coming-soon span{font-size:11px;}
   }
 
+  /* Tarjeta de foto en blanco y negro, en el espacio vacío a la derecha del hero */
+  .hero-photo-card {
+    position: absolute;
+    z-index: 12;
+    right: 7vw;
+    top: 50%;
+    transform: translateY(-50%);
+    width: clamp(180px, 20vw, 280px);
+    aspect-ratio: 3 / 4;
+    overflow: hidden;
+    border: 1px solid rgba(216, 27, 63, 0.35);
+    box-shadow: 0 25px 60px rgba(0, 0, 0, 0.55);
+    background: #000;
+  }
+
+  .hero-photo-card img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    /* Filtro B&N por si tu foto llega a color; si ya es B&N no cambia nada */
+    filter: grayscale(100%) contrast(1.05);
+    display: block;
+  }
+
+  .hero-photo-card::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    box-shadow: inset 0 0 40px rgba(0,0,0,.5);
+    pointer-events: none;
+  }
+
+  /* Se oculta en móvil: ahí no hay espacio vacío que llenar (hero-content ya usa todo el ancho) */
+  @media (max-width: 900px) {
+    .hero-photo-card { display: none; }
+  }
+
   /* Responsivo Móviles */
   @media (max-width: 768px) {
     #landing {
@@ -509,6 +546,16 @@
     Tu navegador no soporta video HTML5.
   </video>
   <div class="hero-overlay"></div>
+
+  <!--
+    📌 Guarda tu foto en blanco y negro dentro de tu carpeta "media" con este nombre:
+    - media/hero-photo-bw.jpg  (o .png si prefieres)
+    El CSS ya le aplica un filtro grayscale por si acaso, así que funciona
+    aunque subas la foto a color también.
+  -->
+  <div class="hero-photo-card">
+    <img src="media/hero-photo-bw.jpg" alt="Entrenamiento en gimnasio">
+  </div>
 
   <header class="hero-header">
     <div class="brand-logo">
