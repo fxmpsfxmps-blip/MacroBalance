@@ -36,15 +36,20 @@
   #landing.leaving{animation:fadeOut .5s ease forwards;}
   @keyframes fadeOut{to{opacity:0;pointer-events:none;}}
 
-  /* Capa de imagen de fondo con encuadre milimétrico */
-  .hero-background {
+  /* Capa de VIDEO de fondo (reemplaza a la imagen estática) */
+  .hero-video {
     position: absolute;
     inset: 0;
     z-index: 1;
-    background-image: url('media/cover-pc.png');
-    background-size: cover;
-    background-position: 62% 38%;
-    background-repeat: no-repeat;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    /* 👇 ESCRITORIO/HORIZONTAL: en tu video la corredora está ~60% desde la
+       izquierda y de torso hacia arriba. Como el video ya es 16:9 casi no se
+       recorta en pantallas anchas, pero si en tu monitor la ventana es MÁS
+       ANCHA que el video, aquí el eje Y es el que más pesa (sube ese número
+       para ver más "arriba" del video, bájalo para ver más "abajo"). */
+    object-position: 55% 40%;
   }
 
   /* Sombra / Gradiente para lectura */
@@ -259,8 +264,14 @@
     #landing {
       padding: 24px;
     }
-    .hero-background {
-      background-position: 68% 38%;
+    .hero-video {
+      /* 👇 CELULAR/VERTICAL: aquí el video se recorta casi todo por los LADOS
+         (izquierda/derecha), no arriba/abajo — porque tu video es 16:9 y el
+         celular es angosto y alto. Por eso el número que de verdad importa
+         es el primero (X). En tu video la corredora está ~60% desde la
+         izquierda, así que este valor la mantiene centrada en el recorte.
+         El segundo número (Y) casi no cambia nada visualmente en móvil. */
+      object-position: 62% 50%;
     }
     .hero-content {
       flex-direction: column;
@@ -482,7 +493,21 @@
 
 <!-- LANDING CON CSS HERO INTEGRADO -->
 <div class="screen" id="landing">
-  <div class="hero-background"></div>
+  <video class="hero-video" autoplay muted loop playsinline poster="media/cover-pc.png">
+    <!--
+      📌 Guarda tu video dentro de tu carpeta "media" con EXACTAMENTE este nombre:
+
+      - media/hero-fitness.mp4   → un solo video horizontal, se reutiliza para
+        escritorio y celular. El recorte (encuadre) para cada tamaño de pantalla
+        se controla desde el CSS con "object-position" (ver comentarios arriba,
+        en .hero-video y en su media query).
+
+      Recomendación de formato: mp4 (H.264), sin audio o muteado, 15-25s en loop,
+      1080p es suficiente para que se vea nítido y pese poco.
+    -->
+    <source src="media/hero-fitness.mp4" type="video/mp4">
+    Tu navegador no soporta video HTML5.
+  </video>
   <div class="hero-overlay"></div>
 
   <header class="hero-header">
