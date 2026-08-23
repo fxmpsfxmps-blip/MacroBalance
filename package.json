@@ -1,0 +1,23 @@
+{
+  "name": "macrobalance",
+  "version": "1.0.0",
+  "private": true,
+  "description": "MacroBalance: calculadora, motor nutricional, dashboard y lista de compras.",
+  "scripts": {
+    "build": "node scripts/build-static.js",
+    "optimize:images": "node scripts/optimize-images.js",
+    "dev": "npm run build && node server.js",
+    "start": "node server.js",
+    "test": "node --test tests/*.test.js",
+    "check": "npm test && npm run build"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "express": "^5.2.1"
+  },
+  "devDependencies": {
+    "sharp": "^0.35.3"
+  }
+}
