@@ -1,0 +1,2309 @@
+:root{
+  --bg:#0a0a0c;
+  --bg2:#111114;
+  --card:#17171b;
+  --border:#26262c;
+
+  --text:#f2f2f3;
+  --muted:#8d8d95;
+
+  --accent:#D81838;
+  --accent-soft:rgba(216,24,56,.14);
+
+  --accesible:#3ecf8e;
+  --moderado:#e8b93f;
+  --premium:#c084fc;
+
+  --danger:#e8556e;
+}
+
+*{
+  box-sizing:border-box;
+}
+
+body{
+  font-family:
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    system-ui,
+    sans-serif;
+
+  margin:0;
+
+  background:var(--bg);
+  color:var(--text);
+}
+
+.wrap{
+  max-width:1180px;
+  margin:0 auto;
+  padding:20px 18px 60px;
+}
+
+/* ---------------------------------------------------------
+   HEADER
+--------------------------------------------------------- */
+
+header.top{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+
+  padding:10px 0 22px;
+
+  border-bottom:
+    1px solid var(--border);
+
+  margin-bottom:20px;
+}
+
+.brand{
+  font-size:22px;
+  font-weight:800;
+  letter-spacing:-.02em;
+}
+
+.brand b{
+  color:var(--accent);
+}
+
+nav.mainnav{
+  display:flex;
+  gap:22px;
+}
+
+nav.mainnav a{
+  color:var(--muted);
+  text-decoration:none;
+  font-size:13px;
+  font-weight:600;
+}
+
+nav.mainnav a.activo{
+  color:var(--text);
+}
+
+/* ---------------------------------------------------------
+   GENERAL
+--------------------------------------------------------- */
+
+h1.title{
+  font-size:26px;
+  margin:0 0 18px;
+  font-weight:800;
+}
+
+.card{
+  background:var(--card);
+
+  border:
+    1px solid var(--border);
+
+  border-radius:14px;
+
+  padding:18px;
+
+  margin-bottom:18px;
+}
+
+.card h2{
+  font-size:13px;
+
+  margin:
+    0 0 14px;
+
+  color:var(--muted);
+
+  text-transform:uppercase;
+
+  letter-spacing:.06em;
+}
+
+/* ---------------------------------------------------------
+   INPUTS
+--------------------------------------------------------- */
+
+.grid4{
+  display:grid;
+
+  grid-template-columns:
+    repeat(4,1fr);
+
+  gap:10px;
+}
+
+@media(max-width:700px){
+
+  .grid4{
+    grid-template-columns:
+      repeat(2,1fr);
+  }
+
+}
+
+.field label{
+  display:block;
+
+  font-size:12px;
+
+  color:var(--muted);
+
+  margin-bottom:4px;
+}
+
+.field input,
+.field select{
+  width:100%;
+
+  background:var(--bg2);
+
+  border:
+    1px solid var(--border);
+
+  color:var(--text);
+
+  padding:9px;
+
+  border-radius:8px;
+
+  font-size:14px;
+}
+
+/* ---------------------------------------------------------
+   TOOLBAR
+--------------------------------------------------------- */
+
+.toolbar{
+  display:flex;
+  gap:8px;
+
+  margin-bottom:12px;
+
+  flex-wrap:wrap;
+}
+
+.toolbar input[type=text]{
+  flex:1;
+
+  min-width:160px;
+
+  background:var(--bg2);
+
+  border:
+    1px solid var(--border);
+
+  color:var(--text);
+
+  padding:8px 10px;
+
+  border-radius:8px;
+}
+
+.chip-btn{
+  background:var(--bg2);
+
+  border:
+    1px solid var(--border);
+
+  color:var(--muted);
+
+  padding:7px 12px;
+
+  border-radius:8px;
+
+  font-size:12px;
+
+  cursor:pointer;
+}
+
+.chip-btn:hover{
+  border-color:var(--accent);
+}
+
+/* ---------------------------------------------------------
+   GENERAR
+--------------------------------------------------------- */
+
+.genbtn{
+  background:var(--accent);
+
+  color:#fff;
+
+  border:none;
+
+  padding:14px 20px;
+
+  border-radius:10px;
+
+  cursor:pointer;
+
+  font-size:15px;
+
+  font-weight:700;
+
+  width:100%;
+}
+
+.genbtn:disabled{
+  opacity:.5;
+
+  cursor:not-allowed;
+}
+
+/* ---------------------------------------------------------
+   COSTO
+--------------------------------------------------------- */
+
+.tier{
+  display:inline-block;
+
+  padding:3px 10px;
+
+  border-radius:20px;
+
+  font-size:10px;
+
+  font-weight:800;
+
+  letter-spacing:.04em;
+
+  text-transform:uppercase;
+
+  border:1px solid;
+}
+
+.tier.accesible{
+  color:var(--accesible);
+
+  border-color:var(--accesible);
+
+  background:
+    rgba(62,207,142,.1);
+}
+
+.tier.moderado{
+  color:var(--moderado);
+
+  border-color:var(--moderado);
+
+  background:
+    rgba(232,185,63,.1);
+}
+
+.tier.premium{
+  color:var(--premium);
+
+  border-color:var(--premium);
+
+  background:
+    rgba(192,132,252,.1);
+}
+
+/* ---------------------------------------------------------
+   TABS SEMANA
+--------------------------------------------------------- */
+
+.semana-tabs{
+  display:flex;
+
+  gap:8px;
+
+  margin-bottom:14px;
+}
+
+.semana-tab{
+  flex:1;
+
+  background:var(--bg2);
+
+  border:
+    1px solid var(--border);
+
+  color:var(--muted);
+
+  padding:10px 14px;
+
+  border-radius:10px;
+
+  font-size:14px;
+
+  font-weight:700;
+
+  cursor:pointer;
+
+  text-align:center;
+}
+
+.semana-tab .mini{
+  display:block;
+
+  font-size:11px;
+
+  color:var(--muted);
+
+  font-weight:400;
+
+  margin-top:2px;
+}
+
+.semana-tab.activo{
+  border-color:var(--accent);
+
+  color:var(--accent);
+
+  background:
+    var(--accent-soft);
+}
+
+/* ---------------------------------------------------------
+   TABS DÍAS
+--------------------------------------------------------- */
+
+.dias-tabs{
+  display:flex;
+
+  gap:6px;
+
+  overflow-x:auto;
+
+  padding-bottom:4px;
+
+  margin-bottom:16px;
+}
+
+.dia-tab{
+  flex:
+    0 0 auto;
+
+  background:var(--bg2);
+
+  border:
+    1px solid var(--border);
+
+  color:var(--muted);
+
+  padding:9px 14px;
+
+  border-radius:8px;
+
+  font-size:13px;
+
+  cursor:pointer;
+
+  white-space:nowrap;
+}
+
+.dia-tab.activo{
+  border-color:var(--accent);
+
+  color:var(--accent);
+
+  background:
+    var(--accent-soft);
+}
+
+.dia-tab .mini{
+  display:block;
+
+  font-size:10px;
+
+  color:var(--muted);
+}
+
+/* ---------------------------------------------------------
+   CARDS DE COMIDA
+--------------------------------------------------------- */
+
+.cards-grid{
+  display:grid;
+
+  /* auto-fill (no auto-fit): evita que una última tarjeta
+     suelta (p.ej. la 5ª de 5 comidas) se estire para ocupar
+     toda la fila; conserva el mismo ancho que sus vecinas. */
+  grid-template-columns:
+    repeat(
+      auto-fill,
+      minmax(220px,1fr)
+    );
+
+  gap:16px;
+
+  margin-bottom:18px;
+}
+
+/* ---------------------------------------------------------
+   ENCABEZADO DEL DASHBOARD (VISTA 2)
+--------------------------------------------------------- */
+
+.dashboard-header{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  flex-wrap:wrap;
+
+  margin-bottom:18px;
+}
+
+.dashboard-header .title{
+  margin:0;
+}
+
+.editbtn{
+  border-color:var(--accent);
+  color:var(--text);
+  white-space:nowrap;
+}
+
+.meal-card{
+  background:var(--card);
+
+  border:
+    1px solid var(--border);
+
+  border-radius:14px;
+
+  overflow:hidden;
+
+  display:flex;
+
+  flex-direction:column;
+}
+
+/* CONTENEDOR DE LA FOTO */
+
+.meal-card .img{
+  width:100%;
+
+  aspect-ratio:3/2;
+
+  background:
+    linear-gradient(
+      135deg,
+      #1c1c22,
+      #0e0e11
+    );
+
+  display:flex;
+
+  align-items:center;
+
+  justify-content:center;
+
+  color:var(--muted);
+
+  font-size:28px;
+
+  position:relative;
+
+  overflow:hidden;
+}
+
+/* FOTO */
+
+.meal-card .img img{
+  width:100%;
+  height:100%;
+
+  object-fit:cover;
+
+  position:absolute;
+
+  inset:0;
+
+  display:block;
+}
+
+/* FALLBACK SI NO EXISTE LA FOTO */
+
+.meal-card .image-fallback{
+  width:100%;
+  height:100%;
+
+  align-items:center;
+  justify-content:center;
+
+  position:absolute;
+
+  inset:0;
+
+  font-size:36px;
+
+  color:var(--muted);
+
+  z-index:1;
+}
+
+/* BADGES ENCIMA DE LA FOTO */
+
+.meal-card .tiempo{
+  position:absolute;
+
+  top:8px;
+  left:8px;
+
+  background:
+    rgba(0,0,0,.62);
+
+  color:#fff;
+
+  font-size:11px;
+
+  padding:3px 9px;
+
+  border-radius:20px;
+
+  font-weight:700;
+
+  text-transform:uppercase;
+
+  letter-spacing:.03em;
+
+  z-index:3;
+}
+
+.meal-card .tier-badge{
+  position:absolute;
+
+  top:8px;
+  right:8px;
+
+  z-index:3;
+}
+
+/* CONTENIDO */
+
+.meal-card .body{
+  padding:
+    12px 14px 14px;
+}
+
+.meal-card .nombre{
+  font-size:15px;
+
+  font-weight:700;
+
+  margin:
+    0 0 6px;
+
+  line-height:1.25;
+}
+
+.meal-card .ingr-list{
+  font-size:12px;
+
+  color:var(--muted);
+
+  margin:
+    0 0 10px;
+
+  line-height:1.6;
+}
+
+.meal-card .ingr-list span{
+  color:var(--text);
+}
+
+.macros-row{
+  display:flex;
+
+  gap:8px;
+}
+
+.macro-pill{
+  flex:1;
+
+  text-align:center;
+
+  background:var(--bg2);
+
+  border:
+    1px solid var(--border);
+
+  border-radius:8px;
+
+  padding:6px 4px;
+}
+
+.macro-pill .v{
+  font-size:13px;
+
+  font-weight:800;
+}
+
+.macro-pill .l{
+  font-size:9px;
+
+  color:var(--muted);
+
+  text-transform:uppercase;
+}
+
+.macro-pill.kcal .v{
+  color:var(--accent);
+}
+
+/* ---------------------------------------------------------
+   RESUMEN DÍA
+--------------------------------------------------------- */
+
+.resumen-dia{
+  background:var(--card);
+
+  border:
+    1px solid var(--border);
+
+  border-radius:14px;
+
+  padding:16px;
+
+  margin-bottom:18px;
+}
+
+.resumen-dia h3{
+  font-size:13px;
+
+  text-transform:uppercase;
+
+  color:var(--accent);
+
+  letter-spacing:.05em;
+
+  margin:
+    0 0 12px;
+}
+
+.bars{
+  display:grid;
+
+  grid-template-columns:
+    repeat(4,1fr);
+
+  gap:14px;
+}
+
+@media(max-width:700px){
+
+  .bars{
+    grid-template-columns:
+      repeat(2,1fr);
+  }
+
+}
+
+.bar-block .l{
+  font-size:11px;
+
+  color:var(--muted);
+
+  display:flex;
+
+  justify-content:space-between;
+
+  margin-bottom:4px;
+}
+
+.bar-track{
+  background:var(--bg2);
+
+  border-radius:20px;
+
+  height:8px;
+
+  overflow:hidden;
+}
+
+.bar-fill{
+  height:100%;
+
+  background:var(--accent);
+
+  border-radius:20px;
+}
+
+.badge{
+  display:inline-block;
+
+  padding:4px 10px;
+
+  border-radius:20px;
+
+  font-size:12px;
+
+  font-weight:700;
+
+  margin-top:10px;
+}
+
+.badge.ok{
+  background:
+    rgba(62,207,142,.15);
+
+  color:
+    var(--accesible);
+}
+
+.badge.bad{
+  background:
+    rgba(232,85,110,.15);
+
+  color:
+    var(--danger);
+}
+
+/* ---------------------------------------------------------
+   AVISOS
+--------------------------------------------------------- */
+
+.aviso{
+  background:
+    rgba(232,185,63,.1);
+
+  border:
+    1px solid rgba(232,185,63,.3);
+
+  color:var(--moderado);
+
+  padding:10px 12px;
+
+  border-radius:8px;
+
+  font-size:13px;
+
+  margin-top:10px;
+}
+
+.aviso.danger{
+  background:
+    rgba(232,85,110,.1);
+
+  border-color:
+    rgba(232,85,110,.3);
+
+  color:
+    var(--danger);
+}
+
+.aviso.high{
+  border-color:
+    var(--accent);
+
+  color:
+    var(--accent);
+
+  background:
+    var(--accent-soft);
+}
+
+/* ---------------------------------------------------------
+   RESUMEN SEMANA
+--------------------------------------------------------- */
+
+.resumen-semana{
+  background:var(--card);
+
+  border:
+    1px solid var(--border);
+
+  border-radius:14px;
+
+  padding:16px;
+
+  margin-top:16px;
+}
+
+.resumen-semana h3{
+  font-size:13px;
+
+  text-transform:uppercase;
+
+  color:var(--accent);
+
+  letter-spacing:.05em;
+
+  margin:
+    0 0 10px;
+}
+
+.resumen-fila{
+  display:flex;
+
+  justify-content:space-between;
+
+  font-size:13px;
+
+  padding:5px 0;
+
+  border-bottom:
+    1px dashed var(--border);
+}
+
+.resumen-fila:last-child{
+  border-bottom:none;
+}
+
+.resumen-fila .et{
+  color:var(--muted);
+}
+
+/* ---------------------------------------------------------
+   COMPRAS
+--------------------------------------------------------- */
+
+.compras-tabs{
+  display:flex;
+
+  gap:8px;
+
+  margin-bottom:14px;
+}
+
+.compras-tab{
+  background:var(--bg2);
+
+  border:
+    1px solid var(--border);
+
+  color:var(--muted);
+
+  padding:8px 14px;
+
+  border-radius:8px;
+
+  font-size:13px;
+
+  cursor:pointer;
+
+  font-weight:600;
+}
+
+.compras-tab.activo{
+  border-color:var(--accent);
+
+  color:var(--accent);
+
+  background:
+    var(--accent-soft);
+}
+
+.compras-grid{
+  display:grid;
+
+  grid-template-columns:
+    repeat(
+      auto-fill,
+      minmax(220px,1fr)
+    );
+
+  gap:12px;
+}
+
+.compras-cat{
+  background:var(--bg2);
+
+  border:
+    1px solid var(--border);
+
+  border-radius:10px;
+
+  padding:12px;
+}
+
+.compras-cat h4{
+  font-size:12px;
+
+  text-transform:uppercase;
+
+  color:var(--accent);
+
+  letter-spacing:.04em;
+
+  margin:
+    0 0 8px;
+}
+
+.compras-item{
+  display:flex;
+
+  justify-content:space-between;
+
+  gap:10px;
+
+  font-size:12.5px;
+
+  padding:3px 0;
+
+  color:var(--text);
+}
+
+.compras-item span:last-child{
+  color:var(--muted);
+
+  text-align:right;
+}
+
+/* ---------------------------------------------------------
+   AUXILIARES
+--------------------------------------------------------- */
+
+.empty{
+  color:var(--muted);
+
+  font-size:13px;
+
+  text-align:center;
+
+  padding:20px 0;
+}
+
+.count{
+  color:var(--muted);
+
+  font-size:12px;
+
+  margin-left:6px;
+
+  font-weight:400;
+}
+
+.diff{
+  font-size:12px;
+
+  color:var(--muted);
+
+  margin-top:8px;
+}
+
+.diff b{
+  color:var(--text);
+}
+
+/* ---------------------------------------------------------
+   GALERÍA DE ALIMENTOS (CARRUSELES POR CATEGORÍA)
+--------------------------------------------------------- */
+
+:root{
+  --food-card-w:168px;
+  --food-card-h:168px;
+}
+
+.food-gallery{
+  overflow:hidden;
+}
+
+.food-gallery .sub{
+  color:var(--muted);
+  font-size:13px;
+  margin:-8px 0 16px;
+}
+
+.food-cat-row{
+  margin-bottom:22px;
+}
+
+.food-cat-row:last-child{
+  margin-bottom:0;
+}
+
+.food-cat-row h3{
+  font-size:12px;
+  text-transform:uppercase;
+  color:var(--accent);
+  letter-spacing:.05em;
+  margin:0 0 10px;
+}
+
+/* Contenedor con overflow oculto: evita scroll horizontal
+   de toda la página y bloquea el swipe manual roto. */
+.food-track-wrap{
+  overflow:hidden;
+  position:relative;
+
+  -webkit-mask-image:
+    linear-gradient(
+      90deg,
+      transparent 0,
+      #000 24px,
+      #000 calc(100% - 24px),
+      transparent 100%
+    );
+  mask-image:
+    linear-gradient(
+      90deg,
+      transparent 0,
+      #000 24px,
+      #000 calc(100% - 24px),
+      transparent 100%
+    );
+}
+
+.food-track{
+  display:flex;
+  gap:10px;
+  width:max-content;
+
+  will-change:transform;
+
+  animation-name:food-scroll;
+  animation-timing-function:linear;
+  animation-iteration-count:infinite;
+}
+
+/* Alterna la dirección visual entre categorías */
+.food-track.dir-right{
+  animation-direction:reverse;
+}
+
+/* Pausa al pasar el mouse (sin listeners de JS) */
+.food-track-wrap:hover .food-track{
+  animation-play-state:paused;
+}
+
+/* Pausa mientras el usuario está buscando, para que no se
+   mueva la tarjeta que está intentando tocar */
+#food-carousels.searching .food-track{
+  animation-play-state:paused;
+}
+
+@keyframes food-scroll{
+  from{ transform:translateX(0); }
+  to{ transform:translateX(-50%); }
+}
+
+.food-card{
+  flex:0 0 var(--food-card-w);
+  width:var(--food-card-w);
+
+  background:var(--bg2);
+  border:1px solid var(--border);
+  border-radius:12px;
+  overflow:hidden;
+
+  cursor:pointer;
+  user-select:none;
+
+  transition:
+    transform .18s ease,
+    border-color .18s ease;
+}
+
+.food-card:hover{
+  transform:translateY(-3px);
+  border-color:var(--accent);
+}
+
+.food-card.excluded{
+  border-color:var(--accent);
+}
+
+/* La búsqueda oculta tarjetas sin reconstruir el carrusel */
+.food-card.fc-hidden{
+  display:none;
+}
+
+.food-card .fc-img{
+  width:100%;
+  height:var(--food-card-h);
+  position:relative;
+  overflow:hidden;
+
+  background:
+    linear-gradient(
+      135deg,
+      #1c1c22,
+      #0e0e11
+    );
+}
+
+.food-card .fc-img img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  display:block;
+
+  transition:
+    filter .18s ease;
+}
+
+.food-card.excluded .fc-img img{
+  filter:grayscale(.55) brightness(.6);
+}
+
+.food-card .fc-fallback{
+  position:absolute;
+  inset:0;
+  display:none;
+  align-items:center;
+  justify-content:center;
+  font-size:26px;
+  color:var(--muted);
+}
+
+/* TINTE OSCURO SOBRE LA FOTO CUANDO ESTÁ EXCLUIDA (la foto sigue visible) */
+.food-card .fc-img::before{
+  content:'';
+  position:absolute;
+  inset:0;
+  background:rgba(10,10,12,.5);
+  opacity:0;
+  transition:opacity .15s ease;
+  z-index:1;
+  pointer-events:none;
+}
+
+.food-card.excluded .fc-img::before{
+  opacity:1;
+}
+
+/* ✕ FLOTANTE — solo visible cuando el alimento está excluido */
+.food-card .fc-x-badge{
+  position:absolute;
+  top:6px;
+  right:6px;
+  z-index:4;
+
+  width:22px;
+  height:22px;
+  border-radius:50%;
+
+  display:none;
+  align-items:center;
+  justify-content:center;
+
+  background:var(--accent);
+  color:#fff;
+
+  font-size:12px;
+  font-weight:800;
+  line-height:1;
+}
+
+.food-card.excluded .fc-x-badge{
+  display:flex;
+}
+
+/* NOMBRE DENTRO DE LA FOTO, CON GRADIENTE INFERIOR */
+.food-card .fc-name{
+  position:absolute;
+  left:0;
+  right:0;
+  bottom:0;
+  z-index:2;
+
+  padding:16px 9px 8px;
+
+  background:
+    linear-gradient(
+      to top,
+      rgba(0,0,0,.86) 0%,
+      rgba(0,0,0,.55) 60%,
+      transparent 100%
+    );
+}
+
+.food-card .fc-name-text{
+  display:-webkit-box;
+  -webkit-line-clamp:2;
+  -webkit-box-orient:vertical;
+  overflow:hidden;
+
+  font-size:11.5px;
+  font-weight:600;
+  line-height:1.3;
+  text-align:center;
+  color:#fff;
+}
+
+/* TEXTO "EXCLUIDO" — solo aparece cuando la tarjeta está excluida */
+.food-card .fc-excluded-text{
+  display:none;
+
+  margin-top:2px;
+
+  font-size:9.5px;
+  font-weight:800;
+  text-transform:uppercase;
+  letter-spacing:.06em;
+  text-align:center;
+  color:#fff;
+}
+
+.food-card.excluded .fc-excluded-text{
+  display:block;
+}
+
+@media(max-width:1100px){
+  :root{
+    --food-card-w:148px;
+    --food-card-h:148px;
+  }
+}
+
+@media(max-width:700px){
+  :root{
+    --food-card-w:130px;
+    --food-card-h:130px;
+  }
+  .food-track{
+    gap:8px;
+  }
+}
+
+@media(prefers-reduced-motion:reduce){
+  .food-track{
+    animation:none !important;
+  }
+}
+
+/* ---------------------------------------------------------
+   BOTÓN FLOTANTE DE WHATSAPP
+--------------------------------------------------------- */
+
+.wa-float{
+  position:fixed;
+  right:18px;
+  bottom:18px;
+  z-index:999;
+
+  display:flex;
+  align-items:center;
+  gap:8px;
+
+  background:var(--accent);
+  color:#fff;
+  text-decoration:none;
+
+  padding:12px;
+  border-radius:50px;
+
+  box-shadow:0 6px 20px rgba(216,24,56,.35);
+
+  font-size:13px;
+  font-weight:700;
+
+  transition:
+    transform .15s ease,
+    box-shadow .15s ease;
+}
+
+.wa-float:hover{
+  transform:translateY(-2px);
+  box-shadow:0 10px 26px rgba(216,24,56,.45);
+}
+
+.wa-float svg{
+  width:22px;
+  height:22px;
+  flex:0 0 auto;
+}
+
+.wa-float .wa-label{
+  white-space:nowrap;
+  padding-right:2px;
+}
+
+@media(max-width:700px){
+  .wa-float{
+    right:14px;
+    bottom:14px;
+    padding:13px;
+  }
+  .wa-float .wa-label{
+    display:none;
+  }
+}
+
+/* ===========================================================
+   VARIANTE B — DASHBOARD FINAL (MI PLAN / LISTA DE COMPRAS)
+=========================================================== */
+
+:root{
+  --macro-kcal:#ff2d55;
+  --macro-p:#ff3d9a;
+  --macro-c:#3ec6ff;
+  --macro-g:#f4c430;
+}
+
+/* -----------------------------------------------------------
+   NAV PRINCIPAL (MACRO NUTRIENTES / MI PLAN / LISTA DE COMPRAS)
+----------------------------------------------------------- */
+
+nav.mainnav a{
+  cursor:pointer;
+  padding:4px 0;
+  border-bottom:2px solid transparent;
+}
+
+nav.mainnav a.activo{
+  border-bottom-color:var(--accent);
+}
+
+/* -----------------------------------------------------------
+   ENCABEZADO MI PLAN
+----------------------------------------------------------- */
+
+.plan-greeting{
+  display:flex;
+  align-items:flex-end;
+  justify-content:space-between;
+  gap:16px;
+  flex-wrap:wrap;
+  margin-bottom:18px;
+}
+
+.plan-greeting .hola{
+  font-size:13px;
+  color:var(--muted);
+  margin:0 0 4px;
+}
+
+.plan-greeting .sub{
+  font-size:13px;
+  color:var(--muted);
+  margin:0 0 8px;
+}
+
+.plan-greeting h1{
+  margin:0;
+}
+
+/* -----------------------------------------------------------
+   RESUMEN DIARIO — MACRO MINI-CARDS
+----------------------------------------------------------- */
+
+.macro-mini-grid{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:10px;
+  margin-bottom:18px;
+}
+
+@media(max-width:700px){
+  .macro-mini-grid{
+    grid-template-columns:repeat(2,1fr);
+  }
+}
+
+.macro-mini{
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:12px;
+  padding:12px 14px;
+}
+
+.macro-mini .top{
+  display:flex;
+  justify-content:space-between;
+  align-items:baseline;
+  margin-bottom:8px;
+}
+
+.macro-mini .label{
+  font-size:11px;
+  text-transform:uppercase;
+  letter-spacing:.05em;
+  color:var(--muted);
+  font-weight:700;
+}
+
+.macro-mini .value{
+  font-size:13px;
+  color:var(--text);
+}
+
+.macro-mini .value b{
+  font-size:16px;
+}
+
+.macro-mini .bar-track{
+  height:6px;
+}
+
+.macro-mini.kcal .bar-fill{ background:var(--macro-kcal); }
+.macro-mini.p .bar-fill{ background:var(--macro-p); }
+.macro-mini.c .bar-fill{ background:var(--macro-c); }
+.macro-mini.g .bar-fill{ background:var(--macro-g); }
+
+.plan-status-row{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  margin:-8px 0 18px;
+  flex-wrap:wrap;
+}
+
+/* -----------------------------------------------------------
+   TIRA DE COMIDAS DEL DÍA
+----------------------------------------------------------- */
+
+.meal-strip{
+  display:flex;
+  gap:10px;
+  overflow-x:auto;
+  padding-bottom:6px;
+  margin-bottom:18px;
+}
+
+.meal-chip{
+  flex:0 0 auto;
+  width:150px;
+
+  display:flex;
+  flex-direction:column;
+
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:12px;
+  overflow:hidden;
+  cursor:pointer;
+
+  transition:
+    border-color .15s ease,
+    transform .15s ease,
+    box-shadow .15s ease;
+}
+
+.meal-chip:hover{
+  transform:translateY(-2px);
+}
+
+.meal-chip.activo{
+  border-color:var(--accent);
+  box-shadow:0 0 0 1px var(--accent);
+}
+
+.meal-chip .thumb{
+  width:100%;
+  aspect-ratio:4/3;
+  position:relative;
+  overflow:hidden;
+  background:
+    linear-gradient(135deg,#1c1c22,#0e0e11);
+}
+
+.meal-chip .thumb img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  display:block;
+  position:absolute;
+  inset:0;
+}
+
+.meal-chip .thumb .fallback{
+  position:absolute;
+  inset:0;
+  display:none;
+  align-items:center;
+  justify-content:center;
+  font-size:22px;
+  color:var(--muted);
+}
+
+.meal-chip .info{
+  padding:8px 10px 10px;
+}
+
+.meal-chip .tipo{
+  font-size:9.5px;
+  font-weight:800;
+  text-transform:uppercase;
+  letter-spacing:.05em;
+  color:var(--accent);
+  margin-bottom:2px;
+}
+
+.meal-chip.activo .tipo{
+  color:var(--accent);
+}
+
+.meal-chip .nombre{
+  font-size:12px;
+  font-weight:600;
+  line-height:1.3;
+  margin-bottom:4px;
+  display:-webkit-box;
+  -webkit-line-clamp:2;
+  -webkit-box-orient:vertical;
+  overflow:hidden;
+}
+
+.meal-chip .kcal{
+  font-size:11px;
+  color:var(--muted);
+  font-weight:700;
+}
+
+/* -----------------------------------------------------------
+   COMIDA ACTIVA — HERO
+----------------------------------------------------------- */
+
+.comida-activa{
+  display:grid;
+  grid-template-columns:minmax(0,1.4fr) minmax(0,1fr);
+  gap:0;
+
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:16px;
+  overflow:hidden;
+  margin-bottom:18px;
+}
+
+@media(max-width:820px){
+  .comida-activa{
+    grid-template-columns:1fr;
+  }
+}
+
+.comida-activa .hero-photo{
+  position:relative;
+  width:100%;
+  min-height:280px;
+  overflow:hidden;
+  background:
+    linear-gradient(135deg,#1c1c22,#0e0e11);
+}
+
+.comida-activa .hero-photo img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  position:absolute;
+  inset:0;
+  display:block;
+}
+
+.comida-activa .hero-photo .fallback{
+  position:absolute;
+  inset:0;
+  display:none;
+  align-items:center;
+  justify-content:center;
+  font-size:44px;
+  color:var(--muted);
+}
+
+.comida-activa .hero-overlay{
+  position:absolute;
+  left:0;
+  right:0;
+  bottom:0;
+  z-index:2;
+  padding:40px 18px 16px;
+
+  background:
+    linear-gradient(
+      to top,
+      rgba(0,0,0,.82) 0%,
+      rgba(0,0,0,.35) 65%,
+      transparent 100%
+    );
+}
+
+.comida-activa .hero-overlay .tipo{
+  font-size:11px;
+  font-weight:800;
+  text-transform:uppercase;
+  letter-spacing:.06em;
+  color:#fff;
+  opacity:.85;
+  margin-bottom:4px;
+}
+
+.comida-activa .hero-overlay .nombre{
+  font-size:20px;
+  font-weight:800;
+  color:#fff;
+  line-height:1.25;
+}
+
+/* FLECHAS DE NAVEGACIÓN */
+
+.hero-nav-arrow{
+  position:absolute;
+  top:50%;
+  transform:translateY(-50%);
+  z-index:3;
+
+  width:38px;
+  height:38px;
+  border-radius:50%;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  background:rgba(0,0,0,.38);
+  color:#fff;
+  border:1px solid rgba(255,255,255,.25);
+
+  font-size:18px;
+  line-height:1;
+  cursor:pointer;
+
+  opacity:.55;
+  transition:opacity .15s ease, background .15s ease;
+}
+
+.hero-photo:hover .hero-nav-arrow{
+  opacity:1;
+}
+
+.hero-nav-arrow:hover{
+  background:rgba(0,0,0,.6);
+}
+
+.hero-nav-arrow.left{ left:10px; }
+.hero-nav-arrow.right{ right:10px; }
+
+.hero-nav-arrow:disabled,
+.hero-nav-arrow[aria-disabled="true"]{
+  opacity:0 !important;
+  pointer-events:none;
+}
+
+@media(max-width:820px){
+  .hero-nav-arrow{
+    opacity:.85;
+  }
+}
+
+/* PANEL DE DATOS DE LA COMIDA ACTIVA */
+
+.comida-activa .data-panel{
+  padding:18px 20px 20px;
+  display:flex;
+  flex-direction:column;
+}
+
+.comida-activa .data-panel .kcal-row{
+  display:flex;
+  align-items:baseline;
+  justify-content:space-between;
+  margin-bottom:14px;
+}
+
+.comida-activa .data-panel .kcal-row .kcal-num{
+  font-size:26px;
+  font-weight:800;
+  color:var(--macro-kcal);
+}
+
+.comida-activa .macro-row-vivo{
+  display:flex;
+  gap:8px;
+  margin-bottom:16px;
+}
+
+.macro-vivo-pill{
+  flex:1;
+  text-align:center;
+  border-radius:10px;
+  padding:8px 4px;
+  border:1px solid var(--border);
+  background:var(--bg2);
+}
+
+.macro-vivo-pill .v{
+  font-size:14px;
+  font-weight:800;
+}
+
+.macro-vivo-pill .l{
+  font-size:9px;
+  text-transform:uppercase;
+  color:var(--muted);
+  letter-spacing:.04em;
+}
+
+.macro-vivo-pill.p .v{ color:var(--macro-p); }
+.macro-vivo-pill.c .v{ color:var(--macro-c); }
+.macro-vivo-pill.g .v{ color:var(--macro-g); }
+
+.comida-activa .ingredientes-title{
+  font-size:11px;
+  text-transform:uppercase;
+  letter-spacing:.05em;
+  color:var(--muted);
+  font-weight:700;
+  margin-bottom:8px;
+}
+
+.ingr-fila{
+  display:flex;
+  justify-content:space-between;
+  align-items:baseline;
+  gap:10px;
+  padding:6px 0;
+  border-bottom:1px dashed var(--border);
+  font-size:13px;
+}
+
+.ingr-fila:last-child{
+  border-bottom:none;
+}
+
+.ingr-fila .nombre{
+  font-weight:400;
+  color:var(--text);
+}
+
+.ingr-fila .cantidad{
+  font-weight:700;
+  color:var(--text);
+  white-space:nowrap;
+}
+
+/* TRANSICIÓN AL CAMBIAR DE COMIDA */
+
+.comida-activa{
+  transition:
+    opacity .2s ease,
+    transform .2s ease;
+}
+
+.comida-activa.transicionando{
+  opacity:0;
+  transform:translateX(6px);
+}
+
+@media(prefers-reduced-motion:reduce){
+  .comida-activa,
+  .meal-chip{
+    transition:none !important;
+  }
+}
+
+/* -----------------------------------------------------------
+   RESUMENES SECUNDARIOS (SEMANA + PLAN) — DOS COLUMNAS
+----------------------------------------------------------- */
+
+.resumenes-secundarios{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:16px;
+}
+
+@media(max-width:820px){
+  .resumenes-secundarios{
+    grid-template-columns:1fr;
+  }
+}
+
+/* -----------------------------------------------------------
+   LISTA DE COMPRAS — VISTA PROPIA
+----------------------------------------------------------- */
+
+.compras-layout{
+  display:grid;
+  grid-template-columns:200px 1fr;
+  gap:18px;
+  align-items:start;
+}
+
+@media(max-width:820px){
+  .compras-layout{
+    grid-template-columns:1fr;
+  }
+}
+
+.compras-cat-sidebar{
+  display:flex;
+  flex-direction:column;
+  gap:4px;
+
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:12px;
+  padding:8px;
+
+  position:sticky;
+  top:12px;
+}
+
+@media(max-width:820px){
+  .compras-cat-sidebar{
+    flex-direction:row;
+    overflow-x:auto;
+    position:static;
+    padding:6px;
+  }
+}
+
+.compras-cat-btn{
+  text-align:left;
+  background:transparent;
+  border:none;
+  color:var(--muted);
+  font-size:13px;
+  font-weight:600;
+  padding:9px 12px;
+  border-radius:8px;
+  cursor:pointer;
+  white-space:nowrap;
+}
+
+.compras-cat-btn:hover{
+  color:var(--text);
+}
+
+.compras-cat-btn.activo{
+  background:var(--accent-soft);
+  color:var(--accent);
+}
+
+.compras-cat-btn .n{
+  color:var(--muted);
+  font-size:11px;
+  margin-left:4px;
+}
+
+.compras-main{
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:12px;
+  padding:8px;
+}
+
+.compras-row{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  padding:9px 8px;
+  border-bottom:1px solid var(--border);
+}
+
+.compras-row:last-child{
+  border-bottom:none;
+}
+
+.compras-row .thumb{
+  width:42px;
+  height:42px;
+  border-radius:9px;
+  overflow:hidden;
+  position:relative;
+  flex:0 0 auto;
+  background:
+    linear-gradient(135deg,#1c1c22,#0e0e11);
+}
+
+.compras-row .thumb img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  display:block;
+  position:absolute;
+  inset:0;
+}
+
+.compras-row .thumb .fallback{
+  position:absolute;
+  inset:0;
+  display:none;
+  align-items:center;
+  justify-content:center;
+  font-size:16px;
+  color:var(--muted);
+}
+
+.compras-row .nombre{
+  flex:1;
+  font-size:13.5px;
+  color:var(--text);
+  min-width:0;
+}
+
+.compras-row .cant{
+  font-size:13px;
+  font-weight:700;
+  color:var(--text);
+  white-space:nowrap;
+  text-align:right;
+}
+
+.compras-row .cant small{
+  display:block;
+  font-weight:400;
+  color:var(--muted);
+  font-size:11px;
+}
+
+.compras-cat-heading{
+  font-size:11px;
+  text-transform:uppercase;
+  letter-spacing:.05em;
+  color:var(--accent);
+  font-weight:700;
+  padding:10px 8px 6px;
+}
+
+/* ===========================================================
+   INTEGRACIÓN DE PRODUCTO + DEVICE LAB
+=========================================================== */
+
+.plan-page .wrap{
+  width:min(100%, 1180px);
+  padding:clamp(18px, 3vw, 30px) clamp(12px, 3vw, 24px) max(84px, env(safe-area-inset-bottom));
+}
+
+.goal-heading{
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:16px;
+  margin-bottom:16px;
+}
+
+.goal-heading h2{
+  margin-bottom:5px;
+}
+
+.goal-heading p{
+  margin:0;
+  color:var(--muted);
+  font-size:13px;
+  line-height:1.5;
+}
+
+.goal-heading a{
+  min-height:44px;
+  display:inline-flex;
+  align-items:center;
+  flex:0 0 auto;
+  color:var(--text);
+  font-size:12px;
+  font-weight:700;
+}
+
+.goal-summary{
+  display:grid;
+  grid-template-columns:repeat(4, minmax(0, 1fr));
+  gap:10px;
+}
+
+.goal-stat{
+  min-width:0;
+  padding:clamp(12px, 2vw, 18px);
+  border:1px solid var(--border);
+  border-radius:12px;
+  background:var(--bg2);
+}
+
+.goal-stat output,
+.goal-stat span{
+  display:block;
+}
+
+.goal-stat output{
+  color:var(--text);
+  font-size:clamp(20px, 3vw, 30px);
+  font-weight:850;
+  line-height:1.1;
+}
+
+.goal-stat span{
+  margin-top:5px;
+  color:var(--muted);
+  font-size:11px;
+  line-height:1.3;
+}
+
+.field input,
+.field select,
+.toolbar input[type=text],
+.chip-btn,
+.semana-tab,
+.dia-tab,
+.compras-cat-btn{
+  min-height:44px;
+}
+
+.generation-error{
+  margin-top:16px;
+  padding:18px;
+  border:1px solid var(--danger);
+  border-radius:12px;
+  background:color-mix(in srgb, var(--danger) 10%, var(--card));
+}
+
+.generation-error h2{
+  margin:0 0 8px;
+  font-size:17px;
+}
+
+.generation-error p{
+  margin:0;
+  color:var(--muted);
+  line-height:1.55;
+}
+
+.generation-error__actions{
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+  margin-top:14px;
+}
+
+.generation-overlay{
+  position:fixed;
+  inset:0;
+  z-index:2000;
+  display:grid;
+  place-items:center;
+  padding:clamp(18px, 5vw, 48px);
+  background:#030304;
+}
+
+.generation-overlay__content{
+  width:min(100%, 560px);
+  text-align:center;
+}
+
+.generation-mark{
+  width:64px;
+  height:64px;
+  display:grid;
+  place-items:center;
+  margin:0 auto 20px;
+  border-radius:50%;
+  background:var(--accent);
+  color:white;
+  font-weight:900;
+  box-shadow:0 0 45px rgba(216, 24, 56, .45);
+}
+
+.generation-overlay h2{
+  margin:0 0 10px;
+  font-size:clamp(24px, 5vw, 40px);
+}
+
+.generation-overlay p{
+  min-height:3em;
+  margin:0;
+  color:#b8b8c0;
+  line-height:1.5;
+}
+
+.generation-overlay small{
+  display:block;
+  margin-top:14px;
+  color:#777780;
+}
+
+.generation-progress{
+  position:relative;
+  height:5px;
+  margin-top:22px;
+  overflow:hidden;
+  border-radius:999px;
+  background:#1d1d22;
+}
+
+.generation-progress span{
+  position:absolute;
+  inset:0 auto 0 0;
+  width:34%;
+  border-radius:inherit;
+  background:linear-gradient(90deg, transparent, var(--accent), #ff5b74, transparent);
+  animation:generation-sweep 1.55s ease-in-out infinite;
+}
+
+@keyframes generation-sweep{
+  from{ transform:translateX(-105%); }
+  to{ transform:translateX(300%); }
+}
+
+body.is-generating{
+  overflow:hidden;
+}
+
+.meal-chip{
+  padding:0;
+  color:var(--text);
+  text-align:left;
+  font:inherit;
+}
+
+.hero-nav-arrow{
+  width:44px;
+  height:44px;
+}
+
+.comida-activa .hero-photo{
+  min-height:clamp(240px, 36vw, 430px);
+  aspect-ratio:16 / 10;
+}
+
+.wa-float{
+  min-width:48px;
+  min-height:48px;
+  right:max(14px, env(safe-area-inset-right));
+  bottom:max(14px, env(safe-area-inset-bottom));
+}
+
+.dias-tabs,
+.meal-strip,
+.compras-cat-sidebar{
+  scrollbar-width:thin;
+  scroll-snap-type:x proximity;
+  overscroll-behavior-inline:contain;
+}
+
+.dia-tab,
+.meal-chip,
+.compras-cat-btn{
+  scroll-snap-align:start;
+}
+
+@media (max-width: 768px){
+  .goal-summary{
+    grid-template-columns:repeat(2, minmax(0, 1fr));
+  }
+
+  .comida-activa .hero-photo{
+    aspect-ratio:4 / 3;
+  }
+
+  .compras-main{
+    min-width:0;
+  }
+}
+
+@media (max-width: 480px){
+  .plan-page .wrap{
+    padding-inline:10px;
+  }
+
+  h1.title{
+    font-size:clamp(22px, 8vw, 28px);
+  }
+
+  .card{
+    padding:14px;
+    border-radius:12px;
+  }
+
+  .goal-heading{
+    flex-direction:column;
+    gap:6px;
+  }
+
+  .goal-heading a{
+    width:100%;
+  }
+
+  .grid4{
+    grid-template-columns:1fr;
+  }
+
+  .toolbar input[type=text],
+  .toolbar .chip-btn{
+    flex:1 1 100%;
+    min-width:0;
+  }
+
+  .semana-tabs{
+    overflow-x:auto;
+  }
+
+  .semana-tab{
+    min-width:146px;
+  }
+
+  .macro-mini-grid{
+    grid-template-columns:1fr 1fr;
+    gap:8px;
+  }
+
+  .meal-chip{
+    width:min(46vw, 158px);
+  }
+
+  .comida-activa .data-panel{
+    padding:16px 14px 18px;
+  }
+
+  .comida-activa .macro-row-vivo{
+    flex-wrap:wrap;
+  }
+
+  .macro-vivo-pill{
+    flex:1 1 88px;
+  }
+
+  .ingr-fila{
+    align-items:flex-start;
+  }
+
+  .compras-row{
+    gap:9px;
+    padding-inline:4px;
+  }
+
+  .compras-row .nombre{
+    overflow-wrap:anywhere;
+  }
+
+  .compras-row .cant{
+    max-width:40%;
+    white-space:normal;
+  }
+}
+
+@media (max-width: 340px){
+  .goal-summary,
+  .macro-mini-grid{
+    grid-template-columns:1fr;
+  }
+
+  .food-card{
+    --food-card-w:122px;
+    --food-card-h:122px;
+  }
+}
+
+@media (hover: none), (pointer: coarse){
+  .food-track-wrap{
+    overflow-x:auto;
+    -webkit-mask-image:none;
+    mask-image:none;
+    scrollbar-width:thin;
+    overscroll-behavior-inline:contain;
+  }
+
+  .food-track{
+    animation:none !important;
+    will-change:auto;
+  }
+
+  .food-card:hover,
+  .meal-chip:hover,
+  .wa-float:hover{
+    transform:none;
+  }
+
+  .hero-nav-arrow{
+    opacity:.92;
+    background:rgba(0,0,0,.58);
+  }
+}
+
+@media (orientation: landscape) and (max-height: 520px){
+  .generation-overlay{
+    place-items:start center;
+    overflow-y:auto;
+  }
+
+  .generation-overlay__content{
+    padding-block:14px;
+  }
+
+  .generation-mark{
+    width:48px;
+    height:48px;
+    margin-bottom:10px;
+  }
+}

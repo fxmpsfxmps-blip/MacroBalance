@@ -1,238 +1,338 @@
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-  import { getAuth, signInWithPopup, GoogleAuthProvider, FacebookAuthProvider } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
-  import { getFirestore, doc, getDoc, setDoc, updateDoc, collection, addDoc, query, where, limit, getDocs, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js';
+import {
+  getAuth,
+  signInWithPopup,
+  signOut,
+  onAuthStateChanged,
+  GoogleAuthProvider,
+  FacebookAuthProvider
+} from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js';
+import {
+  getFirestore,
+  doc,
+  getDoc,
+  setDoc,
+  updateDoc,
+  collection,
+  addDoc,
+  query,
+  getDocs,
+  serverTimestamp
+} from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js';
 
-  // Las credenciales que configuraste en Firebase Console
-  const firebaseConfig = {
-    apiKey: "AIzaSyASE9zpAiwwYuKeImEBgjaW-RC0CPaTx6I",
-    authDomain: "macrobalance-502bb.firebaseapp.com",
-    projectId: "macrobalance-502bb",
-    storageBucket: "macrobalance-502bb.firebasestorage.app",
-    messagingSenderId: "618429309223",
-    appId: "1:618429309223:web:2e40a76de8e315b8080902",
-    measurementId: "G-11DKCSLVXV"
+// La configuración web de Firebase identifica el proyecto, pero no es una llave
+// privada. Las reglas de Auth/Firestore siguen siendo la barrera de seguridad.
+const firebaseConfig = {
+  apiKey: 'AIzaSyASE9zpAiwwYuKeImEBgjaW-RC0CPaTx6I',
+  authDomain: 'macrobalance-502bb.firebaseapp.com',
+  projectId: 'macrobalance-502bb',
+  storageBucket: 'macrobalance-502bb.firebasestorage.app',
+  messagingSenderId: '618429309223',
+  appId: '1:618429309223:web:2e40a76de8e315b8080902',
+  measurementId: 'G-11DKCSLVXV'
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
+const googleProvider = new GoogleAuthProvider();
+const facebookProvider = new FacebookAuthProvider();
+
+const state = window.macroBalanceState || {
+  user: null,
+  userData: null,
+  profile: null,
+  currentGoal: null,
+  authReady: false,
+  error: null
+};
+window.macroBalanceState = state;
+
+let resolveAuthReady;
+window.macroBalanceAuthReady = new Promise(resolve => {
+  resolveAuthReady = resolve;
+});
+
+function emit(name, detail) {
+  window.dispatchEvent(new CustomEvent(name, { detail }));
+}
+
+async function asegurarUsuarioYPerfil(user) {
+  const userRef = doc(db, 'users', user.uid);
+  const userSnap = await getDoc(userRef);
+  await setDoc(userRef, {
+    displayName: user.displayName || 'Usuario',
+    email: user.email || null,
+    photoURL: user.photoURL || null,
+    ...(userSnap.exists() ? {} : {
+      customPhotoURL: null,
+      currentObjectiveId: null,
+      createdAt: serverTimestamp()
+    })
+  }, { merge: true });
+
+  const profileRef = doc(db, 'users', user.uid, 'profile', 'current');
+  const profileSnap = await getDoc(profileRef);
+  if (!profileSnap.exists()) {
+    await setDoc(profileRef, {
+      sexo: null,
+      peso: null,
+      altura: null,
+      edad: null,
+      grasaPct: null,
+      actividadFactor: null,
+      horasSueno: null,
+      aguaTexto: null,
+      nivelEstres: null,
+      vaAlGym: false,
+      diasGym: null,
+      updatedAt: serverTimestamp()
+    });
+  }
+}
+
+async function readSession(user) {
+  const userRef = doc(db, 'users', user.uid);
+  const profileRef = doc(db, 'users', user.uid, 'profile', 'current');
+  const [userSnap, profileSnap] = await Promise.all([getDoc(userRef), getDoc(profileRef)]);
+  const userData = userSnap.exists() ? userSnap.data() : null;
+  const profile = profileSnap.exists() ? profileSnap.data() : null;
+  let currentGoal = null;
+
+  if (userData?.currentObjectiveId) {
+    const goalSnap = await getDoc(
+      doc(db, 'users', user.uid, 'goals_history', userData.currentObjectiveId)
+    );
+    if (goalSnap.exists()) currentGoal = { id: goalSnap.id, ...goalSnap.data() };
+  }
+  return { userData, profile, currentGoal };
+}
+
+async function refreshState(user = auth.currentUser) {
+  if (!user) {
+    Object.assign(state, { user: null, userData: null, profile: null, currentGoal: null });
+    return state;
+  }
+  const session = await readSession(user);
+  Object.assign(state, { user, ...session, error: null });
+  window.datosUsuarioActual = session.userData;
+  window.fotoPerfilUsuario = user.photoURL || null;
+  return state;
+}
+
+window.obtenerEstadoMacroBalance = () => state;
+window.refrescarEstadoMacroBalance = async () => {
+  await refreshState();
+  emit('macrobalance:auth-changed', state);
+  return state;
+};
+
+window.obtenerObjetivoActualFirestore = async function obtenerObjetivoActualFirestore() {
+  if (!auth.currentUser) return null;
+  await refreshState(auth.currentUser);
+  return state.currentGoal;
+};
+
+window.guardarSexoFirestore = async function guardarSexoFirestore(sexo) {
+  const user = auth.currentUser;
+  if (!user) return;
+  await setDoc(
+    doc(db, 'users', user.uid, 'profile', 'current'),
+    { sexo, updatedAt: serverTimestamp() },
+    { merge: true }
+  );
+  state.profile = { ...(state.profile || {}), sexo };
+};
+
+window.precargarPerfilFirestore = async function precargarPerfilFirestore() {
+  const user = auth.currentUser;
+  if (!user) return null;
+  const profileSnap = await getDoc(doc(db, 'users', user.uid, 'profile', 'current'));
+  if (!profileSnap.exists()) return null;
+  const profile = profileSnap.data();
+  state.profile = profile;
+  const setValue = (id, value) => {
+    const element = document.getElementById(id);
+    if (element && value !== null && value !== undefined) element.value = value;
   };
+  setValue('peso', profile.peso);
+  setValue('altura', profile.altura);
+  setValue('edad', profile.edad);
+  setValue('grasa', profile.grasaPct);
+  setValue('sueno', profile.horasSueno);
+  setValue('agua', profile.aguaTexto);
+  setValue('actividad', profile.actividadFactor);
+  setValue('estres', profile.nivelEstres);
+  if (profile.sexo) setValue('sexo', profile.sexo);
+  if (profile.vaAlGym && typeof window.setGym === 'function') {
+    window.setGym(true);
+    if (profile.diasGym) setValue('dias-gym', profile.diasGym);
+    if (typeof window.actualizarKcalGym === 'function') window.actualizarKcalGym();
+  }
+  document.querySelectorAll('.grid input, .grid select').forEach(element => {
+    if (typeof window.marcarCampoLleno === 'function') window.marcarCampoLleno(element);
+  });
+  if (typeof window.actualizarUnidadAgua === 'function') window.actualizarUnidadAgua();
+  return profile;
+};
 
-  // Inicializa la App y la Autenticación
-  const app = initializeApp(firebaseConfig);
-  const auth = getAuth(app);
-  const db = getFirestore(app);
+window.mostrarObjetivoActualFirestore = async function mostrarObjetivoActualFirestore() {
+  const badge = document.getElementById('objetivo-actual-badge');
+  const goal = await window.obtenerObjetivoActualFirestore();
+  if (badge) badge.textContent = goal?.result ? `Tu objetivo actual: ${goal.result.kcal} kcal/día` : '';
+  return goal;
+};
 
-  const googleProvider = new GoogleAuthProvider();
-  const facebookProvider = new FacebookAuthProvider();
+// Conserva exactamente la estructura histórica existente de Firestore.
+window.guardarObjetivoFirestore = async function guardarObjetivoFirestore(plan, inputSnapshot, calcVersion) {
+  const user = auth.currentUser;
+  if (!user) throw new Error('No hay usuario autenticado');
+  const userRef = doc(db, 'users', user.uid);
+  const userSnap = await getDoc(userRef);
+  const previousId = userSnap.exists() ? userSnap.data().currentObjectiveId : null;
 
-  // ===== Persistencia en Firestore =====
-  // Estructura: users/{uid} (identidad) · users/{uid}/profile/current (valores por defecto,
-  // mutables) · users/{uid}/goals_history/{id} (historial de objetivos, inmutable una vez creado)
-
-  async function asegurarUsuarioYPerfil(user){
-    const userRef = doc(db, 'users', user.uid);
-    const userSnap = await getDoc(userRef);
-
-    // merge:true -> nunca pisa customPhotoURL ni currentObjectiveId, solo sincroniza
-    // los datos que vienen del proveedor (Google/Facebook)
-    await setDoc(userRef, {
-      displayName: user.displayName || 'Usuario',
-      email: user.email || null,
-      photoURL: user.photoURL || null,
-      ...(userSnap.exists() ? {} : { customPhotoURL: null, currentObjectiveId: null, createdAt: serverTimestamp() })
-    }, { merge: true });
-
-    const profileRef = doc(db, 'users', user.uid, 'profile', 'current');
-    const profileSnap = await getDoc(profileRef);
-    if(!profileSnap.exists()){
-      await setDoc(profileRef, {
-        sexo: null, peso: null, altura: null, edad: null, grasaPct: null,
-        actividadFactor: null, horasSueno: null, aguaTexto: null, nivelEstres: null,
-        vaAlGym: false, diasGym: null, updatedAt: serverTimestamp()
-      });
-    }
+  if (previousId) {
+    await updateDoc(doc(db, 'users', user.uid, 'goals_history', previousId), {
+      status: 'completed',
+      endDate: serverTimestamp()
+    });
   }
 
-  window.guardarSexoFirestore = async function(sexo){
-    const user = auth.currentUser;
-    if(!user) return;
-    try{
-      await setDoc(doc(db, 'users', user.uid, 'profile', 'current'), { sexo: sexo, updatedAt: serverTimestamp() }, { merge: true });
-    } catch(err){ console.error('Error guardando sexo:', err); }
+  const goalData = {
+    status: 'active',
+    goalType: plan.id,
+    startDate: serverTimestamp(),
+    endDate: null,
+    inputSnapshot,
+    result: {
+      kcal: plan.kcal,
+      proteina: plan.proteina,
+      grasa: plan.grasa,
+      carbos: plan.carbos,
+      metodo: inputSnapshot.metodo
+    },
+    calcVersion,
+    notes: '',
+    createdAt: serverTimestamp()
   };
+  const goalRef = await addDoc(collection(db, 'users', user.uid, 'goals_history'), goalData);
+  await updateDoc(userRef, { currentObjectiveId: goalRef.id, updatedAt: serverTimestamp() });
+  await setDoc(doc(db, 'users', user.uid, 'profile', 'current'), {
+    peso: inputSnapshot.peso,
+    altura: inputSnapshot.altura,
+    edad: inputSnapshot.edad,
+    sexo: inputSnapshot.sexo,
+    grasaPct: inputSnapshot.grasaPct,
+    actividadFactor: inputSnapshot.actividadFactor,
+    horasSueno: inputSnapshot.horasSueno,
+    aguaTexto: inputSnapshot.aguaTexto,
+    nivelEstres: inputSnapshot.nivelEstres,
+    vaAlGym: inputSnapshot.vaAlGym,
+    diasGym: inputSnapshot.diasGym,
+    updatedAt: serverTimestamp()
+  }, { merge: true });
 
-  window.precargarPerfilFirestore = async function(){
-    const user = auth.currentUser;
-    if(!user) return;
-    try{
-      const profileSnap = await getDoc(doc(db, 'users', user.uid, 'profile', 'current'));
-      if(!profileSnap.exists()) return;
-      const p = profileSnap.data();
-      const setVal = (id, val) => { if(val !== null && val !== undefined && document.getElementById(id)) document.getElementById(id).value = val; };
-      setVal('peso', p.peso);
-      setVal('altura', p.altura);
-      setVal('edad', p.edad);
-      setVal('grasa', p.grasaPct);
-      setVal('sueno', p.horasSueno);
-      setVal('agua', p.aguaTexto);
-      if(p.actividadFactor !== null && p.actividadFactor !== undefined) document.getElementById('actividad').value = p.actividadFactor;
-      if(p.nivelEstres !== null && p.nivelEstres !== undefined) document.getElementById('estres').value = p.nivelEstres;
-      if(p.vaAlGym){ setGym(true); if(p.diasGym) document.getElementById('dias-gym').value = p.diasGym; actualizarKcalGym(); }
-      document.querySelectorAll('.grid input, .grid select').forEach(marcarCampoLleno);
-      actualizarUnidadAgua();
-    } catch(err){ console.error('Error precargando perfil:', err); }
-  };
+  state.currentGoal = { id: goalRef.id, ...goalData };
+  state.userData = { ...(state.userData || {}), currentObjectiveId: goalRef.id };
+  emit('macrobalance:goal-changed', state.currentGoal);
+  return state.currentGoal;
+};
 
-  window.mostrarObjetivoActualFirestore = async function(){
-    const user = auth.currentUser;
-    const badge = document.getElementById('objetivo-actual-badge');
-    if(!user || !badge) return;
-    try{
-      const userSnap = await getDoc(doc(db, 'users', user.uid));
-      const currentObjectiveId = userSnap.exists() ? userSnap.data().currentObjectiveId : null;
-      if(!currentObjectiveId){ badge.textContent = ''; return; }
-      const goalSnap = await getDoc(doc(db, 'users', user.uid, 'goals_history', currentObjectiveId));
-      if(goalSnap.exists()){
-        const g = goalSnap.data();
-        badge.textContent = 'Tu objetivo actual: ' + g.result.kcal + ' kcal/día';
-      }
-    } catch(err){ console.error('Error leyendo objetivo actual:', err); }
-  };
+window.guardarFotoPersonalizadaFirestore = async function guardarFoto(base64) {
+  const user = auth.currentUser;
+  if (!user) return;
+  await setDoc(doc(db, 'users', user.uid), {
+    customPhotoURL: base64,
+    updatedAt: serverTimestamp()
+  }, { merge: true });
+};
 
-  // Guarda el plan elegido como el nuevo objetivo activo:
-  // 1) cierra (no borra) el objetivo activo anterior, si existe
-  // 2) crea un documento nuevo e inmutable en goals_history
-  // 3) actualiza el puntero currentObjectiveId
-  // 4) sincroniza el perfil (valores por defecto) con los últimos datos usados
-  window.guardarObjetivoFirestore = async function(plan, inputSnapshot, calcVersion){
-    const user = auth.currentUser;
-    if(!user) throw new Error('No hay usuario autenticado');
+window.eliminarFotoPersonalizadaFirestore = async function eliminarFoto() {
+  const user = auth.currentUser;
+  if (!user) return;
+  await setDoc(doc(db, 'users', user.uid), {
+    customPhotoURL: null,
+    updatedAt: serverTimestamp()
+  }, { merge: true });
+};
 
-    const userRef = doc(db, 'users', user.uid);
-    const userSnap = await getDoc(userRef);
-    const anteriorId = userSnap.exists() ? userSnap.data().currentObjectiveId : null;
+window.obtenerDatosUsuarioFirestore = async function obtenerDatosUsuario() {
+  if (!auth.currentUser) return null;
+  const snapshot = await getDoc(doc(db, 'users', auth.currentUser.uid));
+  const data = snapshot.exists() ? snapshot.data() : null;
+  state.userData = data;
+  return data;
+};
 
-    if(anteriorId){
-      await updateDoc(doc(db, 'users', user.uid, 'goals_history', anteriorId), {
-        status: 'completed',
-        endDate: serverTimestamp()
-      });
+window.guardarCuentaFirestore = async function guardarCuenta(datosCuenta, datosPerfil) {
+  const user = auth.currentUser;
+  if (!user) return;
+  if (datosCuenta && Object.keys(datosCuenta).length) {
+    await setDoc(
+      doc(db, 'users', user.uid),
+      { ...datosCuenta, updatedAt: serverTimestamp() },
+      { merge: true }
+    );
+  }
+  if (datosPerfil && Object.keys(datosPerfil).length) {
+    await setDoc(
+      doc(db, 'users', user.uid, 'profile', 'current'),
+      { ...datosPerfil, updatedAt: serverTimestamp() },
+      { merge: true }
+    );
+  }
+};
+
+window.obtenerHistorialObjetivosFirestore = async function obtenerHistorial() {
+  const user = auth.currentUser;
+  if (!user) return [];
+  const snapshot = await getDocs(query(collection(db, 'users', user.uid, 'goals_history')));
+  const history = [];
+  snapshot.forEach(item => history.push({ id: item.id, ...item.data() }));
+  history.sort((a, b) => {
+    const dateA = a.startDate?.toMillis ? a.startDate.toMillis() : 0;
+    const dateB = b.startDate?.toMillis ? b.startDate.toMillis() : 0;
+    return dateB - dateA;
+  });
+  return history;
+};
+
+window.loginConFirebase = async function loginConFirebase(providerName) {
+  const provider = providerName === 'Facebook' ? facebookProvider : googleProvider;
+  try {
+    const result = await signInWithPopup(auth, provider);
+    await asegurarUsuarioYPerfil(result.user);
+    await refreshState(result.user);
+    emit('macrobalance:auth-changed', state);
+    if (typeof window.avanzarApp === 'function') window.avanzarApp();
+  } catch (error) {
+    console.error('Error al iniciar sesión:', error);
+    if (error.code !== 'auth/popup-closed-by-user') {
+      window.alert(`No se pudo iniciar sesión. Motivo: ${error.message}`);
     }
+  }
+};
 
-    const nuevoRef = await addDoc(collection(db, 'users', user.uid, 'goals_history'), {
-      status: 'active',
-      goalType: plan.id,
-      startDate: serverTimestamp(),
-      endDate: null,
-      inputSnapshot: inputSnapshot,
-      result: {
-        kcal: plan.kcal, proteina: plan.proteina, grasa: plan.grasa, carbos: plan.carbos,
-        metodo: inputSnapshot.metodo
-      },
-      calcVersion: calcVersion,
-      notes: '',
-      createdAt: serverTimestamp()
-    });
+window.cerrarSesionFirebase = async function cerrarSesionFirebase() {
+  await signOut(auth);
+  window.location.assign('/');
+};
 
-    await updateDoc(userRef, { currentObjectiveId: nuevoRef.id, updatedAt: serverTimestamp() });
-
-    // Sincroniza el perfil con los últimos datos usados, para que la próxima vez
-    // la calculadora arranque prellenada. Esto NO toca el documento recién creado.
-    await setDoc(doc(db, 'users', user.uid, 'profile', 'current'), {
-      peso: inputSnapshot.peso, altura: inputSnapshot.altura, edad: inputSnapshot.edad,
-      sexo: inputSnapshot.sexo, grasaPct: inputSnapshot.grasaPct, actividadFactor: inputSnapshot.actividadFactor,
-      horasSueno: inputSnapshot.horasSueno, aguaTexto: inputSnapshot.aguaTexto, nivelEstres: inputSnapshot.nivelEstres,
-      vaAlGym: inputSnapshot.vaAlGym, diasGym: inputSnapshot.diasGym, updatedAt: serverTimestamp()
-    }, { merge: true });
-  };
-
-  // ===== Foto de perfil personalizada (guardada como Base64 en Firestore) =====
-  // Prioridad: customPhotoURL (subida por el usuario) > photoURL (de Google/Facebook) > avatar por defecto
-
-  window.guardarFotoPersonalizadaFirestore = async function(base64){
-    const user = auth.currentUser;
-    if(!user) return;
-    try{
-      await setDoc(doc(db, 'users', user.uid), { customPhotoURL: base64, updatedAt: serverTimestamp() }, { merge: true });
-    } catch(err){ console.error('Error guardando foto personalizada:', err); throw err; }
-  };
-
-  window.eliminarFotoPersonalizadaFirestore = async function(){
-    const user = auth.currentUser;
-    if(!user) return;
-    try{
-      await setDoc(doc(db, 'users', user.uid), { customPhotoURL: null, updatedAt: serverTimestamp() }, { merge: true });
-    } catch(err){ console.error('Error eliminando foto personalizada:', err); throw err; }
-  };
-
-  // Devuelve { displayName, photoURL, customPhotoURL, email } del documento raíz del usuario
-  window.obtenerDatosUsuarioFirestore = async function(){
-    const user = auth.currentUser;
-    if(!user) return null;
-    try{
-      const userSnap = await getDoc(doc(db, 'users', user.uid));
-      if(!userSnap.exists()) return null;
-      return userSnap.data();
-    } catch(err){ console.error('Error leyendo datos de usuario:', err); return null; }
-  };
-
-  // ===== Editar cuenta =====
-  // Guarda nombre (users/{uid}.displayName) y los datos de cálculo (profile/current) en una sola llamada
-  window.guardarCuentaFirestore = async function(datosCuenta, datosPerfil){
-    const user = auth.currentUser;
-    if(!user) return;
-    try{
-      if(datosCuenta && Object.keys(datosCuenta).length){
-        await setDoc(doc(db, 'users', user.uid), { ...datosCuenta, updatedAt: serverTimestamp() }, { merge: true });
-      }
-      if(datosPerfil && Object.keys(datosPerfil).length){
-        await setDoc(doc(db, 'users', user.uid, 'profile', 'current'), { ...datosPerfil, updatedAt: serverTimestamp() }, { merge: true });
-      }
-    } catch(err){ console.error('Error guardando datos de cuenta:', err); throw err; }
-  };
-
-  // ===== Historial de objetivos =====
-  // Devuelve un arreglo de objetivos pasados y activos, más reciente primero
-  window.obtenerHistorialObjetivosFirestore = async function(){
-    const user = auth.currentUser;
-    if(!user) return [];
-    try{
-      const q = query(collection(db, 'users', user.uid, 'goals_history'));
-      const snap = await getDocs(q);
-      const historial = [];
-      snap.forEach(function(d){ historial.push({ id: d.id, ...d.data() }); });
-      historial.sort(function(a, b){
-        const fa = a.startDate && a.startDate.toMillis ? a.startDate.toMillis() : 0;
-        const fb = b.startDate && b.startDate.toMillis ? b.startDate.toMillis() : 0;
-        return fb - fa;
-      });
-      return historial;
-    } catch(err){ console.error('Error leyendo historial de objetivos:', err); return []; }
-  };
-
-  // Exponemos la función al HTML para que el botón la encuentre
-  window.loginConFirebase = function(proveedor) {
-    let providerParaUsar;
-
-    if (proveedor === 'Google') {
-      providerParaUsar = googleProvider;
-    } else if (proveedor === 'Facebook') {
-      providerParaUsar = facebookProvider;
+onAuthStateChanged(auth, async user => {
+  try {
+    if (user) {
+      await asegurarUsuarioYPerfil(user);
+      await refreshState(user);
+    } else {
+      await refreshState(null);
     }
-
-    // Se abre la ventana emergente para registrarse/iniciar sesión
-    signInWithPopup(auth, providerParaUsar)
-      .then(async (result) => {
-        // SI ES EXITOSO, se crea/sincroniza el perfil en Firestore y luego se avanza la pantalla
-        console.log("Éxito. Usuario ingresado:", result.user.email);
-        window.fotoPerfilUsuario = result.user.photoURL || null;
-        try{
-          await asegurarUsuarioYPerfil(result.user);
-        } catch(err){
-          console.error('Error creando/sincronizando el usuario en Firestore:', err);
-        }
-        window.avanzarApp();
-      }).catch((error) => {
-        // SI CIERRAN LA VENTANA O HAY ERROR, no avanza. Se queda atorado en el modal.
-        console.error("Error al iniciar sesión:", error.message);
-        if(error.code !== 'auth/popup-closed-by-user'){
-            alert("No se pudo iniciar sesión. Motivo: " + error.message);
-        }
-      });
-  };
+  } catch (error) {
+    console.error('No se pudo restaurar la sesión de MacroBalance:', error);
+    state.error = error.message;
+  } finally {
+    state.authReady = true;
+    resolveAuthReady(state);
+    emit('macrobalance:auth-changed', state);
+    emit('macrobalance:firebase-ready', state);
+  }
+});

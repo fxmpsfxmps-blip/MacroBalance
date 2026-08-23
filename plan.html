@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>MacroBalance · Dashboard</title>
+
+<link rel="stylesheet" href="/styles/shared.css">
+<link rel="stylesheet" href="/styles/menu.css">
+</head>
+
+
+<body class="plan-page">
+
+<header class="site-header" data-site-header>
+  <a class="site-brand" href="/" aria-label="MacroBalance, inicio">
+    <span class="site-brand__badge" aria-hidden="true">
+      <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 5v14M18 5v14M6 12h12M3 9v6M21 9v6"/></svg>
+    </span>
+    <span>Macro<b>Balance</b></span>
+  </a>
+  <button class="site-nav-toggle" type="button" data-nav-toggle aria-expanded="false" aria-controls="primary-navigation">
+    <span class="sr-only">Abrir navegación</span>
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+  </button>
+  <nav class="site-nav" id="primary-navigation" data-site-nav aria-label="Navegación principal">
+    <a href="/">Inicio</a>
+    <a href="/#macros">Macro Nutrientes</a>
+    <a href="/plan.html#config" data-plan-nav="config">Preferencias</a>
+    <a href="/plan.html#plan" data-plan-nav="plan">Mi Plan</a>
+    <a href="/plan.html#compras" data-plan-nav="compras">Lista de Compras</a>
+    <button type="button" class="site-nav__account" data-auth="out" data-login>Iniciar sesión</button>
+    <button type="button" class="site-nav__account" data-auth="in" data-account hidden>Cuenta</button>
+    <button type="button" data-auth="in" data-logout hidden>Cerrar sesión</button>
+  </nav>
+</header>
+
+<main class="wrap" id="plan-app">
+
+  <section class="state-card" id="session-loading" aria-live="polite">
+    <h1>Preparando tu espacio</h1>
+    <p>Estamos restaurando tu sesión y tu objetivo activo.</p>
+  </section>
+
+  <section class="state-card" id="auth-required" hidden>
+    <h1>Inicia sesión para crear tu plan</h1>
+    <p>Tu objetivo nutricional se vincula a tu cuenta para mantener el proceso continuo.</p>
+    <a class="state-card__action" href="/?login=1">Ir a iniciar sesión</a>
+  </section>
+
+  <section class="state-card" id="goal-required" hidden>
+    <h1>Primero necesitamos tu objetivo</h1>
+    <p>Completa la calculadora y guarda uno de sus resultados. Ese objetivo será la única fuente nutricional del generador.</p>
+    <a class="state-card__action" href="/#macros">Calcular mis macros</a>
+  </section>
+
+  <div id="plan-product" hidden>
+
+
+  <!-- ============================================================
+       VISTA 1 · CONFIGURACIÓN
+  ============================================================ -->
+  <section id="vista-config">
+
+  <h1 class="title">
+    Personaliza tu plan
+  </h1>
+
+
+  <!-- OBJETIVO -->
+
+  <div class="card">
+
+    <div class="goal-heading">
+      <div>
+        <h2>Objetivo activo</h2>
+        <p>Proviene de tu calculadora y se usa en modo de sólo lectura.</p>
+      </div>
+      <a href="/#macros">Recalcular objetivo</a>
+    </div>
+
+    <div class="goal-summary" aria-label="Objetivo nutricional activo">
+      <div class="goal-stat"><output id="obj-kcal">—</output><span>Kcal</span></div>
+      <div class="goal-stat"><output id="obj-proteina">—</output><span>Proteína (g)</span></div>
+      <div class="goal-stat"><output id="obj-carbos">—</output><span>Carbohidratos (g)</span></div>
+      <div class="goal-stat"><output id="obj-grasa">—</output><span>Grasa (g)</span></div>
+    </div>
+
+
+    <div
+      class="grid4"
+      style="margin-top:10px"
+    >
+
+      <div class="field">
+
+        <label>
+          Nº de comidas
+        </label>
+
+        <select id="num-comidas">
+          <option>2</option>
+          <option>3</option>
+          <option>4</option>
+          <option selected value="5">
+            5
+          </option>
+        </select>
+
+      </div>
+
+
+      <div class="field">
+
+        <label>
+          Evitar repetir alimento (días)
+        </label>
+
+        <select id="dias-sin-repetir">
+
+          <option value="1">
+            1 día
+          </option>
+
+          <option value="2" selected>
+            2 días
+          </option>
+
+          <option value="3">
+            3 días
+          </option>
+
+        </select>
+
+      </div>
+
+    </div>
+
+
+    <div
+      id="consistencia-objetivo"
+      class="diff"
+    ></div>
+
+  </div>
+
+
+  <!-- SELECTOR NEGATIVO — GALERÍA / EXCLUSIONES (fuente única: seleccionActual) -->
+
+  <div class="card food-gallery" id="galeria-alimentos">
+
+    <h2>
+      Selecciona qué deseas excluir
+      <span
+        class="count"
+        id="sel-count"
+      ></span>
+    </h2>
+
+    <div class="sub">
+      Toca los alimentos que no deseas incluir en tu plan.
+    </div>
+
+    <div class="toolbar">
+
+      <input
+        type="text"
+        id="buscador"
+        placeholder="Buscar alimento..."
+      >
+
+      <button
+        class="chip-btn"
+        onclick="marcarTodos(true)"
+      >
+        Excluir todo
+      </button>
+
+      <button
+        class="chip-btn"
+        onclick="marcarTodos(false)"
+      >
+        Limpiar exclusiones
+      </button>
+
+    </div>
+
+    <div id="food-carousels"></div>
+
+  </div>
+
+
+  <button
+    class="genbtn"
+    id="btn-generar"
+    onclick="generar()"
+  >
+    Generar plan de 2 semanas
+  </button>
+
+  <div class="generation-error" id="generation-error" role="alert" hidden>
+    <h2>No pudimos terminar tu plan</h2>
+    <p id="generation-error-message"></p>
+    <div class="generation-error__actions">
+      <button class="chip-btn" type="button" onclick="generar()">Reintentar</button>
+      <button class="chip-btn" type="button" onclick="irAVista('config')">Revisar preferencias</button>
+    </div>
+  </div>
+
+  <!-- EXTENSION POINT: aquí podrá montarse el flujo de recetas personalizadas.
+       No participa en la generación estable ni contiene lógica P7. -->
+  <div id="custom-recipe-extension" hidden></div>
+
+  </section>
+
+
+  <!-- ============================================================
+       VISTA 2 · DASHBOARD
+  ============================================================ -->
+  <section id="vista-dashboard" style="display:none">
+
+    <!-- SUBVISTA: SIN PLAN GENERADO AÚN -->
+    <div id="dashboard-empty" class="card empty" style="display:none">
+      Todavía no has generado tu plan.
+      <div style="margin-top:12px">
+        <button class="chip-btn editbtn" onclick="irAVista('config')">
+          Ir a Macro Nutrientes
+        </button>
+      </div>
+    </div>
+
+    <!-- SUBVISTA: MI PLAN -->
+    <div id="subvista-plan" style="display:none">
+
+      <div class="dashboard-header">
+        <button
+          class="chip-btn editbtn"
+          onclick="irAVista('config')"
+        >
+          ← Editar preferencias
+        </button>
+      </div>
+
+      <div id="resultado-plan"></div>
+
+    </div>
+
+    <!-- SUBVISTA: LISTA DE COMPRAS -->
+    <div id="subvista-compras" style="display:none">
+
+      <h1 class="title">Lista de compras</h1>
+
+      <div id="resultado-compras"></div>
+
+    </div>
+
+  </section>
+
+  </div>
+</main>
+
+<div class="generation-overlay" id="generation-overlay" role="dialog" aria-modal="true" aria-labelledby="generation-title" hidden>
+  <div class="generation-overlay__content">
+    <div class="generation-mark" aria-hidden="true">MB</div>
+    <h2 id="generation-title">Construyendo tu plan</h2>
+    <p id="generation-message" aria-live="polite">Combinando tus preferencias con tu objetivo activo…</p>
+    <div class="generation-progress" role="progressbar" aria-label="Generación en curso"><span></span></div>
+    <small id="generation-elapsed">Puede tomar unos segundos.</small>
+  </div>
+</div>
+
+
+<!-- BOTÓN FLOTANTE DE WHATSAPP -->
+<a
+  class="wa-float"
+  href="https://wa.me/528994808320?text=Tengo%20una%20duda%2Fsugerencia"
+  target="_blank"
+  rel="noopener noreferrer"
+  aria-label="¿Dudas o sugerencias? Escríbenos por WhatsApp"
+>
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+    <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path>
+  </svg>
+  <span class="wa-label">¿Dudas o sugerencias?</span>
+</a>
+
+
+<script src="/js/asset-resolver.js" defer></script>
+<script src="/js/navigation.js" defer></script>
+<script type="module" src="/firebase-init.js"></script>
+<script src="/js/menu-app.js" defer></script>
+</body>
+
+</html>

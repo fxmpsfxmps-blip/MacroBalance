@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>MacroBalance</title>
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' width='24' height='24'%3E%3Ccircle cx='12' cy='12' r='12' fill='%23d81b3f'/%3E%3Cpath d='M6 5v14M18 5v14M6 12h12M3 9v6M21 9v6' stroke='%23ffffff' stroke-width='2.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="/styles/shared.css">
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
 
@@ -443,7 +444,7 @@
     background:rgba(20,20,20,.55);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);
     border:1px solid rgba(255,255,255,.08);display:flex;flex-direction:column;cursor:pointer;
     transition: transform .32s ease, opacity .32s ease, filter .32s ease, border-color .32s ease, box-shadow .32s ease;
-    color: var(--ink);
+    color: var(--ink);font:inherit;text-align:left;
   }
   .plan-card .tag{font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-dim);font-weight:700;margin-bottom:14px;display:flex;align-items:center;gap:6px;}
   .plan-card .tag svg{width:13px;height:13px;}
@@ -487,9 +488,285 @@
     .plan-card.pos-hidden-left{transform: translateX(-180px) scale(.7);}
     .plan-card.pos-hidden-right{transform: translateX(180px) scale(.7);}
   }
+
+  /* ===== INTEGRACIÓN RESPONSIVE / DEVICE LAB ===== */
+  .home-site-header{
+    position:fixed;
+    top:0;
+    left:0;
+    right:0;
+    width:100%;
+    max-width:none;
+    padding-inline:clamp(14px, 5vw, 72px);
+    background:linear-gradient(to bottom, rgba(5,5,5,.9), rgba(5,5,5,.35));
+    border-bottom-color:transparent;
+  }
+  #landing{
+    width:100%;
+    min-height:100vh;
+    min-height:100dvh;
+    height:100vh;
+    height:100dvh;
+    padding:clamp(86px, 12vh, 118px) 5vw clamp(24px, 5vh, 48px);
+  }
+  #app{
+    min-height:100vh;
+    padding:clamp(92px, 12vw, 118px) clamp(12px, 4vw, 24px) 64px;
+  }
+  #gate{
+    padding-top:68px;
+  }
+  #modal-overlay,
+  .modal-overlay-cuenta{
+    z-index:1200;
+    overflow-y:auto;
+    overscroll-behavior:contain;
+  }
+  .modal-box,
+  .modal-cuenta-box{
+    max-width:min(100%, 420px);
+  }
+  .btn-cta,
+  .btn-social,
+  .gate-btn,
+  .toggle-opt,
+  button.primary,
+  .arrow-btn,
+  .link-historial,
+  .modal-cuenta-botones button,
+  .cuenta-avatar-botones label,
+  .cuenta-avatar-botones button{
+    min-height:44px;
+  }
+  .arrow-btn{
+    width:44px;
+    height:44px;
+  }
+  input,
+  select{
+    min-height:48px;
+  }
+  .avatar-badge{
+    width:clamp(58px, 10vw, 84px);
+    height:clamp(58px, 10vw, 84px);
+    margin-right:0;
+    padding:0;
+  }
+  .top-row{
+    gap:12px;
+    flex-wrap:wrap;
+  }
+  #objetivo-actual-badge{
+    flex:1 1 180px;
+    text-align:right;
+  }
+  .carrusel-viewport{
+    width:100%;
+    overflow:hidden;
+  }
+  .carrusel-dots .dot{
+    width:32px;
+    height:32px;
+    padding:0;
+    border:0;
+    background:transparent;
+    position:relative;
+    cursor:pointer;
+  }
+  .carrusel-dots .dot::after{
+    content:"";
+    position:absolute;
+    width:8px;
+    height:8px;
+    inset:50% auto auto 50%;
+    transform:translate(-50%,-50%);
+    border-radius:50%;
+    background:var(--panel-line);
+  }
+  .carrusel-dots .dot.active{
+    background:transparent;
+    transform:none;
+  }
+  .carrusel-dots .dot.active::after{
+    background:var(--red-bright);
+    transform:translate(-50%,-50%) scale(1.3);
+  }
+  .loading-photo{
+    opacity:.72;
+    transform:none;
+    animation:none;
+  }
+  .loading-bar-fill{
+    width:38%;
+    animation:loadingSweep 1.2s ease-in-out infinite;
+  }
+  @keyframes loadingSweep{
+    from{transform:translateX(-110%);}
+    to{transform:translateX(275%);}
+  }
+
+  @media (max-width:768px){
+    #landing{
+      padding:90px clamp(18px, 6vw, 32px) max(22px, env(safe-area-inset-bottom));
+    }
+    .main-title{
+      font-size:clamp(38px, 13vw, 64px);
+      line-height:.94;
+    }
+    .sub-title{
+      letter-spacing:.28em;
+      margin-bottom:24px;
+    }
+    .hero-content{
+      max-width:100%;
+    }
+    .gate-left{
+      padding:clamp(28px, 8vw, 48px) clamp(18px, 7vw, 34px) 24px;
+    }
+    .gate-options{
+      width:100%;
+      max-width:420px;
+    }
+    .gate-btn{
+      flex:1;
+      padding-inline:16px;
+    }
+    .detalle-plan{
+      padding:clamp(16px, 5vw, 26px);
+    }
+  }
+
+  @media (max-width:480px){
+    .tag-vertical{
+      display:none;
+    }
+    .hero-content{
+      display:block;
+    }
+    .btn-cta{
+      width:100%;
+      justify-content:center;
+      padding-inline:18px;
+    }
+    .coming-soon{
+      max-width:100%;
+      align-items:flex-start;
+    }
+    .modal-box,
+    .modal-cuenta-box{
+      padding:22px 16px;
+    }
+    .gate-title{
+      font-size:clamp(32px, 11vw, 46px);
+    }
+    .gate-sub{
+      margin-bottom:22px;
+    }
+    p.sub{
+      margin-bottom:28px;
+    }
+    .detalle-plan .macros{
+      grid-template-columns:1fr;
+    }
+    .plan-card.pos-left{
+      transform:translateX(-94px) scale(.82);
+    }
+    .plan-card.pos-right{
+      transform:translateX(94px) scale(.82);
+    }
+  }
+
+  @media (max-width:340px){
+    .main-title{
+      font-size:36px;
+    }
+    .sub-title{
+      font-size:10px;
+      letter-spacing:.2em;
+    }
+    .gate-options,
+    .modal-cuenta-botones{
+      flex-direction:column;
+    }
+    .plan-card{
+      width:164px;
+    }
+  }
+
+  @media (orientation:landscape) and (max-height:560px){
+    #landing{
+      position:fixed;
+      overflow-y:auto;
+      justify-content:flex-start;
+      padding-top:78px;
+    }
+    .hero-body{
+      margin:20px 0;
+    }
+    .main-title{
+      font-size:clamp(34px, 9vh, 58px);
+    }
+    .sub-title{
+      margin:10px 0 14px;
+    }
+    .coming-soon{
+      margin-top:12px;
+    }
+    #gate{
+      grid-template-columns:1fr 1fr;
+      grid-template-rows:1fr;
+      overflow-y:auto;
+    }
+    #gate .gate-right{
+      height:auto;
+      min-height:calc(100dvh - 68px);
+      order:2;
+    }
+    #gate .gate-left{
+      order:1;
+      padding:22px;
+    }
+  }
+
+  @media (hover:none), (pointer:coarse){
+    .avatar-badge .avatar-lapiz{
+      opacity:.72;
+      background:linear-gradient(transparent 52%, rgba(0,0,0,.7));
+      align-items:flex-end;
+      padding-bottom:8px;
+      font-size:17px;
+    }
+    .plan-card:hover.pos-left,
+    .plan-card:hover.pos-right{
+      opacity:.55;
+    }
+  }
 </style>
 </head>
 <body>
+
+<header class="site-header home-site-header" data-site-header>
+  <a class="site-brand" href="/" aria-label="MacroBalance, inicio">
+    <span class="site-brand__badge" aria-hidden="true">
+      <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 5v14M18 5v14M6 12h12M3 9v6M21 9v6"/></svg>
+    </span>
+    <span>Macro<b>Balance</b></span>
+  </a>
+  <button class="site-nav-toggle" type="button" data-nav-toggle aria-expanded="false" aria-controls="primary-navigation">
+    <span class="sr-only">Abrir navegación</span>
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+  </button>
+  <nav class="site-nav" id="primary-navigation" data-site-nav aria-label="Navegación principal">
+    <a href="/" aria-current="page">Inicio</a>
+    <a href="/#macros">Macro Nutrientes</a>
+    <a href="/plan.html#config">Preferencias</a>
+    <a href="/plan.html#plan">Mi Plan</a>
+    <a href="/plan.html#compras">Lista de Compras</a>
+    <button type="button" class="site-nav__account" data-auth="out" data-login>Iniciar sesión</button>
+    <button type="button" class="site-nav__account" data-auth="in" data-account hidden>Cuenta</button>
+    <button type="button" data-auth="in" data-logout hidden>Cerrar sesión</button>
+  </nav>
+</header>
 
 <!-- LANDING CON CSS HERO INTEGRADO -->
 <div class="screen" id="landing">
@@ -510,38 +787,13 @@
   </video>
   <div class="hero-overlay"></div>
 
-  <header class="hero-header">
-    <div class="brand-logo">
-      <div class="logo-badge">
-        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5">
-          <path d="M6 5v14M18 5v14M6 12h12M3 9v6M21 9v6"/>
-        </svg>
-      </div>
-      <span class="logo-text">INICIO</span>
-    </div>
-
-    <div class="header-actions">
-      <button class="btn-icon" aria-label="Cuenta">
-        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
-          <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>
-        </svg>
-      </button>
-      <button class="btn-icon" aria-label="Menú">
-        <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
-          <circle cx="5" cy="5" r="2"/><circle cx="12" cy="5" r="2"/><circle cx="19" cy="5" r="2"/>
-          <circle cx="5" cy="12" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="19" cy="12" r="2"/>
-        </svg>
-      </button>
-    </div>
-  </header>
-
   <main class="hero-body">
     <div class="hero-content">
       <div class="tag-vertical">SALUD</div>
       <div class="text-block">
         <h1 class="main-title">MACRO<span>BALANCE</span></h1>
         <p class="sub-title">PERSONALIZACIÓN</p>
-        <button class="btn-cta" onclick="abrirModal()">
+        <button class="btn-cta" id="hero-cta" onclick="abrirModal()">
           EMPEZAR <span>&rarr;</span>
         </button>
         <div class="coming-soon">
@@ -607,10 +859,10 @@
   <div class="top-row">
     <div class="eyebrow">MacroBalance</div>
     <div id="objetivo-actual-badge" class="tip-chica" style="margin:0;"></div>
-    <div class="avatar-badge" onclick="abrirModalCuenta()" title="Editar cuenta">
+    <button type="button" class="avatar-badge" onclick="abrirModalCuenta()" title="Editar cuenta" aria-label="Editar cuenta">
       <img id="avatar-img" src="" alt="">
       <div class="avatar-lapiz">&#9998;</div>
-    </div>
+    </button>
   </div>
   <div style="text-align:right;margin-top:-8px;">
     <button type="button" class="link-historial" onclick="abrirModalHistorial()">Ver historial de objetivos</button>
@@ -680,8 +932,8 @@
     <div class="field" style="grid-column:1 / -1;">
       <label>¿Vas al gym?</label>
       <div class="toggle-row">
-        <div class="toggle-opt" id="gym-si" onclick="setGym(true)">Sí</div>
-        <div class="toggle-opt selected" id="gym-no" onclick="setGym(false)">No</div>
+      <button type="button" class="toggle-opt" id="gym-si" aria-pressed="false" onclick="setGym(true)">Sí</button>
+      <button type="button" class="toggle-opt selected" id="gym-no" aria-pressed="true" onclick="setGym(false)">No</button>
       </div>
     </div>
     <div class="field dias-gym-field" id="dias-gym-wrap" style="display:none;grid-column:1 / -1;">
@@ -714,12 +966,12 @@
     </div>
 
     <div class="carrusel-arrows">
-      <div class="arrow-btn" onclick="mover(-1)">
+      <button type="button" class="arrow-btn" onclick="mover(-1)" aria-label="Plan anterior">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg>
-      </div>
-      <div class="arrow-btn" onclick="mover(1)">
+      </button>
+      <button type="button" class="arrow-btn" onclick="mover(1)" aria-label="Plan siguiente">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
-      </div>
+      </button>
     </div>
     <div class="carrusel-dots" id="dots"></div>
 
@@ -773,6 +1025,7 @@
   </div>
 </div>
 
+<script src="/js/navigation.js" defer></script>
 <script src="calculadora.js"></script>
 
 <!-- CÓDIGO FIREBASE DE AUTENTICACIÓN AÑADIDO -->

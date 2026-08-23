@@ -10,6 +10,8 @@ function setGym(valor){
   vaAlGym = valor;
   document.getElementById('gym-si').classList.toggle('selected', valor === true);
   document.getElementById('gym-no').classList.toggle('selected', valor === false);
+  document.getElementById('gym-si').setAttribute('aria-pressed', String(valor === true));
+  document.getElementById('gym-no').setAttribute('aria-pressed', String(valor === false));
   document.getElementById('dias-gym-wrap').style.display = valor ? 'block' : 'none';
   document.getElementById('gym-kcal-box').style.display = valor ? 'block' : 'none';
   if(valor) actualizarKcalGym();
@@ -127,59 +129,92 @@ document.querySelectorAll('.grid select').forEach(function(campo){
 actualizarUnidadAgua();
 
 function abrirModal(){
+  if(window.macroBalanceState?.user){
+    mostrarCalculadoraAutenticada();
+    return;
+  }
   document.getElementById('modal-overlay').classList.remove('hidden');
 }
 
-// Esta es la función que solo se activará SI Firebase confirma el inicio de sesión
-window.avanzarApp = function(){
+function mostrarGate(){
   document.getElementById('modal-overlay').classList.add('hidden');
   const landing = document.getElementById('landing');
-  landing.classList.add('leaving');
-  setTimeout(function(){
-    landing.style.display = 'none';
-    document.getElementById('gate').classList.remove('hidden');
-  }, 500);
+  landing.style.display = 'none';
+  const gate = document.getElementById('gate');
+  gate.style.display = '';
+  gate.classList.remove('hidden', 'leaving');
 }
 
-async function elegir(sexo){
-  document.getElementById('sexo').value = sexo;
-  if(window.guardarSexoFirestore) window.guardarSexoFirestore(sexo);
-  const rutaFoto = rutaGate(sexo);
+async function prepararAvatar(sexo){
   const rutaAvatarRespaldo = sexo === 'M' ? 'media/mujer-v.jpg' : 'media/hombre-v.jpg';
-
-  document.getElementById('foto-mujer').classList.toggle('active', sexo === 'M');
-  document.getElementById('foto-hombre').classList.toggle('active', sexo === 'H');
-
   const avatarImg = document.getElementById('avatar-img');
   avatarImg.onerror = function(){ avatarImg.onerror = null; avatarImg.src = rutaAvatarRespaldo; };
-
-  // Consulta si ya existe una foto personalizada guardada en Firestore; si no,
-  // usa la de Google/Facebook, y si tampoco existe, el avatar por defecto.
-  let datosUsuario = null;
-  if(window.obtenerDatosUsuarioFirestore) datosUsuario = await window.obtenerDatosUsuarioFirestore();
+  const datosUsuario = window.obtenerDatosUsuarioFirestore
+    ? await window.obtenerDatosUsuarioFirestore()
+    : null;
   window.datosUsuarioActual = datosUsuario;
   avatarImg.src = resolverFotoPerfil(datosUsuario, rutaAvatarRespaldo);
   window.rutaAvatarRespaldoActual = rutaAvatarRespaldo;
+}
 
+async function mostrarAppCalculadora(sexo){
+  document.getElementById('sexo').value = sexo;
+  document.getElementById('landing').style.display = 'none';
+  document.getElementById('gate').style.display = 'none';
+  const loading = document.getElementById('loading');
+  document.getElementById('loading-photo').src = rutaGate(sexo);
+  loading.style.display = 'flex';
+  loading.classList.remove('hidden');
+
+  try{
+    await prepararAvatar(sexo);
+    if(window.precargarPerfilFirestore) await window.precargarPerfilFirestore();
+    if(window.mostrarObjetivoActualFirestore) await window.mostrarObjetivoActualFirestore();
+  } catch(error) {
+    console.error('No se pudieron restaurar todos los datos del perfil:', error);
+  } finally {
+    loading.style.display = 'none';
+    document.getElementById('app').style.display = 'flex';
+  }
+}
+
+async function mostrarCalculadoraAutenticada(){
+  if(document.getElementById('app').style.display === 'flex' ||
+     document.getElementById('loading').style.display === 'flex') return;
+  const state = window.macroBalanceState;
+  if(!state?.user){
+    document.getElementById('modal-overlay').classList.remove('hidden');
+    return;
+  }
+  history.replaceState(null, '', '#macros');
+  const sexo = state.profile?.sexo;
+  if(sexo === 'M' || sexo === 'H') await mostrarAppCalculadora(sexo);
+  else mostrarGate();
+}
+
+// Sólo se activa cuando Firebase confirma el inicio de sesión.
+window.avanzarApp = function(){
+  mostrarCalculadoraAutenticada();
+};
+
+async function elegir(sexo){
+  document.getElementById('sexo').value = sexo;
+
+  document.getElementById('foto-mujer').classList.toggle('active', sexo === 'M');
+  document.getElementById('foto-hombre').classList.toggle('active', sexo === 'H');
   const gate = document.getElementById('gate');
-  gate.classList.add('leaving');
-  setTimeout(function(){
-    gate.style.display = 'none';
-    const loading = document.getElementById('loading');
-    document.getElementById('loading-photo').src = rutaFoto;
-    loading.classList.remove('hidden');
-    setTimeout(async function(){
-      loading.style.display = 'none';
-      document.getElementById('app').style.display = 'flex';
-      if(window.precargarPerfilFirestore) await window.precargarPerfilFirestore();
-      if(window.mostrarObjetivoActualFirestore) await window.mostrarObjetivoActualFirestore();
-    }, 3500);
-  }, 500);
+  gate.style.display = 'none';
+  if(window.guardarSexoFirestore) await window.guardarSexoFirestore(sexo);
+  await mostrarAppCalculadora(sexo);
 }
 
 // ===== Modal "Editar cuenta" =====
 
-function abrirModalCuenta(){
+async function abrirModalCuenta(){
+  if(document.getElementById('app').style.display !== 'flex'){
+    await mostrarCalculadoraAutenticada();
+  }
+  if(document.getElementById('app').style.display !== 'flex') return;
   const modal = document.getElementById('modal-cuenta');
   if(!modal) return;
   modal.classList.remove('hidden');
@@ -484,8 +519,11 @@ function renderCarrusel(contexto){
     else if(diff === 1 || diff === -(planes.length-1)) posClass = 'pos-right';
     else if(diff < 0) posClass = 'pos-hidden-left';
 
-    const card = document.createElement('div');
+    const card = document.createElement('button');
+    card.type = 'button';
     card.className = 'plan-card ' + posClass;
+    card.setAttribute('aria-pressed', String(i === activo));
+    card.setAttribute('aria-label', 'Seleccionar plan ' + p.nombre + ', ' + p.kcal + ' kilocalorías');
     card.onclick = function(){ activo = i; renderCarrusel(); };
     const badge = (i === objetivoPreferidoIdx)
       ? '<div class="marca-objetivo"><svg viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="10"/></svg>Tu objetivo</div>'
@@ -497,8 +535,11 @@ function renderCarrusel(contexto){
       '<div class="macros-mini">' + p.proteina + 'P · ' + p.grasa + 'G · ' + p.carbos + 'C</div>';
     track.appendChild(card);
 
-    const dot = document.createElement('div');
+    const dot = document.createElement('button');
+    dot.type = 'button';
     dot.className = 'dot' + (i === activo ? ' active' : '');
+    dot.setAttribute('aria-label', 'Mostrar plan ' + p.nombre);
+    dot.setAttribute('aria-pressed', String(i === activo));
     dot.onclick = function(){ activo = i; renderCarrusel(); };
     dots.appendChild(dot);
   });
@@ -562,8 +603,9 @@ async function guardarObjetivoActual(){
   statusBox.textContent = 'Guardando...';
   try{
     await window.guardarObjetivoFirestore(planes[activo], ultimoInputSnapshot, CALC_VERSION);
-    statusBox.textContent = 'Objetivo guardado. Este es ahora tu objetivo activo.';
+    statusBox.textContent = 'Objetivo guardado. Abriendo tus preferencias…';
     if(window.mostrarObjetivoActualFirestore) await window.mostrarObjetivoActualFirestore();
+    window.location.assign('/plan.html#config');
   } catch(err){
     console.error('Error al guardar objetivo:', err);
     statusBox.textContent = 'No se pudo guardar. Intenta de nuevo.';
@@ -571,3 +613,21 @@ async function guardarObjetivoActual(){
     btn.disabled = false;
   }
 }
+
+window.addEventListener('macrobalance:auth-changed', function(event){
+  const state = event.detail;
+  const cta = document.getElementById('hero-cta');
+  if(cta){
+    cta.innerHTML = state?.user ? 'CONTINUAR <span>&rarr;</span>' : 'EMPEZAR <span>&rarr;</span>';
+  }
+  if(window.location.hash === '#macros' && state?.authReady){
+    mostrarCalculadoraAutenticada();
+  }
+  if(new URLSearchParams(window.location.search).get('login') === '1' && !state?.user){
+    document.getElementById('modal-overlay').classList.remove('hidden');
+  }
+});
+
+window.addEventListener('hashchange', function(){
+  if(window.location.hash === '#macros') mostrarCalculadoraAutenticada();
+});
