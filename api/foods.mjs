@@ -1,3 +1,7 @@
 import { createHandler } from '../lib/server/handler.mjs';
 
-export default createHandler('foods', 'GET');
+const handler = createHandler('foods', 'GET');
+
+export function GET(request) {
+  return handler(request);
+}

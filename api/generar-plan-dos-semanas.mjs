@@ -1,3 +1,7 @@
 import { createHandler } from '../lib/server/handler.mjs';
 
-export default createHandler('fortnight', 'POST');
+const handler = createHandler('fortnight', 'POST');
+
+export function POST(request) {
+  return handler(request);
+}

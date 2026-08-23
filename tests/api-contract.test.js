@@ -39,7 +39,7 @@ test('una generación diaria válida entrega dashboard y diagnóstico de exclusi
 });
 
 test('el handler serverless usa Request/Response estándar', async () => {
-  const { default: foodsHandler } = await import('../api/foods.mjs');
+  const { GET: foodsHandler } = await import('../api/foods.mjs');
   const response = await foodsHandler(new Request('http://localhost/api/foods'));
   assert.equal(response.status, 200);
   assert.equal((await response.json()).length, 197);
