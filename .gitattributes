@@ -1,0 +1,7 @@
+# Estos archivos son la migración canónica del motor. No convertir sus finales
+# de línea al hacer checkout, porque sus hashes de integridad son parte del test.
+lib/menu-engine/engine.js -text
+lib/menu-engine/sustitucion.js -text
+lib/menu-engine/dashboard.js -text
+lib/menu-engine/data/foods.json -text
+lib/menu-engine/data/dishes.json -text

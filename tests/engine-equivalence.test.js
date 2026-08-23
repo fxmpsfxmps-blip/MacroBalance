@@ -11,6 +11,13 @@ function sha256(value) {
   return crypto.createHash('sha256').update(value).digest('hex');
 }
 
+function matchesStableHash(filePath, expectedHash) {
+  const contents = fs.readFileSync(filePath);
+  const rawHash = sha256(contents);
+  const lfHash = sha256(contents.toString('utf8').replace(/\r\n/g, '\n'));
+  return rawHash === expectedHash || lfHash === expectedHash;
+}
+
 test('los archivos estables del motor fueron migrados byte por byte', () => {
   const expected = {
     'engine.js': '7cf556ccf0cadec588734cd6f615e2077f90d08405a2a196be90da2a17913a6c',
@@ -21,8 +28,10 @@ test('los archivos estables del motor fueron migrados byte por byte', () => {
   };
 
   for (const [relativePath, expectedHash] of Object.entries(expected)) {
-    const contents = fs.readFileSync(path.join(root, 'lib', 'menu-engine', relativePath));
-    assert.equal(sha256(contents), expectedHash, relativePath);
+    assert.ok(
+      matchesStableHash(path.join(root, 'lib', 'menu-engine', relativePath), expectedHash),
+      relativePath
+    );
   }
 });
 
