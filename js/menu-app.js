@@ -6,6 +6,7 @@ let objetivoActivo = null;
 let usuarioActivoId = null;
 let alimentosCargados = false;
 let generationController = null;
+const GENERATION_MOBILE_QUERY = '(max-width: 820px)';
 
 let semanaActiva = 0;
 let diaActivo = 0;
@@ -766,35 +767,153 @@ function volverAConfiguracion(){
 function mostrarLoadingGeneracion(){
   const overlay = document.getElementById('generation-overlay');
   const message = document.getElementById('generation-message');
-  const elapsed = document.getElementById('generation-elapsed');
+  const working = document.getElementById('generation-working');
+  const ready = document.getElementById('generation-ready');
+  const viewPlanButton = document.getElementById('view-generated-plan');
+  const panels = Array.from(overlay.querySelectorAll('[data-generation-panel]'));
+  const isMobile =
+    window.matchMedia(GENERATION_MOBILE_QUERY).matches ||
+    window.matchMedia('(pointer: coarse)').matches;
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   const messages = [
-    'Combinando tus preferencias con tu objetivo activo…',
-    'Buscando variedad entre desayunos, comidas y cenas…',
-    'Ajustando porciones y revisando la semana completa…',
-    'Preparando tu lista de compras…'
+    'Analizando tus preferencias…',
+    'Seleccionando tus platillos…',
+    'Equilibrando tus macros…',
+    'Ajustando cantidades…',
+    'Construyendo tu semana…',
+    'Preparando tu lista de compras…',
+    'Finalizando tu plan…'
   ];
   let messageIndex = 0;
-  const startedAt = Date.now();
+  let messageSwapTimer = 0;
+  let finished = false;
+  const videoListeners = [];
 
+  // El overlay puede haber quedado antes del dashboard tras una transición
+  // móvil anterior. Como hijo directo de body nunca depende de una vista oculta.
+  document.body.insertBefore(overlay, document.querySelector('.wa-float'));
+
+  overlay.className = 'generation-overlay';
+  overlay.setAttribute('aria-modal', 'true');
   overlay.hidden = false;
   document.body.classList.add('is-generating');
+  working.hidden = false;
+  ready.hidden = true;
   message.textContent = messages[0];
-  elapsed.textContent = 'Puede tomar unos segundos.';
+
+  const selectedMobilePanel = isMobile
+    ? Math.floor(Math.random() * panels.length)
+    : -1;
+
+  panels.forEach((panel, index) => {
+    const video = panel.querySelector('video');
+    const poster = panel.querySelector('img');
+    const shouldLoad = !isMobile || index === selectedMobilePanel;
+
+    panel.classList.remove('is-active', 'is-playing', 'has-video-error');
+    video.pause();
+    video.removeAttribute('src');
+    video.removeAttribute('poster');
+    poster.removeAttribute('src');
+    video.load();
+
+    if(!shouldLoad) return;
+
+    panel.classList.add('is-active');
+    poster.src = panel.dataset.posterSrc;
+    video.poster = panel.dataset.posterSrc;
+
+    if(reduceMotion) return;
+
+    const handlePlaying = () => panel.classList.add('is-playing');
+    const handleVideoError = () => {
+      panel.classList.remove('is-playing');
+      panel.classList.add('has-video-error');
+    };
+
+    video.addEventListener('playing', handlePlaying);
+    video.addEventListener('error', handleVideoError);
+    videoListeners.push([video, handlePlaying, handleVideoError]);
+
+    // Las propiedades y los atributos se fijan ambos para Safari/iOS.
+    video.muted = true;
+    video.defaultMuted = true;
+    video.setAttribute('muted', '');
+    video.setAttribute('autoplay', '');
+    video.setAttribute('playsinline', '');
+    video.src = panel.dataset.videoSrc;
+    video.load();
+    const playback = video.play();
+    if(playback && typeof playback.catch === 'function'){
+      playback.catch(handleVideoError);
+    }
+  });
 
   const messageTimer = window.setInterval(() => {
     messageIndex = Math.min(messageIndex + 1, messages.length - 1);
-    message.textContent = messages[messageIndex];
-  }, 7000);
-  const elapsedTimer = window.setInterval(() => {
-    const seconds = Math.round((Date.now() - startedAt) / 1000);
-    elapsed.textContent = `Tiempo transcurrido: ${seconds} s`;
-  }, 1000);
+    message.classList.add('is-changing');
+    messageSwapTimer = window.setTimeout(() => {
+      message.textContent = messages[messageIndex];
+      message.classList.remove('is-changing');
+    }, 180);
+  }, 4500);
 
-  return function detenerLoading(){
-    window.clearInterval(messageTimer);
-    window.clearInterval(elapsedTimer);
-    overlay.hidden = true;
+  function stopMedia(){
+    videoListeners.forEach(([video, handlePlaying, handleVideoError]) => {
+      video.removeEventListener('playing', handlePlaying);
+      video.removeEventListener('error', handleVideoError);
+    });
+    panels.forEach(panel => {
+      const video = panel.querySelector('video');
+      video.pause();
+      video.removeAttribute('src');
+      video.load();
+    });
+  }
+
+  function hideExperience(scrollToPlan = false){
+    if(finished) return;
+    finished = true;
+    overlay.classList.add('is-closing');
     document.body.classList.remove('is-generating');
+    window.setTimeout(() => {
+      overlay.hidden = true;
+      overlay.className = 'generation-overlay';
+      stopMedia();
+      if(scrollToPlan){
+        document.getElementById('subvista-plan').scrollIntoView({
+          behavior:'smooth',
+          block:'start'
+        });
+      }
+    }, 180);
+  }
+
+  viewPlanButton.onclick = () => hideExperience(true);
+
+  return function detenerLoading({ planReady = false } = {}){
+    window.clearInterval(messageTimer);
+    window.clearTimeout(messageSwapTimer);
+    document.body.classList.remove('is-generating');
+
+    if(planReady && isMobile){
+      overlay.classList.add('is-ready');
+      overlay.removeAttribute('aria-modal');
+      working.hidden = true;
+      ready.hidden = false;
+      document.getElementById('vista-dashboard').prepend(overlay);
+      overlay.scrollIntoView({ behavior:'smooth', block:'start' });
+      return;
+    }
+
+    if(planReady){
+      hideExperience();
+      return;
+    }
+
+    finished = true;
+    overlay.hidden = true;
+    stopMedia();
   };
 }
 
@@ -919,6 +1038,7 @@ async function generar(){
 
   ocultarErrorGeneracion();
   const detenerLoading = mostrarLoadingGeneracion();
+  let generationSucceeded = false;
   generationController = new AbortController();
   const timeout = window.setTimeout(() => generationController.abort(), 70000);
 
@@ -979,6 +1099,7 @@ async function generar(){
     renderPlan();
 
     mostrarDashboard();
+    generationSucceeded = true;
 
   }catch(error){
 
@@ -998,7 +1119,7 @@ async function generar(){
 
     window.clearTimeout(timeout);
     generationController = null;
-    detenerLoading();
+    detenerLoading({ planReady:generationSucceeded });
 
     btn.disabled =
       false;

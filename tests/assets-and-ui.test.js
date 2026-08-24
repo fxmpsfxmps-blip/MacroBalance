@@ -30,9 +30,29 @@ test('la configuración consume un objetivo activo de sólo lectura', () => {
   assert.match(html, /id="custom-recipe-extension"/);
 });
 
-test('el loading de generación es indeterminado y no muestra porcentajes', () => {
+test('la generación audiovisual conserva posters y limita la carga móvil a un video', () => {
   const html = fs.readFileSync(path.join(root, 'plan.html'), 'utf8');
-  assert.match(html, /role="progressbar"/);
+  const app = fs.readFileSync(path.join(root, 'js', 'menu-app.js'), 'utf8');
+  const panels = html.match(/data-generation-panel/g) || [];
+
+  assert.equal(panels.length, 4);
+  assert.equal((html.match(/data-video-src="\/media\/transition-[^"]+\.mp4"/g) || []).length, 4);
+  assert.equal((html.match(/data-poster-src="\/media\/transition-[^"]+\.webp"/g) || []).length, 4);
+  assert.match(html, /<video autoplay muted loop playsinline preload="none"/);
+  assert.doesNotMatch(html, /<video[^>]+\ssrc=/);
+  assert.doesNotMatch(html, /role="progressbar"/);
+  assert.doesNotMatch(html, /generation-elapsed/);
   assert.doesNotMatch(html, /aria-valuenow/);
   assert.doesNotMatch(html, />\s*\d+%\s*</);
+  assert.match(app, /window\.matchMedia\('\(pointer: coarse\)'\)\.matches/);
+  assert.match(app, /const shouldLoad = !isMobile \|\| index === selectedMobilePanel/);
+
+  for (const name of ['lifestyle', 'running', 'bodybuilding', 'fitness']) {
+    const video = path.join(root, 'media', `transition-${name}.mp4`);
+    const poster = path.join(root, 'media', `transition-${name}.webp`);
+    assert.ok(fs.existsSync(video), name);
+    assert.ok(fs.statSync(video).size < 8 * 1024 * 1024, `${name} excede 8 MB`);
+    assert.ok(fs.existsSync(poster), `${name} no tiene poster`);
+    assert.ok(fs.statSync(poster).size < 200 * 1024, `${name} poster excede 200 KB`);
+  }
 });

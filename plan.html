@@ -262,12 +262,39 @@
 </main>
 
 <div class="generation-overlay" id="generation-overlay" role="dialog" aria-modal="true" aria-labelledby="generation-title" hidden>
-  <div class="generation-overlay__content">
-    <div class="generation-mark" aria-hidden="true">MB</div>
-    <h2 id="generation-title">Construyendo tu plan</h2>
-    <p id="generation-message" aria-live="polite">Combinando tus preferencias con tu objetivo activo…</p>
-    <div class="generation-progress" role="progressbar" aria-label="Generación en curso"><span></span></div>
-    <small id="generation-elapsed">Puede tomar unos segundos.</small>
+  <h2 class="sr-only" id="generation-title">MacroBalance está construyendo tu plan</h2>
+
+  <div class="generation-media" id="generation-media" aria-hidden="true">
+    <figure class="generation-panel" data-generation-panel data-video-src="/media/transition-lifestyle.mp4" data-poster-src="/media/transition-lifestyle.webp">
+      <img alt="" decoding="async">
+      <video autoplay muted loop playsinline preload="none" disablepictureinpicture></video>
+    </figure>
+    <figure class="generation-panel" data-generation-panel data-video-src="/media/transition-running.mp4" data-poster-src="/media/transition-running.webp">
+      <img alt="" decoding="async">
+      <video autoplay muted loop playsinline preload="none" disablepictureinpicture></video>
+    </figure>
+    <figure class="generation-panel" data-generation-panel data-video-src="/media/transition-bodybuilding.mp4" data-poster-src="/media/transition-bodybuilding.webp">
+      <img alt="" decoding="async">
+      <video autoplay muted loop playsinline preload="none" disablepictureinpicture></video>
+    </figure>
+    <figure class="generation-panel" data-generation-panel data-video-src="/media/transition-fitness.mp4" data-poster-src="/media/transition-fitness.webp">
+      <img alt="" decoding="async">
+      <video autoplay muted loop playsinline preload="none" disablepictureinpicture></video>
+    </figure>
+  </div>
+
+  <div class="generation-shade" aria-hidden="true"></div>
+
+  <div class="generation-status" id="generation-working">
+    <span class="generation-status__dot" aria-hidden="true"></span>
+    <p id="generation-message" aria-live="polite">Analizando tus preferencias…</p>
+  </div>
+
+  <div class="generation-ready" id="generation-ready" hidden>
+    <p class="generation-ready__eyebrow">Tu plan está listo</p>
+    <p>Desliza para descubrirlo</p>
+    <span class="generation-ready__arrow" aria-hidden="true">↓</span>
+    <button type="button" id="view-generated-plan">Ver mi plan</button>
   </div>
 </div>
 

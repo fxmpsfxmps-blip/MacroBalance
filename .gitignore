@@ -12,3 +12,9 @@ coverage/
 test-results/
 playwright-report/
 *.optimized.tmp
+
+# Fuentes 4K/alta tasa conservadas localmente; producción usa transition-*.
+media/13372516_1080_1920_30fps.mp4
+media/14597490_2160_3840_60fps.mp4
+media/16405602_2160_3840_59fps.mp4
+media/8431888-uhd_2160_4096_25fps.mp4
