@@ -159,9 +159,28 @@ function esRutaMacros(){
     window.location.pathname.replace(/\/$/, '') === '/macros';
 }
 
-function cerrarModalAuth(){
+let authModalReturnFocus = null;
+
+function mostrarModalAuth(){
+  const modal = document.getElementById('modal-overlay');
+  if(!modal) return;
+  if(modal.classList.contains('hidden')){
+    const activeElement = document.activeElement;
+    authModalReturnFocus = activeElement instanceof HTMLElement ? activeElement : document.getElementById('hero-cta');
+  }
+  modal.classList.remove('hidden');
+  window.requestAnimationFrame(function(){
+    document.getElementById('auth-modal-close')?.focus();
+  });
+}
+
+function cerrarModalAuth(restaurarFoco){
   const modal = document.getElementById('modal-overlay');
   if(modal) modal.classList.add('hidden');
+  if(restaurarFoco && authModalReturnFocus && document.contains(authModalReturnFocus)){
+    authModalReturnFocus.focus();
+  }
+  authModalReturnFocus = null;
 }
 
 async function abrirModal(){
@@ -178,8 +197,35 @@ async function abrirModal(){
     mostrarCalculadoraAutenticada();
     return;
   }
-  document.getElementById('modal-overlay').classList.remove('hidden');
+  mostrarModalAuth();
 }
+
+document.addEventListener('keydown', function(event){
+  const modal = document.getElementById('modal-overlay');
+  if(!modal || modal.classList.contains('hidden')) return;
+  if(event.key === 'Escape'){
+    event.preventDefault();
+    cerrarModalAuth(true);
+    return;
+  }
+  if(event.key !== 'Tab') return;
+  const focusable = Array.from(modal.querySelectorAll('button:not([disabled]), [href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])'))
+    .filter(function(element){ return element.getClientRects().length > 0; });
+  if(!focusable.length) return;
+  const first = focusable[0];
+  const last = focusable[focusable.length - 1];
+  if(event.shiftKey && document.activeElement === first){
+    event.preventDefault();
+    last.focus();
+  } else if(!event.shiftKey && document.activeElement === last){
+    event.preventDefault();
+    first.focus();
+  }
+});
+
+document.getElementById('modal-overlay')?.addEventListener('click', function(event){
+  if(event.target === event.currentTarget) cerrarModalAuth(true);
+});
 
 function mostrarEstadoAnonimo(){
   cerrarModalAuth();
@@ -246,7 +292,7 @@ async function mostrarCalculadoraAutenticada(){
      document.getElementById('loading').style.display === 'flex') return;
   const state = window.macroBalanceState;
   if(!state?.user){
-    if(state?.authReady) document.getElementById('modal-overlay').classList.remove('hidden');
+    if(state?.authReady) mostrarModalAuth();
     return;
   }
   cerrarModalAuth();
@@ -853,7 +899,7 @@ window.addEventListener('macrobalance:auth-changed', function(event){
     mostrarCalculadoraAutenticada();
   }
   if(new URLSearchParams(window.location.search).get('login') === '1' && !state?.user){
-    document.getElementById('modal-overlay').classList.remove('hidden');
+    mostrarModalAuth();
   }
   if(state?.authReady && !state?.user && !new URLSearchParams(window.location.search).has('login')){
     mostrarEstadoAnonimo();

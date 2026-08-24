@@ -48,6 +48,8 @@ Flujo común:
 ## Persistencia y compatibilidad
 
 - Auth usa `browserLocalPersistence`; la sesión se conserva entre recargas y reinicios cuando el navegador permite almacenamiento local.
+- El aviso de autenticación obligatorio se puede cerrar para volver a la landing. La autenticación sigue siendo necesaria para avanzar y para los datos persistentes asociados a un usuario.
+- Required authentication prompt is dismissible to return to the landing. Authentication remains required to proceed and for persisted user data.
 - No existe bypass de autenticación, usuario falso, token ni secreto de desarrollo.
 - El perfil permanece en `users/{uid}/profile/current`.
 - Cada objetivo se guarda en `users/{uid}/goals_history/{goalId}` y el puntero activo en `users/{uid}.currentObjectiveId`.

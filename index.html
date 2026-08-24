@@ -311,11 +311,14 @@
     }
   }
 
-  /* ===== MODAL registro obligatorio ===== */
+  /* ===== MODAL de autenticación obligatoria ===== */
   #modal-overlay{position:fixed;inset:0;z-index:60;background:rgba(0,0,0,.88);display:flex;align-items:center;justify-content:center;padding:20px;}
-  .modal-box{background:var(--panel);border:1px solid var(--panel-line);padding:32px 26px;max-width:440px;width:100%;max-height:min(88vh,720px);overflow-y:auto;text-align:center;box-shadow:0 20px 50px rgba(0,0,0,0.8);}
+  .modal-box{position:relative;background:var(--panel);border:1px solid var(--panel-line);padding:32px 26px;max-width:440px;width:100%;max-height:min(88vh,720px);overflow-y:auto;text-align:center;box-shadow:0 20px 50px rgba(0,0,0,0.8);}
   .modal-box h3{font-weight:700;font-size:20px;margin:0 0 8px;}
   .modal-box p{color:var(--ink-dim);font-size:13.5px;margin:0 0 22px;line-height:1.5;}
+  .auth-modal-close{position:absolute;top:10px;right:10px;width:44px;height:44px;display:grid;place-items:center;border:1px solid transparent;background:transparent;color:var(--ink-dim);font-size:26px;line-height:1;cursor:pointer;border-radius:2px;}
+  .auth-modal-close:hover{border-color:var(--panel-line);color:var(--ink);}
+  .auth-modal-close:focus-visible{outline:2px solid var(--red-bright);outline-offset:2px;color:var(--ink);}
   
   .auth-buttons{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:8px;}
   .btn-social{width:100%;min-width:0;border:1px solid #2b2b30;padding:12px 10px;font-size:12.5px;font-weight:650;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:9px;border-radius:8px;transition:opacity .2s ease,border-color .2s ease,transform .2s ease;background:#18181c;color:#f4f4f5;}
@@ -926,11 +929,12 @@
   </main>
 </div>
 
-<!-- MODAL de acceso centralizado con Firebase Authentication -->
+<!-- MODAL de acceso obligatorio con Firebase Authentication -->
 <div id="modal-overlay" class="hidden">
-  <div class="modal-box" role="dialog" aria-modal="true" aria-labelledby="auth-modal-title">
+  <div class="modal-box" role="dialog" aria-modal="true" aria-labelledby="auth-modal-title" aria-describedby="auth-modal-description" tabindex="-1">
+    <button type="button" class="auth-modal-close" id="auth-modal-close" onclick="cerrarModalAuth(true)" aria-label="Cerrar ventana de autenticación">×</button>
     <h3 id="auth-modal-title">Crea tu cuenta</h3>
-    <p>Necesitas iniciar sesión para guardar tu progreso y continuar.</p>
+    <p id="auth-modal-description">Necesitas iniciar sesión para guardar tu progreso y continuar.</p>
     
     <div class="auth-buttons">
       <button class="btn-social btn-google auth-featured" data-auth-provider="Google" onclick="window.loginConFirebase('Google')">
@@ -966,7 +970,7 @@
 
     <div class="auth-provider-status" id="auth-provider-status" role="status" aria-live="polite"></div>
 
-    <div class="modal-note">Al registrarte aceptas que se vinculará tu cuenta para darte seguimiento. No puedes avanzar sin registrarte.</div>
+    <div class="modal-note">Inicia sesión para continuar con tu plan.</div>
   </div>
 </div>
 

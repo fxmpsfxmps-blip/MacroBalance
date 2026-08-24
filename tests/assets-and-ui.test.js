@@ -166,6 +166,22 @@ test('Firebase centraliza sesión persistente y los seis proveedores', () => {
   assert.match(calculator, /esRutaMacros\(\)/);
 });
 
+test('el aviso de autenticación V2.1 es cancelable sin alterar Firebase Auth', () => {
+  const html = fs.readFileSync(path.join(root, 'index.html'), 'utf8');
+  const calculator = fs.readFileSync(path.join(root, 'calculadora.js'), 'utf8');
+
+  assert.match(html, /id="auth-modal-close"/);
+  assert.match(html, /Cerrar ventana de autenticación/);
+  assert.match(html, /Crea tu cuenta/);
+  assert.match(html, /Necesitas iniciar sesión para guardar tu progreso y continuar/);
+  assert.match(html, /Inicia sesión para continuar con tu plan/);
+  assert.match(calculator, /function mostrarModalAuth\(/);
+  assert.match(calculator, /event\.key === 'Escape'/);
+  assert.match(calculator, /authModalReturnFocus/);
+  assert.match(calculator, /event\.target === event\.currentTarget/);
+  assert.match(calculator, /if\(!state\?\.user\)/);
+});
+
 test('Media, SEO y rutas públicas forman parte del build', () => {
   const home = fs.readFileSync(path.join(root, 'index.html'), 'utf8');
   const media = fs.readFileSync(path.join(root, 'multimedia.html'), 'utf8');
