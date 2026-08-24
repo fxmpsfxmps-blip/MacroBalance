@@ -1289,6 +1289,16 @@ async function generar(){
    RENDER PLAN
 --------------------------------------------------------- */
 
+function resumenCompras14Dias(){
+  const lista = plan?.lista_compras_14_dias;
+  if(!lista || typeof lista !== 'object') return { ingredientes:0, categorias:0 };
+  const categorias = Object.keys(lista).filter(key => Array.isArray(lista[key]) && lista[key].length);
+  return {
+    categorias: categorias.length,
+    ingredientes: categorias.reduce((total, key) => total + lista[key].length, 0)
+  };
+}
+
 function renderPlan(){
 
   const el =
@@ -1375,6 +1385,8 @@ function renderPlan(){
   const warningsHtml =
     renderExclusionWarnings();
 
+  const comprasResumen = resumenCompras14Dias();
+
 
   el.innerHTML =
 
@@ -1398,7 +1410,18 @@ function renderPlan(){
     '<div class="resumenes-secundarios">' +
       '<div id="resumen-semana-contenido"></div>' +
       '<div id="resumen-global-contenido"></div>' +
-    '</div>';
+    '</div>' +
+
+    '<section class="plan-shopping-entry" aria-labelledby="plan-shopping-title">' +
+      '<div>' +
+        '<p class="plan-shopping-entry__eyebrow">Lista de compras</p>' +
+        '<h2 id="plan-shopping-title">Todo lo necesario para tus 14 días</h2>' +
+        '<p>Organizado directamente a partir de tu plan: <b>' +
+          comprasResumen.ingredientes + ' ingredientes</b> en <b>' +
+          comprasResumen.categorias + ' categorías</b>.</p>' +
+      '</div>' +
+      '<button type="button" onclick="irAVista(\'compras\')">Ver lista de compras <span aria-hidden="true">→</span></button>' +
+    '</section>';
 
 
   renderSemanaActiva();

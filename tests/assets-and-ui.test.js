@@ -55,6 +55,8 @@ test('la generación audiovisual conserva posters y limita la carga móvil a un 
   assert.match(app, /needs-play/);
   assert.doesNotMatch(html, /generation-ready__arrow/);
   assert.doesNotMatch(html, /Desliza para descubrirlo/);
+  assert.match(html, /generation-ready__action/);
+  assert.match(html, /Ver mi plan[\s\S]*→/);
 
   for (const name of ['lifestyle', 'running', 'bodybuilding', 'fitness']) {
     const video = path.join(root, 'media', `transition-${name}.mp4`);
@@ -80,6 +82,29 @@ test('branding, perfil e historial reflejan el producto actual', () => {
   assert.match(calculator, /eliminarObjetivoHistorial\(this\)/);
   assert.match(firebase, /eliminarObjetivoHistorialFirestore/);
   assert.match(firebase, /goalId === currentId/);
+});
+
+test('el sistema visual final reutiliza la Calculadora y conecta Mi Plan con compras', () => {
+  const html = fs.readFileSync(path.join(root, 'index.html'), 'utf8');
+  const plan = fs.readFileSync(path.join(root, 'plan.html'), 'utf8');
+  const shared = fs.readFileSync(path.join(root, 'styles', 'shared.css'), 'utf8');
+  const menu = fs.readFileSync(path.join(root, 'styles', 'menu.css'), 'utf8');
+  const app = fs.readFileSync(path.join(root, 'js', 'menu-app.js'), 'utf8');
+  const hero = fs.readFileSync(path.join(root, 'js', 'hero-video.js'), 'utf8');
+
+  assert.match(shared, /--mb-bg:\s*#050505/);
+  assert.match(shared, /--mb-panel:\s*#101010/);
+  assert.match(shared, /--mb-border:\s*#1c1c1c/);
+  assert.match(shared, /--mb-radius:\s*2px/);
+  assert.match(menu, /#session-loading[\s\S]*background:transparent/);
+  assert.match(plan, /session-loading__pulse/);
+  assert.match(app, /function resumenCompras14Dias/);
+  assert.match(app, /plan-shopping-entry/);
+  assert.match(app, /lista_compras_14_dias/);
+  assert.doesNotMatch(html, /hero-video-play/);
+  assert.doesNotMatch(html, />\s*Reproducir video\s*</);
+  assert.match(hero, /video\.addEventListener\('canplay', retryWhenReady\)/);
+  assert.match(hero, /window\.addEventListener\('pageshow'/);
 });
 
 test('los avisos no factibles conservan información con jerarquía secundaria', () => {

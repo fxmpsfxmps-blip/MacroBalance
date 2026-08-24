@@ -53,6 +53,7 @@
 <main class="wrap" id="plan-app">
 
   <section class="state-card" id="session-loading" aria-live="polite">
+    <span class="session-loading__pulse" aria-hidden="true"></span>
     <h1>Preparando tu espacio</h1>
     <p>Estamos restaurando tu sesión y tu objetivo activo.</p>
   </section>
@@ -314,8 +315,10 @@
   </div>
 
   <div class="generation-ready" id="generation-ready" hidden>
-    <span class="generation-ready__label">Tu plan está listo</span>
-    <button type="button" id="view-generated-plan">Ver mi plan</button>
+    <button type="button" id="view-generated-plan">
+      <span class="generation-ready__label">Tu plan está listo</span>
+      <span class="generation-ready__action">Ver mi plan <span aria-hidden="true">→</span></span>
+    </button>
   </div>
 </div>
 

@@ -1,6 +1,5 @@
 (function initializeHeroVideo() {
   const video = document.querySelector('.hero-video');
-  const playButton = document.querySelector('.hero-video-play');
   if (!video) return;
 
   video.muted = true;
@@ -9,12 +8,12 @@
   video.setAttribute('autoplay', '');
   video.setAttribute('playsinline', '');
 
-  let loadedRetryUsed = false;
+  let readinessRetryUsed = false;
+  let resumeRetryUsed = false;
   let playInFlight = false;
   let frameRequested = false;
   const showVideo = () => {
     video.classList.add('is-playing');
-    playButton?.classList.remove('is-visible');
   };
   const revealAfterFirstFrame = () => {
     if (frameRequested) return;
@@ -25,9 +24,8 @@
     }
     video.addEventListener('timeupdate', showVideo, { once:true });
   };
-  const keepPoster = ({ allowManual = true } = {}) => {
+  const keepPoster = () => {
     video.classList.remove('is-playing');
-    playButton?.classList.toggle('is-visible', allowManual);
   };
 
   const attemptPlayback = async () => {
@@ -43,20 +41,29 @@
   };
 
   video.addEventListener('playing', revealAfterFirstFrame);
-  video.addEventListener('error', () => keepPoster({ allowManual:false }));
-  video.addEventListener('loadeddata', () => {
-    if (!video.paused || loadedRetryUsed) return;
-    loadedRetryUsed = true;
+  video.addEventListener('error', keepPoster);
+  const retryWhenReady = () => {
+    if (!video.paused || readinessRetryUsed) return;
+    readinessRetryUsed = true;
     attemptPlayback();
-  });
-  playButton?.addEventListener('click', attemptPlayback);
+  };
+  video.addEventListener('loadeddata', retryWhenReady);
+  video.addEventListener('canplay', retryWhenReady);
   document.addEventListener('visibilitychange', () => {
-    if (!document.hidden && video.paused && !video.error) attemptPlayback();
+    if (!document.hidden && video.paused && !video.error && !resumeRetryUsed) {
+      resumeRetryUsed = true;
+      attemptPlayback();
+    }
+  });
+  window.addEventListener('pageshow', event => {
+    if (!event.persisted || !video.paused || video.error) return;
+    resumeRetryUsed = false;
+    attemptPlayback();
   });
 
   if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
     video.pause();
-    keepPoster({ allowManual:false });
+    keepPoster();
     return;
   }
 

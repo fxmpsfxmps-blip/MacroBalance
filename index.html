@@ -71,14 +71,6 @@
   .hero-video.is-playing{opacity:1;}
   .hero-poster{position:absolute;inset:0;z-index:0;display:block;}
   .hero-poster img{width:100%;height:100%;display:block;object-fit:cover;object-position:55% 40%;}
-  .hero-video-play{
-    position:absolute;right:clamp(18px,3vw,38px);bottom:max(22px,calc(env(safe-area-inset-bottom) + 16px));z-index:12;
-    display:none;align-items:center;gap:8px;min-height:44px;padding:9px 14px;border:1px solid rgba(255,255,255,.35);
-    border-radius:999px;background:rgba(5,5,5,.68);color:#fff;font-size:12px;font-weight:750;cursor:pointer;
-    backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
-  }
-  .hero-video-play.is-visible{display:inline-flex;}
-
   /* Sombra / Gradiente para lectura */
   .hero-overlay {
     position: absolute;
@@ -789,6 +781,22 @@
       opacity:.55;
     }
   }
+
+  /* Geometría estructural compartida: recta, como la Calculadora. */
+  .coming-soon,
+  .btn-social,
+  .modal-cuenta-box,
+  .cuenta-avatar-botones label,
+  .cuenta-avatar-botones button,
+  .cuenta-field input,
+  .cuenta-field select,
+  .modal-cuenta-botones button,
+  .historial-activo,
+  .historial-eliminar,
+  .detalle-plan,
+  .marca-objetivo{
+    border-radius:2px;
+  }
 </style>
 </head>
 <body>
@@ -823,7 +831,7 @@
     <source media="(max-width: 768px)" srcset="media/cover-mobile.png">
     <img src="media/cover-pc.png" alt="">
   </picture>
-  <video class="hero-video" autoplay muted loop playsinline poster="media/cover-pc.png">
+  <video class="hero-video" autoplay muted loop playsinline preload="metadata" poster="media/cover-pc.png">
     <!--
       📌 Guarda tu video dentro de tu carpeta "media" con EXACTAMENTE este nombre:
 
@@ -838,9 +846,6 @@
     <source src="media/hero-fitness.mp4" type="video/mp4">
     Tu navegador no soporta video HTML5.
   </video>
-  <button type="button" class="hero-video-play" aria-label="Reproducir video de portada">
-    <span aria-hidden="true">▶</span> Reproducir video
-  </button>
   <div class="hero-overlay"></div>
 
   <main class="hero-body">
