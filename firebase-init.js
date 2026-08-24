@@ -20,7 +20,7 @@ import {
   updateDoc,
   collection,
   addDoc,
-  deleteDoc,
+  runTransaction,
   query,
   getDocs,
   serverTimestamp
@@ -223,7 +223,7 @@ window.mostrarObjetivoActualFirestore = async function mostrarObjetivoActualFire
 };
 
 // Conserva exactamente la estructura histórica existente de Firestore.
-window.guardarObjetivoFirestore = async function guardarObjetivoFirestore(plan, inputSnapshot, calcVersion) {
+window.guardarObjetivoFirestore = async function guardarObjetivoFirestore(plan, inputSnapshot, calcVersion, nutritionTarget) {
   const user = auth.currentUser;
   if (!user) throw new Error('No hay usuario autenticado');
   const userRef = doc(db, 'users', user.uid);
@@ -251,6 +251,10 @@ window.guardarObjetivoFirestore = async function guardarObjetivoFirestore(plan, 
       metodo: inputSnapshot.metodo
     },
     calcVersion,
+    calculatorVersion: calcVersion,
+    calculationMode: nutritionTarget?.calculationMode || inputSnapshot?.calculationMode || 'standard',
+    nutritionTargetVersion: nutritionTarget?.schemaVersion || null,
+    nutritionTarget: nutritionTarget || null,
     notes: '',
     createdAt: serverTimestamp()
   };
@@ -326,11 +330,26 @@ window.guardarCuentaFirestore = async function guardarCuenta(datosCuenta, datosP
 window.eliminarObjetivoHistorialFirestore = async function eliminarObjetivoHistorial(goalId) {
   const user = auth.currentUser;
   if (!user) throw new Error('No hay usuario autenticado.');
-  const currentId = state.currentGoal?.id || state.userData?.currentObjectiveId;
-  if (!goalId || goalId === currentId) {
-    throw new Error('El objetivo actual no se puede eliminar.');
+  if (!goalId) throw new Error('No se recibió un objetivo válido.');
+  const userRef = doc(db, 'users', user.uid);
+  const goalRef = doc(db, 'users', user.uid, 'goals_history', goalId);
+  try {
+    await runTransaction(db, async transaction => {
+      const [userSnapshot, goalSnapshot] = await Promise.all([
+        transaction.get(userRef),
+        transaction.get(goalRef)
+      ]);
+      if (!goalSnapshot.exists()) throw new Error('El objetivo ya no existe.');
+      const currentId = userSnapshot.exists() ? userSnapshot.data().currentObjectiveId : null;
+      if (goalId === currentId) throw new Error('El objetivo actual no se puede eliminar.');
+      transaction.delete(goalRef);
+    });
+  } catch (error) {
+    if (error?.code === 'permission-denied') {
+      throw new Error('Firestore rechazó el borrado. Verifica que las reglas V2 estén publicadas para permitir al propietario borrar objetivos que no estén activos.');
+    }
+    throw error;
   }
-  await deleteDoc(doc(db, 'users', user.uid, 'goals_history', goalId));
   return true;
 };
 

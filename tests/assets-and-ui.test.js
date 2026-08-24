@@ -90,7 +90,35 @@ test('branding, perfil e historial reflejan el producto actual', () => {
   assert.match(calculator, /\{ sexo: sexo \}/);
   assert.match(calculator, /eliminarObjetivoHistorial\(this\)/);
   assert.match(firebase, /eliminarObjetivoHistorialFirestore/);
+  assert.match(firebase, /runTransaction/);
   assert.match(firebase, /goalId === currentId/);
+  assert.match(firebase, /transaction\.delete\(goalRef\)/);
+});
+
+test('V2.1 expone ambas calculadoras y persiste un NutritionTarget compatible', () => {
+  const html = fs.readFileSync(path.join(root, 'index.html'), 'utf8');
+  const calculator = fs.readFileSync(path.join(root, 'calculadora.js'), 'utf8');
+  const core = fs.readFileSync(path.join(root, 'js', 'calculator-core.js'), 'utf8');
+  const firebase = fs.readFileSync(path.join(root, 'firebase-init.js'), 'utf8');
+
+  assert.match(html, /id="mode-standard"/);
+  assert.match(html, /id="mode-precision"/);
+  assert.match(html, /id="precision-fields"/);
+  assert.match(html, /\/js\/calculator-core\.js/);
+  assert.match(calculator, /calculationMode === 'precision'/);
+  assert.match(calculator, /STANDARD_CALC_VERSION/);
+  assert.match(core, /TARGET_SCHEMA_VERSION = '2\.1'/);
+  assert.match(core, /weeklyTarget:[\s\S]*strategy: 'uniform'/);
+  assert.match(firebase, /nutritionTargetVersion/);
+  assert.match(firebase, /calculationMode/);
+});
+
+test('las reglas V2 limitan datos por uid y protegen el objetivo activo', () => {
+  const rules = fs.readFileSync(path.join(root, 'firestore.rules'), 'utf8');
+  assert.match(rules, /request\.auth\.uid == userId/);
+  assert.match(rules, /match \/goals_history\/\{goalId\}/);
+  assert.match(rules, /get\('currentObjectiveId', null\) != goalId/);
+  assert.match(rules, /allow delete: if false/);
 });
 
 test('el sistema visual final reutiliza la Calculadora y conecta Mi Plan con compras', () => {
