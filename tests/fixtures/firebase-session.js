@@ -15,7 +15,15 @@
 
   window.macroBalanceState = state;
   window.macroBalanceAuthReady = Promise.resolve(state);
-  window.cerrarSesionFirebase = async () => {};
+  window.cerrarSesionFirebase = async () => {
+    Object.assign(state, {
+      user: null,
+      userData: null,
+      profile: null,
+      currentGoal: null
+    });
+    window.dispatchEvent(new CustomEvent('macrobalance:auth-changed', { detail: state }));
+  };
   window.guardarSexoFirestore = async sexo => { state.profile.sexo = sexo; };
   window.obtenerDatosUsuarioFirestore = async () => state.userData;
   window.precargarPerfilFirestore = async () => state.profile;

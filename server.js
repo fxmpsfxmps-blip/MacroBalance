@@ -60,7 +60,9 @@ app.use(express.static(staticDirectory, {
   fallthrough: true,
   index: 'index.html'
 }));
+app.get('/macros', (_request, response) => response.sendFile(path.join(staticDirectory, 'index.html')));
 app.get('/plan', (_request, response) => response.sendFile(path.join(staticDirectory, 'plan.html')));
+app.get('/multimedia', (_request, response) => response.sendFile(path.join(staticDirectory, 'multimedia.html')));
 
 app.use((_request, response) => {
   response.status(404).json({ success: false, error: 'Ruta no encontrada.' });

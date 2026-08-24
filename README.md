@@ -44,12 +44,13 @@ docs/                        Arquitectura, auditoría, deployment y device lab
 js/                          Navegación, resolución de assets y aplicación del menú
 lib/menu-engine/             Engine, sustituciones, Dashboard y JSON estables
 lib/server/                  Validación y handler compartidos por local/Vercel
-media/                       Hero y fotografías de la calculadora
+media/                       Hero, posters y videos web optimizados
 styles/                      Estilos compartidos y del menú
 tests/                       Contratos, equivalencia, assets y fixtures locales
 PLT_*.jpg                    193 fotografías por dish_id (URL /{dish_id}.jpg)
 index.html                   Inicio + calculadora
 plan.html                    Configurador + Dashboard + compras
+multimedia.html              Galería audiovisual con carga bajo demanda
 firebase-init.js             Auth y persistencia Firestore
 server.js                    Servidor local, no servidor de producción
 vercel.json                  Build estático y funciones Node en Vercel
@@ -70,6 +71,8 @@ users/{uid}/goals_history/{goalId}
 `users/{uid}.currentObjectiveId` apunta al objetivo activo. Al guardar uno nuevo, el anterior se marca como `completed`, se crea un documento histórico nuevo y se actualiza el puntero.
 
 Antes de probar un dominio de Vercel, agrégalo en Firebase Console → Authentication → Settings → Authorized domains. Revisa también que las reglas de Firestore permitan únicamente el acceso del usuario autenticado a su propio `uid`.
+
+La configuración manual de X, GitHub, Microsoft y Apple está documentada en [docs/auth-providers.md](docs/auth-providers.md). Sus secretos se introducen únicamente en Firebase y en la consola del proveedor.
 
 ## API
 

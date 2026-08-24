@@ -128,12 +128,43 @@ document.querySelectorAll('.grid select').forEach(function(campo){
 });
 actualizarUnidadAgua();
 
-function abrirModal(){
+function esRutaMacros(){
+  return window.location.hash === '#macros' ||
+    window.location.pathname.replace(/\/$/, '') === '/macros';
+}
+
+function cerrarModalAuth(){
+  const modal = document.getElementById('modal-overlay');
+  if(modal) modal.classList.add('hidden');
+}
+
+async function abrirModal(){
+  const cta = document.getElementById('hero-cta');
+  if(cta) cta.disabled = true;
+  try{
+    if(window.macroBalanceAuthReady) await window.macroBalanceAuthReady;
+  }finally{
+    if(cta) cta.disabled = false;
+  }
+
   if(window.macroBalanceState?.user){
+    cerrarModalAuth();
     mostrarCalculadoraAutenticada();
     return;
   }
   document.getElementById('modal-overlay').classList.remove('hidden');
+}
+
+function mostrarEstadoAnonimo(){
+  cerrarModalAuth();
+  document.getElementById('app').style.display = 'none';
+  document.getElementById('gate').style.display = 'none';
+  document.getElementById('loading').style.display = 'none';
+  const landing = document.getElementById('landing');
+  landing.style.display = 'flex';
+  landing.classList.remove('hidden', 'leaving');
+  document.getElementById('modal-cuenta')?.classList.add('hidden');
+  document.getElementById('modal-historial')?.classList.add('hidden');
 }
 
 function mostrarGate(){
@@ -154,6 +185,12 @@ async function prepararAvatar(sexo){
     : null;
   window.datosUsuarioActual = datosUsuario;
   avatarImg.src = resolverFotoPerfil(datosUsuario, rutaAvatarRespaldo);
+  const profileName = document.getElementById('calculator-user-name');
+  if(profileName){
+    profileName.textContent = datosUsuario?.displayName ||
+      window.macroBalanceState?.user?.displayName ||
+      'Tu perfil';
+  }
   window.rutaAvatarRespaldoActual = rutaAvatarRespaldo;
 }
 
@@ -183,9 +220,10 @@ async function mostrarCalculadoraAutenticada(){
      document.getElementById('loading').style.display === 'flex') return;
   const state = window.macroBalanceState;
   if(!state?.user){
-    document.getElementById('modal-overlay').classList.remove('hidden');
+    if(state?.authReady) document.getElementById('modal-overlay').classList.remove('hidden');
     return;
   }
+  cerrarModalAuth();
   history.replaceState(null, '', '#macros');
   const sexo = state.profile?.sexo;
   if(sexo === 'M' || sexo === 'H') await mostrarAppCalculadora(sexo);
@@ -620,14 +658,25 @@ window.addEventListener('macrobalance:auth-changed', function(event){
   if(cta){
     cta.innerHTML = state?.user ? 'CONTINUAR <span>&rarr;</span>' : 'EMPEZAR <span>&rarr;</span>';
   }
-  if(window.location.hash === '#macros' && state?.authReady){
+  if(state?.user){
+    cerrarModalAuth();
+    const url = new URL(window.location.href);
+    if(url.searchParams.get('login') === '1'){
+      url.searchParams.delete('login');
+      history.replaceState(null, '', url.pathname + url.search + url.hash);
+    }
+  }
+  if(esRutaMacros() && state?.authReady){
     mostrarCalculadoraAutenticada();
   }
   if(new URLSearchParams(window.location.search).get('login') === '1' && !state?.user){
     document.getElementById('modal-overlay').classList.remove('hidden');
   }
+  if(state?.authReady && !state?.user && !new URLSearchParams(window.location.search).has('login')){
+    mostrarEstadoAnonimo();
+  }
 });
 
 window.addEventListener('hashchange', function(){
-  if(window.location.hash === '#macros') mostrarCalculadoraAutenticada();
+  if(esRutaMacros()) mostrarCalculadoraAutenticada();
 });

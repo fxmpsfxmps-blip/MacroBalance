@@ -12,7 +12,15 @@ if (path.resolve(output) !== expectedOutput || !output.startsWith(root + path.se
 fs.rmSync(output, { recursive: true, force: true });
 fs.mkdirSync(output, { recursive: true });
 
-for (const file of ['index.html', 'plan.html', 'calculadora.js', 'firebase-init.js']) {
+for (const file of [
+  'index.html',
+  'plan.html',
+  'multimedia.html',
+  'calculadora.js',
+  'firebase-init.js',
+  'robots.txt',
+  'sitemap.xml'
+]) {
   fs.copyFileSync(path.join(root, file), path.join(output, file));
 }
 

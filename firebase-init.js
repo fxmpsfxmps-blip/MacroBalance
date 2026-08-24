@@ -4,8 +4,13 @@ import {
   signInWithPopup,
   signOut,
   onAuthStateChanged,
+  setPersistence,
+  browserLocalPersistence,
   GoogleAuthProvider,
-  FacebookAuthProvider
+  FacebookAuthProvider,
+  GithubAuthProvider,
+  TwitterAuthProvider,
+  OAuthProvider
 } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js';
 import {
   getFirestore,
@@ -37,6 +42,29 @@ const auth = getAuth(app);
 const db = getFirestore(app);
 const googleProvider = new GoogleAuthProvider();
 const facebookProvider = new FacebookAuthProvider();
+const microsoftProvider = new OAuthProvider('microsoft.com');
+const appleProvider = new OAuthProvider('apple.com');
+const githubProvider = new GithubAuthProvider();
+const twitterProvider = new TwitterAuthProvider();
+
+googleProvider.setCustomParameters({ prompt: 'select_account' });
+facebookProvider.addScope('email');
+microsoftProvider.setCustomParameters({ prompt: 'select_account' });
+githubProvider.addScope('user:email');
+
+const authProviders = {
+  Google: googleProvider,
+  Facebook: facebookProvider,
+  Microsoft: microsoftProvider,
+  Apple: appleProvider,
+  GitHub: githubProvider,
+  X: twitterProvider
+};
+
+const persistenceReady = setPersistence(auth, browserLocalPersistence).catch(error => {
+  console.error('No se pudo activar la persistencia local de Firebase Auth:', error);
+  throw error;
+});
 
 const state = window.macroBalanceState || {
   user: null,
@@ -49,6 +77,8 @@ const state = window.macroBalanceState || {
 window.macroBalanceState = state;
 
 let resolveAuthReady;
+let authReadyResolved = false;
+let authRevision = 0;
 window.macroBalanceAuthReady = new Promise(resolve => {
   resolveAuthReady = resolve;
 });
@@ -110,7 +140,15 @@ async function readSession(user) {
 
 async function refreshState(user = auth.currentUser) {
   if (!user) {
-    Object.assign(state, { user: null, userData: null, profile: null, currentGoal: null });
+    Object.assign(state, {
+      user: null,
+      userData: null,
+      profile: null,
+      currentGoal: null,
+      error: null
+    });
+    window.datosUsuarioActual = null;
+    window.fotoPerfilUsuario = null;
     return state;
   }
   const session = await readSession(user);
@@ -297,41 +335,125 @@ window.obtenerHistorialObjetivosFirestore = async function obtenerHistorial() {
   return history;
 };
 
-window.loginConFirebase = async function loginConFirebase(providerName) {
-  const provider = providerName === 'Facebook' ? facebookProvider : googleProvider;
-  try {
-    const result = await signInWithPopup(auth, provider);
-    await asegurarUsuarioYPerfil(result.user);
-    await refreshState(result.user);
-    emit('macrobalance:auth-changed', state);
-    if (typeof window.avanzarApp === 'function') window.avanzarApp();
-  } catch (error) {
-    console.error('Error al iniciar sesión:', error);
-    if (error.code !== 'auth/popup-closed-by-user') {
-      window.alert(`No se pudo iniciar sesión. Motivo: ${error.message}`);
-    }
+function setOAuthUI(status, providerName = null, message = '') {
+  document.querySelectorAll('[data-auth-provider]').forEach(button => {
+    const isCurrent = button.dataset.authProvider === providerName;
+    button.disabled = status === 'working';
+    button.classList.toggle('is-loading', status === 'working' && isCurrent);
+    button.setAttribute('aria-busy', String(status === 'working' && isCurrent));
+  });
+
+  const statusElement = document.getElementById('auth-provider-status');
+  if (statusElement) {
+    if (status === 'working') statusElement.textContent = `Conectando con ${providerName}…`;
+    else if (message) statusElement.textContent = message;
   }
-};
+
+  emit('macrobalance:oauth-status', { status, provider: providerName, message });
+}
+
+function waitForAuthUser(user) {
+  if (state.authReady && state.user?.uid === user.uid) return Promise.resolve(state);
+  return new Promise((resolve, reject) => {
+    const timeout = window.setTimeout(() => {
+      window.removeEventListener('macrobalance:auth-changed', handleAuth);
+      reject(Object.assign(new Error('Firebase tardó demasiado en confirmar la sesión.'), {
+        code: 'auth/state-confirmation-timeout'
+      }));
+    }, 15000);
+    function handleAuth(event) {
+      if (event.detail?.user?.uid !== user.uid) return;
+      window.clearTimeout(timeout);
+      window.removeEventListener('macrobalance:auth-changed', handleAuth);
+      resolve(event.detail);
+    }
+    window.addEventListener('macrobalance:auth-changed', handleAuth);
+  });
+}
+
+function waitForSignedOut() {
+  if (state.authReady && !state.user) return Promise.resolve(state);
+  return new Promise(resolve => {
+    function handleAuth(event) {
+      if (event.detail?.user) return;
+      window.removeEventListener('macrobalance:auth-changed', handleAuth);
+      resolve(event.detail);
+    }
+    window.addEventListener('macrobalance:auth-changed', handleAuth);
+  });
+}
+
+function authErrorMessage(error, providerName) {
+  if (error.code === 'auth/operation-not-allowed') {
+    return `${providerName} está preparado, pero falta activarlo en Firebase.`;
+  }
+  if (error.code === 'auth/account-exists-with-different-credential') {
+    return 'Esta cuenta ya existe con otro proveedor. Entra primero con el método que utilizaste originalmente.';
+  }
+  if (error.code === 'auth/network-request-failed') {
+    return 'No pudimos conectar con el proveedor. Revisa tu conexión e inténtalo nuevamente.';
+  }
+  if (error.code === 'auth/unauthorized-domain') {
+    return 'Este dominio todavía no está autorizado en Firebase Authentication.';
+  }
+  return 'No pudimos completar el acceso. Inténtalo nuevamente.';
+}
+
+const oauthCoordinator = window.MacroBalanceAuthCoordinator.createOAuthCoordinator({
+  providers: authProviders,
+  signIn: async provider => {
+    await persistenceReady;
+    return signInWithPopup(auth, provider);
+  },
+  waitForAuth: waitForAuthUser,
+  onStatus: ({ status, provider }) => setOAuthUI(status, provider),
+  onBusy: activeProvider => {
+    setOAuthUI('message', null, `Ya estamos conectando con ${activeProvider}.`);
+  },
+  onCancel: (_error, providerName) => {
+    setOAuthUI('message', null, `Acceso con ${providerName} cancelado. Puedes elegir otro método.`);
+  },
+  onSuccess: () => {
+    setOAuthUI('message', null, 'Sesión iniciada correctamente.');
+    if (typeof window.avanzarApp === 'function') window.avanzarApp();
+  },
+  onError: (error, providerName) => {
+    console.error(`No se pudo iniciar sesión con ${providerName}:`, error);
+    setOAuthUI('message', null, authErrorMessage(error, providerName));
+  }
+});
+
+window.macroBalanceAuthProviders = Object.freeze(Object.keys(authProviders));
+window.loginConFirebase = providerName => oauthCoordinator.login(providerName);
 
 window.cerrarSesionFirebase = async function cerrarSesionFirebase() {
+  await persistenceReady;
   await signOut(auth);
-  window.location.assign('/');
+  await waitForSignedOut();
 };
 
 onAuthStateChanged(auth, async user => {
+  const revision = ++authRevision;
   try {
+    await persistenceReady;
     if (user) {
       await asegurarUsuarioYPerfil(user);
+      if (revision !== authRevision) return;
       await refreshState(user);
     } else {
       await refreshState(null);
     }
+    if (revision !== authRevision) return;
   } catch (error) {
     console.error('No se pudo restaurar la sesión de MacroBalance:', error);
     state.error = error.message;
   } finally {
+    if (revision !== authRevision) return;
     state.authReady = true;
-    resolveAuthReady(state);
+    if (!authReadyResolved) {
+      authReadyResolved = true;
+      resolveAuthReady(state);
+    }
     emit('macrobalance:auth-changed', state);
     emit('macrobalance:firebase-ready', state);
   }

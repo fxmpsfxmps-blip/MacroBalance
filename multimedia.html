@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Media · MacroBalance</title>
+  <meta name="description" content="Historias visuales de movimiento, bienestar y balance seleccionadas por MacroBalance.">
+  <link rel="canonical" href="https://macro-balance-iota.vercel.app/multimedia">
+  <meta property="og:title" content="Media · MacroBalance">
+  <meta property="og:description" content="Movimiento, bienestar y objetivos reales en la galería audiovisual de MacroBalance.">
+  <meta property="og:image" content="https://macro-balance-iota.vercel.app/media/social-preview.webp">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://macro-balance-iota.vercel.app/multimedia">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Media · MacroBalance">
+  <meta name="twitter:description" content="Movimiento, bienestar y objetivos reales en la galería audiovisual de MacroBalance.">
+  <meta name="twitter:image" content="https://macro-balance-iota.vercel.app/media/social-preview.webp">
+  <link rel="stylesheet" href="/styles/shared.css">
+  <link rel="stylesheet" href="/styles/media.css">
+</head>
+<body>
+  <header class="site-header" data-site-header>
+    <a class="site-brand" href="/" aria-label="MacroBalance, inicio">
+      <span class="site-brand__badge" aria-hidden="true">
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 5v14M18 5v14M6 12h12M3 9v6M21 9v6"/></svg>
+      </span>
+      <span>Macro<b>Balance</b></span>
+    </a>
+    <button class="site-nav-toggle" type="button" data-nav-toggle aria-expanded="false" aria-controls="primary-navigation">
+      <span class="sr-only">Abrir navegación</span>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+    </button>
+    <nav class="site-nav" id="primary-navigation" data-site-nav aria-label="Navegación principal">
+      <a href="/">Inicio</a>
+        <a href="/macros">Macro Nutrientes</a>
+      <a href="/plan.html#config">Preferencias</a>
+      <a href="/plan.html#plan">Mi Plan</a>
+      <a href="/plan.html#compras">Lista de Compras</a>
+        <a href="/multimedia" aria-current="page">Media</a>
+      <button type="button" class="site-nav__account" data-auth="out" data-login>Iniciar sesión</button>
+      <button type="button" class="site-nav__account" data-auth="in" data-account hidden>Cuenta</button>
+      <button type="button" data-auth="in" data-logout hidden>Cerrar sesión</button>
+    </nav>
+  </header>
+
+  <main class="media-page">
+    <header class="media-intro">
+      <p class="media-eyebrow">MacroBalance Media</p>
+      <h1>El balance también se mueve.</h1>
+      <p>Historias visuales sobre constancia, fuerza y bienestar. Toca una pieza para reproducirla; solo se carga cuando la necesitas.</p>
+    </header>
+
+    <section class="media-gallery" aria-label="Galería audiovisual MacroBalance">
+      <article class="media-card media-card--portrait">
+        <video muted loop playsinline preload="none" poster="/media/transition-lifestyle.webp" data-media-src="/media/transition-lifestyle.mp4"></video>
+        <button type="button" class="media-toggle" aria-label="Reproducir Bienestar en construcción"><span aria-hidden="true">▶</span></button>
+        <div class="media-caption"><span>Bienestar</span><strong>Tu proceso también cuenta</strong></div>
+      </article>
+      <article class="media-card media-card--portrait">
+        <video muted loop playsinline preload="none" poster="/media/transition-running.webp" data-media-src="/media/transition-running.mp4"></video>
+        <button type="button" class="media-toggle" aria-label="Reproducir Kilómetro a kilómetro"><span aria-hidden="true">▶</span></button>
+        <div class="media-caption"><span>Cardio</span><strong>Kilómetro a kilómetro</strong></div>
+      </article>
+      <article class="media-card media-card--portrait">
+        <video muted loop playsinline preload="none" poster="/media/transition-bodybuilding.webp" data-media-src="/media/transition-bodybuilding.mp4"></video>
+        <button type="button" class="media-toggle" aria-label="Reproducir Fuerza con propósito"><span aria-hidden="true">▶</span></button>
+        <div class="media-caption"><span>Fuerza</span><strong>Fuerza con propósito</strong></div>
+      </article>
+      <article class="media-card media-card--portrait">
+        <video muted loop playsinline preload="none" poster="/media/transition-fitness.webp" data-media-src="/media/transition-fitness.mp4"></video>
+        <button type="button" class="media-toggle" aria-label="Reproducir Movimiento que transforma"><span aria-hidden="true">▶</span></button>
+        <div class="media-caption"><span>Movimiento</span><strong>Movimiento que transforma</strong></div>
+      </article>
+      <article class="media-card media-card--wide">
+        <video muted loop playsinline preload="none" poster="/media/cover-pc.png" data-media-src="/media/hero-fitness.mp4"></video>
+        <button type="button" class="media-toggle" aria-label="Reproducir La historia de MacroBalance"><span aria-hidden="true">▶</span></button>
+        <div class="media-caption"><span>MacroBalance</span><strong>La historia continúa</strong></div>
+      </article>
+    </section>
+    <p class="media-hint">Desliza para explorar más historias <span aria-hidden="true">→</span></p>
+  </main>
+
+  <script src="/js/navigation.js" defer></script>
+  <script src="/js/auth-coordinator.js"></script>
+  <script type="module" src="/firebase-init.js"></script>
+  <script src="/js/media-gallery.js" defer></script>
+</body>
+</html>

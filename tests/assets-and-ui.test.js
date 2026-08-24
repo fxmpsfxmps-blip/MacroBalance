@@ -45,7 +45,11 @@ test('la generación audiovisual conserva posters y limita la carga móvil a un 
   assert.doesNotMatch(html, /aria-valuenow/);
   assert.doesNotMatch(html, />\s*\d+%\s*</);
   assert.match(app, /window\.matchMedia\('\(pointer: coarse\)'\)\.matches/);
-  assert.match(app, /const shouldLoad = !isMobile \|\| index === selectedMobilePanel/);
+  assert.match(app, /activateMobilePanel\(selectedMobilePanel\)/);
+  assert.match(app, /panels\.forEach\(loadPanel\)/);
+  assert.match(app, /removeAttribute\('src'\)/);
+  assert.match(html, /data-generation-prev/);
+  assert.match(html, /data-generation-next/);
 
   for (const name of ['lifestyle', 'running', 'bodybuilding', 'fitness']) {
     const video = path.join(root, 'media', `transition-${name}.mp4`);
@@ -55,4 +59,34 @@ test('la generación audiovisual conserva posters y limita la carga móvil a un 
     assert.ok(fs.existsSync(poster), `${name} no tiene poster`);
     assert.ok(fs.statSync(poster).size < 200 * 1024, `${name} poster excede 200 KB`);
   }
+});
+
+test('Firebase centraliza sesión persistente y los seis proveedores', () => {
+  const firebase = fs.readFileSync(path.join(root, 'firebase-init.js'), 'utf8');
+  const calculator = fs.readFileSync(path.join(root, 'calculadora.js'), 'utf8');
+  const html = fs.readFileSync(path.join(root, 'index.html'), 'utf8');
+
+  assert.match(firebase, /setPersistence\(auth, browserLocalPersistence\)/);
+  assert.match(firebase, /onAuthStateChanged\(auth/);
+  assert.match(firebase, /createOAuthCoordinator/);
+  for (const provider of ['Google', 'Facebook', 'Microsoft', 'Apple', 'GitHub', 'X']) {
+    assert.match(html, new RegExp(`data-auth-provider="${provider}"`));
+  }
+  assert.match(calculator, /cerrarModalAuth\(\)/);
+  assert.match(calculator, /esRutaMacros\(\)/);
+});
+
+test('Media, SEO y rutas públicas forman parte del build', () => {
+  const media = fs.readFileSync(path.join(root, 'multimedia.html'), 'utf8');
+  const gallery = fs.readFileSync(path.join(root, 'js', 'media-gallery.js'), 'utf8');
+  const build = fs.readFileSync(path.join(root, 'scripts', 'build-static.js'), 'utf8');
+  const vercel = fs.readFileSync(path.join(root, 'vercel.json'), 'utf8');
+
+  assert.equal((media.match(/data-media-src=/g) || []).length, 5);
+  assert.doesNotMatch(media, /<video[^>]+\ssrc=/);
+  assert.match(gallery, /video\.src = video\.dataset\.mediaSrc/);
+  assert.match(build, /'multimedia\.html'/);
+  assert.match(build, /'robots\.txt'/);
+  assert.match(build, /'sitemap\.xml'/);
+  assert.match(vercel, /"source": "\/macros"/);
 });

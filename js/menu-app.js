@@ -373,7 +373,11 @@ function renderFoodGallery(items){
               categoriaLegible(cat) +
             '</h3>' +
 
-            '<div class="food-track-wrap">' +
+            '<div class="food-carousel-shell">' +
+
+              '<button type="button" class="food-carousel-arrow food-carousel-arrow--prev" aria-label="Ver alimento anterior" onclick="navegarCarruselAlimentos(this,-1)">‹</button>' +
+
+              '<div class="food-track-wrap">' +
 
               '<div class="food-track ' +
                 (
@@ -390,6 +394,10 @@ function renderFoodGallery(items){
                   .join('') +
 
               '</div>' +
+
+              '</div>' +
+
+              '<button type="button" class="food-carousel-arrow food-carousel-arrow--next" aria-label="Ver alimento siguiente" onclick="navegarCarruselAlimentos(this,1)">›</button>' +
 
             '</div>' +
 
@@ -771,6 +779,9 @@ function mostrarLoadingGeneracion(){
   const ready = document.getElementById('generation-ready');
   const viewPlanButton = document.getElementById('view-generated-plan');
   const panels = Array.from(overlay.querySelectorAll('[data-generation-panel]'));
+  const previousPanelButton = overlay.querySelector('[data-generation-prev]');
+  const nextPanelButton = overlay.querySelector('[data-generation-next]');
+  const panelPosition = document.getElementById('generation-panel-position');
   const isMobile =
     window.matchMedia(GENERATION_MOBILE_QUERY).matches ||
     window.matchMedia('(pointer: coarse)').matches;
@@ -787,6 +798,8 @@ function mostrarLoadingGeneracion(){
   let messageIndex = 0;
   let messageSwapTimer = 0;
   let finished = false;
+  let touchStartX = 0;
+  let touchStartY = 0;
   const videoListeners = [];
 
   // El overlay puede haber quedado antes del dashboard tras una transición
@@ -801,24 +814,24 @@ function mostrarLoadingGeneracion(){
   ready.hidden = true;
   message.textContent = messages[0];
 
-  const selectedMobilePanel = isMobile
+  let selectedMobilePanel = isMobile
     ? Math.floor(Math.random() * panels.length)
     : -1;
 
-  panels.forEach((panel, index) => {
+  function resetPanel(panel){
     const video = panel.querySelector('video');
     const poster = panel.querySelector('img');
-    const shouldLoad = !isMobile || index === selectedMobilePanel;
-
     panel.classList.remove('is-active', 'is-playing', 'has-video-error');
     video.pause();
     video.removeAttribute('src');
     video.removeAttribute('poster');
     poster.removeAttribute('src');
     video.load();
+  }
 
-    if(!shouldLoad) return;
-
+  function loadPanel(panel){
+    const video = panel.querySelector('video');
+    const poster = panel.querySelector('img');
     panel.classList.add('is-active');
     poster.src = panel.dataset.posterSrc;
     video.poster = panel.dataset.posterSrc;
@@ -847,7 +860,44 @@ function mostrarLoadingGeneracion(){
     if(playback && typeof playback.catch === 'function'){
       playback.catch(handleVideoError);
     }
-  });
+  }
+
+  panels.forEach(resetPanel);
+
+  function activateMobilePanel(nextIndex){
+    if(!isMobile || !panels.length) return;
+    selectedMobilePanel = (nextIndex + panels.length) % panels.length;
+    panels.forEach((panel, index) => {
+      resetPanel(panel);
+      if(index === selectedMobilePanel) loadPanel(panel);
+    });
+    panelPosition.textContent = (selectedMobilePanel + 1) + ' de ' + panels.length;
+  }
+
+  if(isMobile){
+    activateMobilePanel(selectedMobilePanel);
+  }else{
+    panels.forEach(loadPanel);
+  }
+
+  const showPreviousPanel = () => activateMobilePanel(selectedMobilePanel - 1);
+  const showNextPanel = () => activateMobilePanel(selectedMobilePanel + 1);
+  previousPanelButton.onclick = showPreviousPanel;
+  nextPanelButton.onclick = showNextPanel;
+
+  const handleTouchStart = event => {
+    touchStartX = event.changedTouches[0].clientX;
+    touchStartY = event.changedTouches[0].clientY;
+  };
+  const handleTouchEnd = event => {
+    const deltaX = event.changedTouches[0].clientX - touchStartX;
+    const deltaY = event.changedTouches[0].clientY - touchStartY;
+    if(Math.abs(deltaX) < 48 || Math.abs(deltaX) <= Math.abs(deltaY)) return;
+    if(deltaX < 0) showNextPanel();
+    else showPreviousPanel();
+  };
+  overlay.addEventListener('touchstart', handleTouchStart, { passive:true });
+  overlay.addEventListener('touchend', handleTouchEnd, { passive:true });
 
   const messageTimer = window.setInterval(() => {
     messageIndex = Math.min(messageIndex + 1, messages.length - 1);
@@ -859,6 +909,10 @@ function mostrarLoadingGeneracion(){
   }, 4500);
 
   function stopMedia(){
+    overlay.removeEventListener('touchstart', handleTouchStart);
+    overlay.removeEventListener('touchend', handleTouchEnd);
+    previousPanelButton.onclick = null;
+    nextPanelButton.onclick = null;
     videoListeners.forEach(([video, handlePlaying, handleVideoError]) => {
       video.removeEventListener('playing', handlePlaying);
       video.removeEventListener('error', handleVideoError);
@@ -915,6 +969,34 @@ function mostrarLoadingGeneracion(){
     overlay.hidden = true;
     stopMedia();
   };
+}
+
+
+function navegarCarruselAlimentos(button, direction){
+  const shell = button.closest('.food-carousel-shell');
+  const wrap = shell && shell.querySelector('.food-track-wrap');
+  const track = shell && shell.querySelector('.food-track');
+  const card = track && track.querySelector('.food-card');
+  if(!wrap || !track || !card) return;
+
+  const animation = track.getAnimations ? track.getAnimations()[0] : null;
+  if(animation){
+    const timing = animation.effect.getComputedTiming();
+    const uniqueItems = Math.max(1, track.children.length / 2);
+    const stepTime = Number(timing.duration) / uniqueItems;
+    const directionFactor = track.classList.contains('dir-right') ? -1 : 1;
+    const duration = Number(timing.duration);
+    animation.pause();
+    animation.currentTime = (
+      (Number(animation.currentTime) || 0) + direction * directionFactor * stepTime + duration
+    ) % duration;
+
+    window.clearTimeout(track._resumeCarouselTimer);
+    track._resumeCarouselTimer = window.setTimeout(() => animation.play(), 2400);
+  }else{
+    const gap = Number.parseFloat(getComputedStyle(track).gap) || 10;
+    wrap.scrollBy({ left: direction * (card.getBoundingClientRect().width + gap), behavior:'smooth' });
+  }
 }
 
 

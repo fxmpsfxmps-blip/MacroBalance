@@ -6,6 +6,18 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
 <title>MacroBalance · Dashboard</title>
+<meta name="description" content="Personaliza y consulta tu plan de alimentación MacroBalance.">
+<meta name="robots" content="noindex,nofollow">
+<link rel="canonical" href="https://macro-balance-iota.vercel.app/plan">
+<meta property="og:title" content="MacroBalance · Plan personalizado">
+<meta property="og:description" content="Tu objetivo, menú de 14 días y lista de compras en un solo lugar.">
+<meta property="og:image" content="https://macro-balance-iota.vercel.app/media/social-preview.webp">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://macro-balance-iota.vercel.app/plan">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="MacroBalance · Plan personalizado">
+<meta name="twitter:description" content="Tu objetivo, menú de 14 días y lista de compras en un solo lugar.">
+<meta name="twitter:image" content="https://macro-balance-iota.vercel.app/media/social-preview.webp">
 
 <link rel="stylesheet" href="/styles/shared.css">
 <link rel="stylesheet" href="/styles/menu.css">
@@ -27,10 +39,11 @@
   </button>
   <nav class="site-nav" id="primary-navigation" data-site-nav aria-label="Navegación principal">
     <a href="/">Inicio</a>
-    <a href="/#macros">Macro Nutrientes</a>
+    <a href="/macros">Macro Nutrientes</a>
     <a href="/plan.html#config" data-plan-nav="config">Preferencias</a>
     <a href="/plan.html#plan" data-plan-nav="plan">Mi Plan</a>
     <a href="/plan.html#compras" data-plan-nav="compras">Lista de Compras</a>
+    <a href="/multimedia">Media</a>
     <button type="button" class="site-nav__account" data-auth="out" data-login>Iniciar sesión</button>
     <button type="button" class="site-nav__account" data-auth="in" data-account hidden>Cuenta</button>
     <button type="button" data-auth="in" data-logout hidden>Cerrar sesión</button>
@@ -53,7 +66,7 @@
   <section class="state-card" id="goal-required" hidden>
     <h1>Primero necesitamos tu objetivo</h1>
     <p>Completa la calculadora y guarda uno de sus resultados. Ese objetivo será la única fuente nutricional del generador.</p>
-    <a class="state-card__action" href="/#macros">Calcular mis macros</a>
+    <a class="state-card__action" href="/macros">Calcular mis macros</a>
   </section>
 
   <div id="plan-product" hidden>
@@ -78,7 +91,7 @@
         <h2>Objetivo activo</h2>
         <p>Proviene de tu calculadora y se usa en modo de sólo lectura.</p>
       </div>
-      <a href="/#macros">Recalcular objetivo</a>
+      <a href="/macros">Recalcular objetivo</a>
     </div>
 
     <div class="goal-summary" aria-label="Objetivo nutricional activo">
@@ -283,6 +296,12 @@
     </figure>
   </div>
 
+  <div class="generation-mobile-nav" aria-label="Historias durante la generación">
+    <button type="button" data-generation-prev aria-label="Historia anterior">‹</button>
+    <span id="generation-panel-position" aria-live="polite">1 de 4</span>
+    <button type="button" data-generation-next aria-label="Historia siguiente">›</button>
+  </div>
+
   <div class="generation-shade" aria-hidden="true"></div>
 
   <div class="generation-status" id="generation-working">
@@ -316,6 +335,7 @@
 
 <script src="/js/asset-resolver.js" defer></script>
 <script src="/js/navigation.js" defer></script>
+<script src="/js/auth-coordinator.js"></script>
 <script type="module" src="/firebase-init.js"></script>
 <script src="/js/menu-app.js" defer></script>
 </body>
