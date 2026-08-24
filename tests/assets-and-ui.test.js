@@ -30,6 +30,15 @@ test('la configuración consume un objetivo activo de sólo lectura', () => {
   assert.match(html, /id="custom-recipe-extension"/);
 });
 
+test('la configuración advierte que las selecciones excluyen alimentos del plan completo', () => {
+  const html = fs.readFileSync(path.join(root, 'plan.html'), 'utf8');
+  const app = fs.readFileSync(path.join(root, 'js', 'menu-app.js'), 'utf8');
+
+  assert.match(html, /id="exclusion-notice"/);
+  assert.match(html, /se excluirá de todas las comidas de tu plan de 14 días/i);
+  assert.match(app, /has-exclusions/);
+});
+
 test('la generación audiovisual conserva posters y limita la carga móvil a un video', () => {
   const html = fs.readFileSync(path.join(root, 'plan.html'), 'utf8');
   const app = fs.readFileSync(path.join(root, 'js', 'menu-app.js'), 'utf8');
@@ -130,10 +139,12 @@ test('Firebase centraliza sesión persistente y los seis proveedores', () => {
 });
 
 test('Media, SEO y rutas públicas forman parte del build', () => {
+  const home = fs.readFileSync(path.join(root, 'index.html'), 'utf8');
   const media = fs.readFileSync(path.join(root, 'multimedia.html'), 'utf8');
   const gallery = fs.readFileSync(path.join(root, 'js', 'media-gallery.js'), 'utf8');
   const build = fs.readFileSync(path.join(root, 'scripts', 'build-static.js'), 'utf8');
   const vercel = fs.readFileSync(path.join(root, 'vercel.json'), 'utf8');
+  const socialPreview = path.join(root, 'media', 'social-preview.jpg');
 
   assert.equal((media.match(/data-media-src=/g) || []).length, 5);
   assert.doesNotMatch(media, /<video[^>]+\ssrc=/);
@@ -142,4 +153,10 @@ test('Media, SEO y rutas públicas forman parte del build', () => {
   assert.match(build, /'robots\.txt'/);
   assert.match(build, /'sitemap\.xml'/);
   assert.match(vercel, /"source": "\/macros"/);
+  assert.match(home, /property="og:image" content="https:\/\/macro-balance-iota\.vercel\.app\/media\/social-preview\.jpg"/);
+  assert.match(home, /property="og:image:width" content="1200"/);
+  assert.match(home, /property="og:image:height" content="630"/);
+  assert.ok(fs.existsSync(socialPreview));
+  assert.ok(fs.statSync(socialPreview).size < 300 * 1024, 'La imagen social excede 300 KB');
+  assert.match(vercel, /"source": "\/media\/social-preview\.jpg"/);
 });

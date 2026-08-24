@@ -492,14 +492,32 @@ function actualizarContador(){
       'sel-count'
     );
 
-  if(!el){
+  if(el){
+    el.textContent =
+      '(' +
+      seleccionActual.size +
+      ' excluidos)';
+  }
+
+  const aviso =
+    document.getElementById(
+      'exclusion-notice'
+    );
+
+  if(!aviso){
     return;
   }
 
-  el.textContent =
-    '(' +
-    seleccionActual.size +
-    ' excluidos)';
+  const cantidad = seleccionActual.size;
+
+  aviso.classList.toggle(
+    'has-exclusions',
+    cantidad > 0
+  );
+
+  aviso.querySelector('p').innerHTML = cantidad > 0
+    ? '<strong>Atención:</strong> ' + cantidad + ' alimento' + (cantidad === 1 ? '' : 's') + ' seleccionado' + (cantidad === 1 ? '' : 's') + ' se excluirá' + (cantidad === 1 ? '' : 'n') + ' de todas las comidas de tu plan de 14 días.'
+    : '<strong>Importante:</strong> cualquier alimento que marques se excluirá de todas las comidas de tu plan de 14 días.';
 
 }
 

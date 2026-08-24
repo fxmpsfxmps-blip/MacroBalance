@@ -1024,7 +1024,49 @@ h1.title{
 .food-gallery .sub{
   color:var(--muted);
   font-size:13px;
-  margin:-8px 0 16px;
+  margin:-8px 0 12px;
+}
+
+.exclusion-notice{
+  display:flex;
+  align-items:flex-start;
+  gap:10px;
+  margin:0 0 16px;
+  padding:12px 14px;
+  border:1px solid rgba(231,22,63,.68);
+  border-radius:8px;
+  background:rgba(231,22,63,.08);
+  color:#f1cbd2;
+  font-size:13px;
+  line-height:1.45;
+}
+
+.exclusion-notice.has-exclusions{
+  border-color:var(--accent);
+  background:rgba(231,22,63,.14);
+  color:#fff;
+}
+
+.exclusion-notice__icon{
+  display:grid;
+  flex:0 0 22px;
+  width:22px;
+  height:22px;
+  border-radius:50%;
+  background:var(--accent);
+  color:#fff;
+  font-size:13px;
+  font-weight:900;
+  line-height:1;
+  place-items:center;
+}
+
+.exclusion-notice p{
+  margin:1px 0 0;
+}
+
+.exclusion-notice strong{
+  color:#ff496c;
 }
 
 .food-cat-row{
