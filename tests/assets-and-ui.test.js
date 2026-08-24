@@ -50,6 +50,11 @@ test('la generación audiovisual conserva posters y limita la carga móvil a un 
   assert.match(app, /removeAttribute\('src'\)/);
   assert.match(html, /data-generation-prev/);
   assert.match(html, /data-generation-next/);
+  assert.match(html, /data-generation-manual-play/);
+  assert.match(app, /visibilitychange/);
+  assert.match(app, /needs-play/);
+  assert.doesNotMatch(html, /generation-ready__arrow/);
+  assert.doesNotMatch(html, /Desliza para descubrirlo/);
 
   for (const name of ['lifestyle', 'running', 'bodybuilding', 'fitness']) {
     const video = path.join(root, 'media', `transition-${name}.mp4`);
@@ -59,6 +64,29 @@ test('la generación audiovisual conserva posters y limita la carga móvil a un 
     assert.ok(fs.existsSync(poster), `${name} no tiene poster`);
     assert.ok(fs.statSync(poster).size < 200 * 1024, `${name} poster excede 200 KB`);
   }
+});
+
+test('branding, perfil e historial reflejan el producto actual', () => {
+  const html = fs.readFileSync(path.join(root, 'index.html'), 'utf8');
+  const shared = fs.readFileSync(path.join(root, 'styles', 'shared.css'), 'utf8');
+  const calculator = fs.readFileSync(path.join(root, 'calculadora.js'), 'utf8');
+  const firebase = fs.readFileSync(path.join(root, 'firebase-init.js'), 'utf8');
+
+  assert.doesNotMatch(html, /Próximamente/i);
+  assert.match(html, /Disponible ahora/);
+  assert.match(shared, /\.site-brand b\s*\{\s*color:\s*inherit/);
+  assert.match(html, /id="cuenta-sexo"/);
+  assert.match(calculator, /\{ sexo: sexo \}/);
+  assert.match(calculator, /eliminarObjetivoHistorial\(this\)/);
+  assert.match(firebase, /eliminarObjetivoHistorialFirestore/);
+  assert.match(firebase, /goalId === currentId/);
+});
+
+test('los avisos no factibles conservan información con jerarquía secundaria', () => {
+  const app = fs.readFileSync(path.join(root, 'js', 'menu-app.js'), 'utf8');
+  assert.match(app, /<details class="ajuste-details">/);
+  assert.match(app, /data\.explicacion_no_factible/);
+  assert.doesNotMatch(app, /'🛑 '\s*\+\s*data\.explicacion_no_factible/);
 });
 
 test('Firebase centraliza sesión persistente y los seis proveedores', () => {

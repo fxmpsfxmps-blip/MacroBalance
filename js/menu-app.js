@@ -781,6 +781,7 @@ function mostrarLoadingGeneracion(){
   const panels = Array.from(overlay.querySelectorAll('[data-generation-panel]'));
   const previousPanelButton = overlay.querySelector('[data-generation-prev]');
   const nextPanelButton = overlay.querySelector('[data-generation-next]');
+  const manualPlayButton = overlay.querySelector('[data-generation-manual-play]');
   const panelPosition = document.getElementById('generation-panel-position');
   const isMobile =
     window.matchMedia(GENERATION_MOBILE_QUERY).matches ||
@@ -800,7 +801,6 @@ function mostrarLoadingGeneracion(){
   let finished = false;
   let touchStartX = 0;
   let touchStartY = 0;
-  const videoListeners = [];
 
   // El overlay puede haber quedado antes del dashboard tras una transición
   // móvil anterior. Como hijo directo de body nunca depende de una vista oculta.
@@ -818,35 +818,97 @@ function mostrarLoadingGeneracion(){
     ? Math.floor(Math.random() * panels.length)
     : -1;
 
+  function updateManualPlayState(){
+    const needsPlay = panels.some(panel =>
+      panel.classList.contains('is-active') && panel.classList.contains('needs-play')
+    );
+    overlay.classList.toggle('needs-manual-play', needsPlay);
+  }
+
   function resetPanel(panel){
     const video = panel.querySelector('video');
     const poster = panel.querySelector('img');
-    panel.classList.remove('is-active', 'is-playing', 'has-video-error');
+    if(typeof panel._generationCleanup === 'function') panel._generationCleanup();
+    panel._generationLoadId = (panel._generationLoadId || 0) + 1;
+    panel.classList.remove('is-active', 'is-playing', 'has-video-error', 'needs-play');
     video.pause();
     video.removeAttribute('src');
     video.removeAttribute('poster');
     poster.removeAttribute('src');
     video.load();
+    updateManualPlayState();
   }
 
   function loadPanel(panel){
     const video = panel.querySelector('video');
     const poster = panel.querySelector('img');
+    const loadId = panel._generationLoadId;
+    let loadedRetryUsed = false;
+    let frameCallbackId = 0;
+    let frameRevealPending = false;
     panel.classList.add('is-active');
     poster.src = panel.dataset.posterSrc;
     video.poster = panel.dataset.posterSrc;
 
     if(reduceMotion) return;
 
-    const handlePlaying = () => panel.classList.add('is-playing');
-    const handleVideoError = () => {
-      panel.classList.remove('is-playing');
-      panel.classList.add('has-video-error');
+    const isCurrentLoad = () => panel._generationLoadId === loadId && panel.classList.contains('is-active');
+    const revealVideo = () => {
+      if(!isCurrentLoad()) return;
+      frameRevealPending = false;
+      panel.classList.add('is-playing');
     };
-
+    const handlePlaying = () => {
+      if(!isCurrentLoad()) return;
+      panel.classList.remove('needs-play', 'has-video-error');
+      updateManualPlayState();
+      if(frameRevealPending || panel.classList.contains('is-playing')) return;
+      frameRevealPending = true;
+      if(typeof video.requestVideoFrameCallback === 'function'){
+        frameCallbackId = video.requestVideoFrameCallback(revealVideo);
+      }else{
+        video.addEventListener('timeupdate', revealVideo, { once:true });
+      }
+    };
+    const handleVideoError = () => {
+      if(!isCurrentLoad()) return;
+      panel.classList.remove('is-playing');
+      panel.classList.remove('needs-play');
+      panel.classList.add('has-video-error');
+      updateManualPlayState();
+    };
+    const attemptPlayback = async () => {
+      if(!isCurrentLoad() || document.hidden) return;
+      try{
+        await video.play();
+      }catch(error){
+        if(!isCurrentLoad()) return;
+        panel.classList.remove('is-playing');
+        panel.classList.add('needs-play');
+        updateManualPlayState();
+      }
+    };
+    const handleLoadedData = () => {
+      if(video.paused && !loadedRetryUsed){
+        loadedRetryUsed = true;
+        attemptPlayback();
+      }
+    };
     video.addEventListener('playing', handlePlaying);
     video.addEventListener('error', handleVideoError);
-    videoListeners.push([video, handlePlaying, handleVideoError]);
+    video.addEventListener('loadeddata', handleLoadedData);
+    panel._generationAttemptPlayback = attemptPlayback;
+    panel._generationCleanup = () => {
+      video.removeEventListener('playing', handlePlaying);
+      video.removeEventListener('error', handleVideoError);
+      video.removeEventListener('loadeddata', handleLoadedData);
+      video.removeEventListener('timeupdate', revealVideo);
+      if(frameCallbackId && typeof video.cancelVideoFrameCallback === 'function'){
+        video.cancelVideoFrameCallback(frameCallbackId);
+      }
+      panel._generationAttemptPlayback = null;
+      panel._generationCleanup = null;
+    };
 
     // Las propiedades y los atributos se fijan ambos para Safari/iOS.
     video.muted = true;
@@ -856,10 +918,7 @@ function mostrarLoadingGeneracion(){
     video.setAttribute('playsinline', '');
     video.src = panel.dataset.videoSrc;
     video.load();
-    const playback = video.play();
-    if(playback && typeof playback.catch === 'function'){
-      playback.catch(handleVideoError);
-    }
+    attemptPlayback();
   }
 
   panels.forEach(resetPanel);
@@ -884,6 +943,23 @@ function mostrarLoadingGeneracion(){
   const showNextPanel = () => activateMobilePanel(selectedMobilePanel + 1);
   previousPanelButton.onclick = showPreviousPanel;
   nextPanelButton.onclick = showNextPanel;
+  manualPlayButton.onclick = () => {
+    panels.forEach(panel => {
+      if(panel.classList.contains('is-active') && panel._generationAttemptPlayback){
+        panel._generationAttemptPlayback();
+      }
+    });
+  };
+
+  const handleVisibilityChange = () => {
+    if(document.hidden) return;
+    panels.forEach(panel => {
+      if(panel.classList.contains('is-active') && panel.classList.contains('needs-play')){
+        panel._generationAttemptPlayback?.();
+      }
+    });
+  };
+  document.addEventListener('visibilitychange', handleVisibilityChange);
 
   const handleTouchStart = event => {
     touchStartX = event.changedTouches[0].clientX;
@@ -913,15 +989,10 @@ function mostrarLoadingGeneracion(){
     overlay.removeEventListener('touchend', handleTouchEnd);
     previousPanelButton.onclick = null;
     nextPanelButton.onclick = null;
-    videoListeners.forEach(([video, handlePlaying, handleVideoError]) => {
-      video.removeEventListener('playing', handlePlaying);
-      video.removeEventListener('error', handleVideoError);
-    });
+    manualPlayButton.onclick = null;
+    document.removeEventListener('visibilitychange', handleVisibilityChange);
     panels.forEach(panel => {
-      const video = panel.querySelector('video');
-      video.pause();
-      video.removeAttribute('src');
-      video.load();
+      resetPanel(panel);
     });
   }
 
@@ -1675,10 +1746,10 @@ function renderDia(){
       !data.factible &&
       data.explicacion_no_factible
 
-        ? '<div class="aviso danger">' +
-            '🛑 ' +
-            data.explicacion_no_factible +
-          '</div>'
+        ? '<details class="ajuste-details">' +
+            '<summary>Ver detalle del ajuste nutricional</summary>' +
+            '<p class="ajuste-details__copy">' + data.explicacion_no_factible + '</p>' +
+          '</details>'
 
         : ''
     );

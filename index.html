@@ -71,6 +71,13 @@
   .hero-video.is-playing{opacity:1;}
   .hero-poster{position:absolute;inset:0;z-index:0;display:block;}
   .hero-poster img{width:100%;height:100%;display:block;object-fit:cover;object-position:55% 40%;}
+  .hero-video-play{
+    position:absolute;right:clamp(18px,3vw,38px);bottom:max(22px,calc(env(safe-area-inset-bottom) + 16px));z-index:12;
+    display:none;align-items:center;gap:8px;min-height:44px;padding:9px 14px;border:1px solid rgba(255,255,255,.35);
+    border-radius:999px;background:rgba(5,5,5,.68);color:#fff;font-size:12px;font-weight:750;cursor:pointer;
+    backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
+  }
+  .hero-video-play.is-visible{display:inline-flex;}
 
   /* Sombra / Gradiente para lectura */
   .hero-overlay {
@@ -236,7 +243,7 @@
     transform: scale(0.96);
   }
 
-  /* Banner "Próximamente" */
+  /* Estado actual del producto */
   .coming-soon{
     position: relative;
     z-index: 10;
@@ -390,7 +397,7 @@
   #cuenta-foto-estado{font-size:12px;color:var(--ink-dim);text-align:center;min-height:16px;}
   .cuenta-field{margin-bottom:14px;}
   .cuenta-field label{display:block;font-size:13px;color:var(--ink-dim);margin-bottom:6px;}
-  .cuenta-field input{width:100%;padding:10px;border-radius:8px;border:1px solid var(--panel-line);background:#0a0a0a;color:var(--ink);}
+  .cuenta-field input,.cuenta-field select{width:100%;padding:10px;border-radius:8px;border:1px solid var(--panel-line);background:#0a0a0a;color:var(--ink);}
   .cuenta-field input[disabled]{opacity:.6;}
   .modal-cuenta-botones{display:flex;gap:10px;margin-top:18px;}
   .modal-cuenta-botones button{flex:1;padding:12px;border-radius:8px;border:none;cursor:pointer;font-weight:600;}
@@ -403,6 +410,11 @@
   .historial-kcal{font-weight:700;}
   .historial-fecha{color:var(--ink-dim);font-size:13px;flex:1;}
   .historial-activo{background:var(--red);color:#fff;font-size:11px;padding:2px 8px;border-radius:6px;}
+  .historial-eliminar{display:grid;flex:0 0 44px;width:44px;height:44px;padding:0;place-items:center;border:1px solid var(--panel-line);border-radius:10px;background:transparent;color:var(--ink-dim);cursor:pointer;}
+  .historial-eliminar:hover,.historial-eliminar:focus-visible{border-color:var(--red);color:#ff4965;background:rgba(216,27,63,.1);}
+  .historial-eliminar:disabled{cursor:wait;opacity:.5;}
+  .historial-eliminar svg{width:18px;height:18px;}
+  #historial-estado{min-height:18px;margin-top:8px;color:var(--ink-dim);font-size:12px;text-align:center;}
   .historial-vacio{color:var(--ink-dim);font-size:13px;padding:10px 0;}
   .link-historial{font-size:12px;color:var(--ink-dim);text-decoration:underline;cursor:pointer;background:none;border:none;}
   h1{font-weight:300;font-size:clamp(30px,4.5vw,42px);margin:0 0 8px;opacity:0;animation:riseIn .5s ease .32s forwards;}
@@ -826,6 +838,9 @@
     <source src="media/hero-fitness.mp4" type="video/mp4">
     Tu navegador no soporta video HTML5.
   </video>
+  <button type="button" class="hero-video-play" aria-label="Reproducir video de portada">
+    <span aria-hidden="true">▶</span> Reproducir video
+  </button>
   <div class="hero-overlay"></div>
 
   <main class="hero-body">
@@ -839,7 +854,7 @@
         </button>
         <div class="coming-soon">
           <span class="dot-live"></span>
-          <span><b>Próximamente</b>un menú interactivo en tiempo real, adaptable a ti — no tú a él.</span>
+          <span><b>Disponible ahora</b>tu plan personalizado de 14 días, listo a partir de tus macros.</span>
         </div>
       </div>
     </div>
@@ -1070,7 +1085,14 @@
     </div>
     <div class="cuenta-field">
       <label for="cuenta-email">Correo electrónico</label>
-      <input type="text" id="cuenta-email" disabled>
+      <input type="email" id="cuenta-email" readonly aria-readonly="true">
+    </div>
+    <div class="cuenta-field">
+      <label for="cuenta-sexo">Sexo usado por la calculadora</label>
+      <select id="cuenta-sexo">
+        <option value="M">Mujer</option>
+        <option value="H">Hombre</option>
+      </select>
     </div>
 
     <div class="modal-cuenta-botones">
@@ -1086,6 +1108,7 @@
   <div class="modal-cuenta-box">
     <h3>Historial de objetivos</h3>
     <div class="historial-lista-box" id="historial-lista"></div>
+    <div id="historial-estado" role="status" aria-live="polite"></div>
     <div class="modal-cuenta-botones">
       <button class="btn-cuenta-cancelar" style="flex:none;width:100%;" onclick="cerrarModalHistorial()">Cerrar</button>
     </div>

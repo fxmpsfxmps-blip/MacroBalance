@@ -20,6 +20,7 @@ import {
   updateDoc,
   collection,
   addDoc,
+  deleteDoc,
   query,
   getDocs,
   serverTimestamp
@@ -318,7 +319,19 @@ window.guardarCuentaFirestore = async function guardarCuenta(datosCuenta, datosP
       { ...datosPerfil, updatedAt: serverTimestamp() },
       { merge: true }
     );
+    state.profile = { ...(state.profile || {}), ...datosPerfil };
   }
+};
+
+window.eliminarObjetivoHistorialFirestore = async function eliminarObjetivoHistorial(goalId) {
+  const user = auth.currentUser;
+  if (!user) throw new Error('No hay usuario autenticado.');
+  const currentId = state.currentGoal?.id || state.userData?.currentObjectiveId;
+  if (!goalId || goalId === currentId) {
+    throw new Error('El objetivo actual no se puede eliminar.');
+  }
+  await deleteDoc(doc(db, 'users', user.uid, 'goals_history', goalId));
+  return true;
 };
 
 window.obtenerHistorialObjetivosFirestore = async function obtenerHistorial() {

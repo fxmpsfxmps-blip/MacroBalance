@@ -259,8 +259,10 @@ async function abrirModalCuenta(){
   const u = window.datosUsuarioActual || {};
   const nombreInput = document.getElementById('cuenta-nombre');
   const emailInput = document.getElementById('cuenta-email');
+  const sexoInput = document.getElementById('cuenta-sexo');
   if(nombreInput) nombreInput.value = u.displayName || '';
   if(emailInput) emailInput.value = u.email || '';
+  if(sexoInput) sexoInput.value = window.macroBalanceState?.profile?.sexo || document.getElementById('sexo').value || 'M';
   const avatarPreview = document.getElementById('cuenta-avatar-preview');
   if(avatarPreview) avatarPreview.src = document.getElementById('avatar-img').src;
   const btnEliminarFoto = document.getElementById('cuenta-eliminar-foto');
@@ -304,7 +306,8 @@ async function guardarCuenta(){
   if(estadoGuardado) estadoGuardado.textContent = 'Guardando...';
   try{
     const nombre = document.getElementById('cuenta-nombre').value.trim();
-    if(window.guardarCuentaFirestore) await window.guardarCuentaFirestore({ displayName: nombre }, {});
+    const sexo = document.getElementById('cuenta-sexo').value;
+    if(window.guardarCuentaFirestore) await window.guardarCuentaFirestore({ displayName: nombre }, { sexo: sexo });
 
     if(window.nuevaFotoBase64Pendiente){
       await window.guardarFotoPersonalizadaFirestore(window.nuevaFotoBase64Pendiente);
@@ -316,8 +319,8 @@ async function guardarCuenta(){
 
     // Refresca el avatar y los datos en memoria
     if(window.obtenerDatosUsuarioFirestore) window.datosUsuarioActual = await window.obtenerDatosUsuarioFirestore();
-    const rutaRespaldo = window.rutaAvatarRespaldoActual || 'media/mujer-v.jpg';
-    document.getElementById('avatar-img').src = resolverFotoPerfil(window.datosUsuarioActual, rutaRespaldo);
+    document.getElementById('sexo').value = sexo;
+    await prepararAvatar(sexo);
 
     if(estadoGuardado) estadoGuardado.textContent = 'Guardado.';
     setTimeout(cerrarModalCuenta, 700);
@@ -334,6 +337,8 @@ async function abrirModalHistorial(){
   if(!modal || !window.obtenerHistorialObjetivosFirestore) return;
   modal.classList.remove('hidden');
   const lista = document.getElementById('historial-lista');
+  const estadoHistorial = document.getElementById('historial-estado');
+  if(estadoHistorial) estadoHistorial.textContent = '';
   lista.innerHTML = '<div class="historial-vacio">Cargando...</div>';
   const historial = await window.obtenerHistorialObjetivosFirestore();
   if(!historial.length){
@@ -342,14 +347,37 @@ async function abrirModalHistorial(){
   }
   lista.innerHTML = historial.map(function(item){
     const fecha = item.startDate && item.startDate.toDate ? item.startDate.toDate().toLocaleDateString('es-MX', { day: 'numeric', month: 'long', year: 'numeric' }) : '';
-    const estado = item.status === 'active' ? '<span class="historial-activo">Objetivo actual</span>' : '';
     const kcal = item.result ? item.result.kcal : '';
+    const currentId = window.macroBalanceState?.currentGoal?.id || window.macroBalanceState?.userData?.currentObjectiveId;
+    const esActual = item.id === currentId;
+    const estado = esActual
+      ? '<span class="historial-activo">Objetivo actual</span>'
+      : '<button type="button" class="historial-eliminar" data-goal-id="' + encodeURIComponent(item.id) + '" onclick="eliminarObjetivoHistorial(this)" aria-label="Eliminar objetivo de ' + kcal + ' kilocalorías"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M4 7h16M9 7V4h6v3m-8 0 1 13h8l1-13M10 11v5m4-5v5"/></svg></button>';
     return '<div class="historial-item">' +
       '<div class="historial-kcal">' + kcal + ' kcal</div>' +
       '<div class="historial-fecha">' + fecha + '</div>' +
       estado +
     '</div>';
   }).join('');
+}
+
+async function eliminarObjetivoHistorial(button){
+  const goalId = decodeURIComponent(button.dataset.goalId || '');
+  if(!goalId || !window.eliminarObjetivoHistorialFirestore) return;
+  if(!window.confirm('¿Eliminar este objetivo del historial? Esta acción no se puede deshacer.')) return;
+  const estado = document.getElementById('historial-estado');
+  button.disabled = true;
+  if(estado) estado.textContent = 'Eliminando objetivo…';
+  try{
+    await window.eliminarObjetivoHistorialFirestore(goalId);
+    await abrirModalHistorial();
+    const estadoActualizado = document.getElementById('historial-estado');
+    if(estadoActualizado) estadoActualizado.textContent = 'Objetivo eliminado.';
+  }catch(error){
+    console.error('No se pudo eliminar el objetivo:', error);
+    button.disabled = false;
+    if(estado) estado.textContent = error.message || 'No se pudo eliminar el objetivo.';
+  }
 }
 
 function cerrarModalHistorial(){
