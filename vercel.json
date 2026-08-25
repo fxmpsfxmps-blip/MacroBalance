@@ -10,7 +10,7 @@
   "functions": {
     "api/*.mjs": {
       "maxDuration": 60,
-      "includeFiles": "lib/menu-engine/**"
+      "includeFiles": "{lib/menu-engine/**,lib/server/monitoring/**}"
     }
   },
   "headers": [

@@ -2774,6 +2774,7 @@ function fmt(n){
 --------------------------------------------------------- */
 
 function objetivoDesdeGoal(goal){
+  if(goal?.calculationMode === 'precision' || goal?.nutritionTarget?.calculationMode === 'precision') return null;
   const result = goal?.result;
   if(!result) return null;
   const objective = {

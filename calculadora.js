@@ -4,27 +4,31 @@ let objetivoPreferidoIdx = 1;
 let vaAlGym = false;
 let ultimoContexto = null;
 let ultimoInputSnapshot = null;
-let calculationMode = 'standard';
 const STANDARD_CALC_VERSION = 'v1-2026-08';
 
-function setCalculationMode(mode){
-  calculationMode = mode === 'precision' ? 'precision' : 'standard';
-  const app = document.getElementById('app');
-  if(app) app.dataset.calculationMode = calculationMode;
-  document.getElementById('mode-standard')?.setAttribute('aria-pressed', String(calculationMode === 'standard'));
-  document.getElementById('mode-precision')?.setAttribute('aria-pressed', String(calculationMode === 'precision'));
-  const precisionFields = document.getElementById('precision-fields');
-  if(precisionFields) precisionFields.setAttribute('aria-hidden', String(calculationMode !== 'precision'));
-  const title = document.getElementById('calculator-title');
-  if(title) title.textContent = calculationMode === 'precision' ? 'Calculadora de precisión' : 'Calculadora estándar';
-  document.getElementById('carrusel-section').style.display = 'none';
-  document.getElementById('error').style.display = 'none';
-}
-
-function setCalculationModeFromKeyboard(event, mode){
-  if(event.key !== 'Enter' && event.key !== ' ') return;
-  event.preventDefault();
-  setCalculationMode(mode);
+function crearObjetivoNutricionalEstandar(plan, metodo){
+  const kcal = Math.round(Number(plan.kcal));
+  const proteina = Math.round(Number(plan.proteina));
+  const carbos = Math.round(Number(plan.carbos));
+  const grasa = Math.round(Number(plan.grasa));
+  const macroKcal = proteina * 4 + carbos * 4 + grasa * 9;
+  return {
+    schemaVersion: '2.1',
+    calculationMode: 'standard',
+    calculatorVersion: STANDARD_CALC_VERSION,
+    goalType: plan.id || 'mantenimiento',
+    kcal: kcal,
+    proteina: proteina,
+    carbos: carbos,
+    grasa: grasa,
+    energyCheck: { macroKcal: macroKcal, differenceKcal: macroKcal - kcal },
+    method: { bmrMethod: metodo },
+    weeklyTarget: {
+      strategy: 'uniform',
+      dailyTarget: { kcal: kcal, proteina: proteina, carbos: carbos, grasa: grasa },
+      variableDays: null
+    }
+  };
 }
 
 function setGym(valor){
@@ -35,11 +39,6 @@ function setGym(valor){
   document.getElementById('gym-no').setAttribute('aria-pressed', String(valor === false));
   document.getElementById('dias-gym-wrap').style.display = valor ? 'block' : 'none';
   document.getElementById('gym-kcal-box').style.display = valor ? 'block' : 'none';
-  const precisionType = document.getElementById('precision-training-type');
-  if(precisionType && calculationMode === 'precision'){
-    if(valor && precisionType.value === 'none') precisionType.value = 'strength';
-    if(!valor) precisionType.value = 'none';
-  }
   if(valor) actualizarKcalGym();
 }
 
@@ -423,7 +422,7 @@ async function abrirModalHistorial(){
     const currentId = window.macroBalanceState?.currentGoal?.id || window.macroBalanceState?.userData?.currentObjectiveId;
     const esActual = item.id === currentId;
     const modo = item.calculationMode === 'precision' || item.nutritionTarget?.calculationMode === 'precision'
-      ? 'Precisión'
+      ? 'Objetivo experimental archivado'
       : 'Estándar';
     const estado = esActual
       ? '<span class="historial-activo">Objetivo actual</span>'
@@ -476,103 +475,6 @@ function interpretarAgua(texto){
   return numero;
 }
 
-function calcularPrecision(datos){
-  const core = window.MacroBalanceCalculator;
-  if(!core){
-    datos.errorBox.textContent = 'No se pudo cargar la Calculadora de Precisión. Recarga la página e intenta de nuevo.';
-    datos.errorBox.style.display = 'block';
-    return;
-  }
-  if(datos.edad < 18 || datos.edad > 100){
-    datos.errorBox.textContent = 'La Calculadora de Precisión admite personas adultas de 18 a 100 años.';
-    datos.errorBox.style.display = 'block';
-    return;
-  }
-
-  const nivelEstres = parseInt(document.getElementById('estres').value, 10) || null;
-  const diasEntrenamiento = datos.vaAlGym ? parseInt(document.getElementById('dias-gym').value, 10) || 0 : 0;
-  const trainingType = datos.vaAlGym ? document.getElementById('precision-training-type').value : 'none';
-  const stepsValue = parseFloat(document.getElementById('precision-steps').value);
-  const precisionInput = {
-    weightKg: datos.peso,
-    heightCm: datos.altura,
-    age: datos.edad,
-    sex: datos.sexo,
-    bodyFatPct: Number.isFinite(datos.grasaPct) ? datos.grasaPct : null,
-    activityFactor: datos.factorNeat,
-    stepsPerDay: Number.isFinite(stepsValue) && stepsValue > 0 ? stepsValue : null,
-    sleepHours: Number.isFinite(datos.horasSueno) ? datos.horasSueno : null,
-    stressLevel: nivelEstres,
-    trainingType: trainingType,
-    trainingIntensity: document.getElementById('precision-training-intensity').value,
-    trainingDays: diasEntrenamiento,
-    trainingMinutes: parseFloat(document.getElementById('precision-training-minutes').value) || 0,
-    cardioType: document.getElementById('precision-cardio-type').value,
-    cardioDays: parseFloat(document.getElementById('precision-cardio-days').value) || 0,
-    cardioMinutes: parseFloat(document.getElementById('precision-cardio-minutes').value) || 0,
-    changeRate: document.getElementById('precision-rate').value
-  };
-
-  let resultado;
-  try{
-    resultado = core.calculatePrecisionTargets(precisionInput);
-  }catch(error){
-    datos.errorBox.textContent = error.message || 'No fue posible completar el cálculo de precisión.';
-    datos.errorBox.style.display = 'block';
-    return;
-  }
-
-  planes = resultado.plans;
-  const metodo = resultado.bmr.method + ' + actividad y ejercicio neto por MET';
-  const metaAgua = datos.peso * 0.035;
-  const consumoActual = interpretarAgua(datos.aguaTexto);
-  const faltanteAgua = metaAgua - consumoActual;
-  ultimoInputSnapshot = {
-    peso: datos.peso,
-    altura: datos.altura,
-    edad: datos.edad,
-    sexo: datos.sexo,
-    grasaPct: Number.isFinite(datos.grasaPct) ? datos.grasaPct : null,
-    actividadFactor: datos.factorNeat,
-    horasSueno: Number.isFinite(datos.horasSueno) ? datos.horasSueno : null,
-    aguaTexto: datos.aguaTexto || null,
-    nivelEstres: nivelEstres,
-    vaAlGym: datos.vaAlGym,
-    diasGym: datos.vaAlGym ? diasEntrenamiento : null,
-    metodo: metodo,
-    calculationMode: 'precision',
-    calculatorVersion: resultado.calculatorVersion,
-    precision: precisionInput
-  };
-
-  const recuperacion = resultado.diagnostics.recovery;
-  const cardioActivo = precisionInput.cardioType !== 'none' && precisionInput.cardioDays > 0;
-  activo = objetivoPreferidoIdx;
-  document.getElementById('guardar-status').textContent = '';
-  datos.carruselSection.style.display = 'block';
-  renderCarrusel({
-    metodo: metodo,
-    tagSueno: recuperacion.constrained ? 'Revisar recuperación' : 'Sin restricción',
-    tipSueno: recuperacion.reason ? '<b>Recuperación:</b> ' + recuperacion.reason : '',
-    metaAgua: metaAgua.toFixed(1),
-    consumoActual: consumoActual,
-    faltanteAgua: faltanteAgua,
-    horasSueno: datos.horasSueno,
-    vaAlGym: datos.vaAlGym,
-    diasGym: diasEntrenamiento,
-    tipGym: datos.vaAlGym
-      ? 'Entrenamiento: ' + trainingType + ', ' + diasEntrenamiento + ' día(s)/semana, ' + precisionInput.trainingMinutes + ' min por sesión. El cálculo usa gasto neto por MET para evitar contar dos veces el reposo.'
-      : 'No se añadió entrenamiento estructurado.',
-    nivelEstres: nivelEstres,
-    tagEstres: nivelEstres ? nivelEstres + '/5' : 'Sin datos',
-    tipEstres: cardioActivo
-      ? 'Cardio adicional: ' + precisionInput.cardioType + ', ' + precisionInput.cardioDays + ' día(s)/semana, ' + precisionInput.cardioMinutes + ' min por sesión.'
-      : 'No se añadió cardio adicional.',
-    precisionDiagnostics: resultado.diagnostics
-  });
-  datos.carruselSection.scrollIntoView({behavior:'smooth', block:'start'});
-}
-
 function calcular(){
   const peso = parseFloat(document.getElementById('peso').value);
   const altura = parseFloat(document.getElementById('altura').value);
@@ -607,15 +509,6 @@ function calcular(){
 
   objetivoPreferidoIdx = parseInt(document.getElementById('objetivoPreferido').value, 10);
   if(isNaN(objetivoPreferidoIdx)) objetivoPreferidoIdx = 1;
-
-  if(calculationMode === 'precision'){
-    calcularPrecision({
-      peso: peso, altura: altura, edad: edad, sexo: sexo, factorNeat: factorNeat,
-      grasaPct: grasaPct, horasSueno: horasSueno, aguaTexto: aguaTexto,
-      vaAlGym: vaAlGym, errorBox: errorBox, carruselSection: carruselSection
-    });
-    return;
-  }
 
   // 1) BMR: Katch-McArdle si hay % de grasa (usa masa magra, más preciso), si no Mifflin-St Jeor
   let bmr, metodo;
@@ -726,14 +619,7 @@ function calcular(){
   });
 
   planes.forEach(function(plan){
-    if(window.MacroBalanceCalculator){
-      plan.nutritionTarget = window.MacroBalanceCalculator.createNutritionTarget({
-        plan: plan,
-        calculationMode: 'standard',
-        calculatorVersion: STANDARD_CALC_VERSION,
-        method: { bmrMethod: metodo }
-      });
-    }
+    plan.nutritionTarget = crearObjetivoNutricionalEstandar(plan, metodo);
   });
 
   ultimoInputSnapshot = {

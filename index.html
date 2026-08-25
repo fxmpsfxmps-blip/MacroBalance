@@ -789,62 +789,6 @@
     }
   }
 
-  .calculator-mode-switch{
-    display:grid;
-    grid-template-columns:repeat(2,minmax(0,1fr));
-    gap:8px;
-    margin:22px 0 24px;
-    padding:5px;
-    border:1px solid var(--panel-line);
-    border-radius:2px;
-    background:var(--panel);
-  }
-  .calculator-mode-switch button{
-    min-height:48px;
-    border:1px solid transparent;
-    border-radius:2px;
-    background:transparent;
-    color:var(--ink-dim);
-    font:inherit;
-    font-size:12px;
-    font-weight:800;
-    letter-spacing:.08em;
-    text-transform:uppercase;
-    cursor:pointer;
-  }
-  .calculator-mode-switch button[aria-pressed="true"]{
-    border-color:var(--red);
-    background:rgba(216,27,63,.12);
-    color:#fff;
-  }
-  .precision-panel{
-    display:none;
-    grid-column:1 / -1;
-    grid-template-columns:repeat(2,minmax(0,1fr));
-    gap:18px;
-    margin-top:6px;
-    padding:20px;
-    border:1px solid rgba(216,27,63,.5);
-    border-radius:2px;
-    background:rgba(216,27,63,.045);
-  }
-  #app[data-calculation-mode="precision"] .precision-panel{display:grid;}
-  .precision-panel__heading{grid-column:1 / -1;}
-  .precision-panel__heading strong{
-    display:block;
-    color:var(--red-bright);
-    font-size:12px;
-    letter-spacing:.12em;
-    text-transform:uppercase;
-  }
-  .precision-panel__heading p{margin:6px 0 0;color:var(--ink-dim);font-size:12px;line-height:1.5;}
-
-  @media(max-width:600px){
-    .calculator-mode-switch{grid-template-columns:1fr;}
-    .precision-panel{grid-template-columns:1fr;padding:16px;}
-    .precision-panel__heading{grid-column:1;}
-  }
-
   /* Geometría estructural compartida: recta, como la Calculadora. */
   .coming-soon,
   .btn-social,
@@ -1021,11 +965,6 @@
   <h1 id="calculator-title">Calculadora estándar</h1>
   <p class="sub">Ingresa tus datos y obtén tu gasto calórico, el reparto de macros, tu agua recomendada y una guía de cardio realista.</p>
 
-  <div class="calculator-mode-switch" role="group" aria-label="Modalidad de cálculo">
-    <button type="button" id="mode-standard" aria-pressed="true" onclick="setCalculationMode('standard')" onkeydown="setCalculationModeFromKeyboard(event, 'standard')">Estándar</button>
-    <button type="button" id="mode-precision" aria-pressed="false" onclick="setCalculationMode('precision')" onkeydown="setCalculationModeFromKeyboard(event, 'precision')">Precisión</button>
-  </div>
-
  <div class="grid">
     <div class="field">
       <label for="peso">Peso (kg)</label>
@@ -1106,67 +1045,6 @@
       <div class="gym-kcal-box" id="gym-kcal-box">+<b id="gym-kcal-valor">0</b> kcal/día promedio por tu entrenamiento</div>
     </div>
 
-    <section class="precision-panel" id="precision-fields" aria-hidden="true" aria-labelledby="precision-fields-title">
-      <div class="precision-panel__heading">
-        <strong id="precision-fields-title">Caracterización de precisión</strong>
-        <p>Estos datos refinan movimiento, entrenamiento, cardio y velocidad del objetivo. No incluyen lógica clínica.</p>
-      </div>
-      <div class="field">
-        <label for="precision-steps">Pasos diarios aproximados (opcional)</label>
-        <input type="number" id="precision-steps" min="0" max="50000" step="500" placeholder="ej: 8000">
-        <div class="tip-chica">Si los indicas, sustituyen el factor general de movimiento diario.</div>
-      </div>
-      <div class="field">
-        <label for="precision-rate">Velocidad deseada de cambio</label>
-        <select id="precision-rate">
-          <option value="slow">Conservadora</option>
-          <option value="moderate" selected>Moderada</option>
-          <option value="fast">Rápida</option>
-        </select>
-      </div>
-      <div class="field">
-        <label for="precision-training-type">Tipo principal de entrenamiento</label>
-        <select id="precision-training-type">
-          <option value="none">Sin entrenamiento estructurado</option>
-          <option value="strength">Fuerza</option>
-          <option value="hypertrophy">Hipertrofia</option>
-          <option value="mixed">Mixto / funcional</option>
-          <option value="intervals">Intervalos intensos</option>
-          <option value="endurance">Resistencia</option>
-        </select>
-      </div>
-      <div class="field">
-        <label for="precision-training-intensity">Intensidad habitual</label>
-        <select id="precision-training-intensity">
-          <option value="low">Ligera</option>
-          <option value="moderate" selected>Moderada</option>
-          <option value="high">Alta</option>
-        </select>
-      </div>
-      <div class="field">
-        <label for="precision-training-minutes">Duración por sesión (min)</label>
-        <input type="number" id="precision-training-minutes" min="0" max="240" step="5" value="60">
-      </div>
-      <div class="field">
-        <label for="precision-cardio-type">Cardio adicional</label>
-        <select id="precision-cardio-type">
-          <option value="none">Ninguno</option>
-          <option value="walking">Caminata moderada</option>
-          <option value="cycling">Bicicleta</option>
-          <option value="elliptical">Elíptica</option>
-          <option value="rowing">Remo</option>
-          <option value="running">Carrera</option>
-        </select>
-      </div>
-      <div class="field">
-        <label for="precision-cardio-days">Días de cardio por semana</label>
-        <input type="number" id="precision-cardio-days" min="0" max="7" value="0">
-      </div>
-      <div class="field">
-        <label for="precision-cardio-minutes">Duración de cardio (min)</label>
-        <input type="number" id="precision-cardio-minutes" min="0" max="240" step="5" value="30">
-      </div>
-    </section>
   </div>
 
   <button class="primary" onclick="calcular()">Calcular</button>
@@ -1252,7 +1130,7 @@
 </div>
 
 <script src="/js/navigation.js" defer></script>
-<script src="/js/calculator-core.js"></script>
+<script src="/js/error-monitor.js" defer></script>
 <script src="calculadora.js"></script>
 <script src="/js/auth-coordinator.js"></script>
 <script src="/js/hero-video.js"></script>

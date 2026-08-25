@@ -95,22 +95,25 @@ test('branding, perfil e historial reflejan el producto actual', () => {
   assert.match(firebase, /transaction\.delete\(goalRef\)/);
 });
 
-test('V2.1 expone ambas calculadoras y persiste un NutritionTarget compatible', () => {
+test('producción expone sólo la calculadora estándar y conserva la investigación desconectada', () => {
   const html = fs.readFileSync(path.join(root, 'index.html'), 'utf8');
   const calculator = fs.readFileSync(path.join(root, 'calculadora.js'), 'utf8');
   const core = fs.readFileSync(path.join(root, 'js', 'calculator-core.js'), 'utf8');
   const firebase = fs.readFileSync(path.join(root, 'firebase-init.js'), 'utf8');
 
-  assert.match(html, /id="mode-standard"/);
-  assert.match(html, /id="mode-precision"/);
-  assert.match(html, /id="precision-fields"/);
-  assert.match(html, /\/js\/calculator-core\.js/);
-  assert.match(calculator, /calculationMode === 'precision'/);
+  assert.doesNotMatch(html, /id="mode-precision"/);
+  assert.doesNotMatch(html, /id="precision-fields"/);
+  assert.doesNotMatch(html, /\/js\/calculator-core\.js/);
+  assert.doesNotMatch(calculator, /if\(calculationMode === 'precision'\)/);
+  assert.doesNotMatch(calculator, /function calcularPrecision/);
   assert.match(calculator, /STANDARD_CALC_VERSION/);
+  assert.match(calculator, /crearObjetivoNutricionalEstandar/);
   assert.match(core, /TARGET_SCHEMA_VERSION = '2\.1'/);
   assert.match(core, /weeklyTarget:[\s\S]*strategy: 'uniform'/);
   assert.match(firebase, /nutritionTargetVersion/);
   assert.match(firebase, /calculationMode/);
+  const menuApp = fs.readFileSync(path.join(root, 'js', 'menu-app.js'), 'utf8');
+  assert.match(menuApp, /goal\?\.calculationMode === 'precision'/);
 });
 
 test('las reglas V2 limitan datos por uid y protegen el objetivo activo', () => {
