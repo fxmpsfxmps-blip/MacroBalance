@@ -27,16 +27,31 @@ let seleccionActual =
 
 const NOMBRES_CAT = {
   proteina:'Proteínas',
-  lacteo:'Lácteos',
-  grasa:'Grasas y aceites',
-  carbohidrato:'Carbohidratos',
+  lacteo:'Leches y yogures',
+  queso:'Quesos',
+  cereal:'Cereales y tubérculos',
+  pan_tortilla:'Panes, tortillas y galletas',
   leguminosa:'Leguminosas',
-  condimento:'Condimentos',
+  grasa:'Aceites y grasas',
+  nuez_semilla:'Nueces y semillas',
   fruta:'Frutas',
   verdura:'Verduras',
-  cereal:'Cereales',
+  condimento:'Condimentos, salsas y endulzantes',
   bebida:'Bebidas'
 };
+
+const FOODS_OCULTOS_EN_CARRUSEL =
+  new Set([
+    'hielo',
+    'trace_aditivo'
+  ]);
+
+function foodVisibleEnSelector(food){
+  return !!food?.id &&
+    !FOODS_OCULTOS_EN_CARRUSEL.has(
+      food.id
+    );
+}
 
 
 // ============================================================
@@ -88,7 +103,11 @@ async function cargarAlimentos(){
         a
   );
 
-  renderFoodGallery(alimentos);
+  renderFoodGallery(
+    alimentos.filter(
+      foodVisibleEnSelector
+    )
+  );
 
 }
 
@@ -530,12 +549,16 @@ function marcarTodos(valor){
 
   if(valor){
 
-    alimentos.forEach(
-      a =>
-        seleccionActual.add(
-          a.id
-        )
-    );
+    alimentos
+      .filter(
+        foodVisibleEnSelector
+      )
+      .forEach(
+        a =>
+          seleccionActual.add(
+            a.id
+          )
+      );
 
   }else{
 
@@ -1139,7 +1162,16 @@ function restaurarPlanDeSesion(goalId){
     if(saved.preferences){
       document.getElementById('num-comidas').value = saved.preferences.numeroComidas || '5';
       document.getElementById('dias-sin-repetir').value = saved.preferences.diasSinRepetir || '2';
-      seleccionActual = new Set(saved.preferences.exclusions || []);
+      seleccionActual =
+        new Set(
+          (saved.preferences.exclusions || [])
+            .filter(
+              id =>
+                !FOODS_OCULTOS_EN_CARRUSEL.has(
+                  id
+                )
+            )
+        );
     }
     renderPlan();
   }catch(error){
@@ -2359,7 +2391,7 @@ const NOMBRES_CAT_COMPRAS = {
     'Proteínas',
 
   cereales:
-    'Cereales / carbohidratos',
+    'Cereales, panes y tubérculos',
 
   verduras:
     'Verduras',

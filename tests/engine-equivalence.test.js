@@ -22,8 +22,8 @@ test('los archivos estables del motor fueron migrados byte por byte', () => {
   const expected = {
     'engine.js': '7cf556ccf0cadec588734cd6f615e2077f90d08405a2a196be90da2a17913a6c',
     'sustitucion.js': 'adecd395e3c15ef8fb6c86d0ede89a806814226c212081408914ede50530deaa',
-    'dashboard.js': 'bf37e8222839fdb213e1f2193b74cacd13a0ad70c3546a736fab92a5ed90a730',
-    'data/foods.json': '551f8303447dd6295425dae234dff1577cd0381e39f6344730989a9ceac199fd',
+    'dashboard.js': '5188e2ef90692ab997ee75893032b0920212223b82a7d3ba7c34a06e58f62ad0',
+    'data/foods.json': '99b4e0a46777b60d0c8bff58c3480b888f29e69bb256a6a8f546dec0065dc74c',
     'data/dishes.json': '2d6301faf4f1b12f27eefdf8c09c0f5817cacbe684b9a80ef7245de937ecb273'
   };
 

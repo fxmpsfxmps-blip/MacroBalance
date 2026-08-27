@@ -1440,7 +1440,7 @@
   {
     "id": "queso_panela",
     "name": "Queso panela",
-    "category": "lacteo",
+    "category": "queso",
     "state": "listo para consumir",
     "base_g": 100,
     "kcal": 250,
@@ -1492,7 +1492,7 @@
   {
     "id": "queso_panela_light",
     "name": "Queso panela light",
-    "category": "lacteo",
+    "category": "queso",
     "state": "listo para consumir",
     "base_g": 100,
     "kcal": 150,
@@ -1544,7 +1544,7 @@
   {
     "id": "queso_cottage",
     "name": "Queso cottage",
-    "category": "lacteo",
+    "category": "queso",
     "state": "listo para consumir",
     "base_g": 100,
     "kcal": 98,
@@ -1596,7 +1596,7 @@
   {
     "id": "queso_mozzarella",
     "name": "Queso mozzarella",
-    "category": "lacteo",
+    "category": "queso",
     "state": "listo para consumir",
     "base_g": 100,
     "kcal": 280,
@@ -1647,7 +1647,7 @@
   {
     "id": "queso_fresco",
     "name": "Queso fresco",
-    "category": "lacteo",
+    "category": "queso",
     "state": "listo para consumir",
     "base_g": 100,
     "kcal": 264,
@@ -1699,7 +1699,7 @@
   {
     "id": "queso_oaxaca",
     "name": "Queso Oaxaca",
-    "category": "lacteo",
+    "category": "queso",
     "state": "listo para consumir",
     "base_g": 100,
     "kcal": 316,
@@ -1750,7 +1750,7 @@
   {
     "id": "queso_manchego",
     "name": "Queso manchego",
-    "category": "lacteo",
+    "category": "queso",
     "state": "listo para consumir",
     "base_g": 100,
     "kcal": 380,
@@ -1801,7 +1801,7 @@
   {
     "id": "queso_doble_crema",
     "name": "Queso doble crema",
-    "category": "lacteo",
+    "category": "queso",
     "state": "listo para consumir",
     "base_g": 100,
     "kcal": 300,
@@ -1852,7 +1852,7 @@
   {
     "id": "requeson",
     "name": "Requesón",
-    "category": "lacteo",
+    "category": "queso",
     "state": "listo para consumir",
     "base_g": 100,
     "kcal": 130,
@@ -2015,7 +2015,7 @@
   {
     "id": "arroz_blanco_cocido",
     "name": "Arroz blanco cocido",
-    "category": "carbohidrato",
+    "category": "cereal",
     "state": "cocido",
     "base_g": 100,
     "kcal": 130,
@@ -2075,7 +2075,7 @@
   {
     "id": "arroz_integral_cocido",
     "name": "Arroz integral cocido",
-    "category": "carbohidrato",
+    "category": "cereal",
     "state": "cocido",
     "base_g": 100,
     "kcal": 123,
@@ -2131,7 +2131,7 @@
   {
     "id": "pasta_cocida",
     "name": "Pasta cocida",
-    "category": "carbohidrato",
+    "category": "cereal",
     "state": "cocido",
     "base_g": 100,
     "kcal": 158,
@@ -2187,7 +2187,7 @@
   {
     "id": "avena_cruda",
     "name": "Avena cruda",
-    "category": "carbohidrato",
+    "category": "cereal",
     "state": "crudo",
     "base_g": 100,
     "kcal": 389,
@@ -2242,7 +2242,7 @@
   {
     "id": "avena_cocida",
     "name": "Avena cocida",
-    "category": "carbohidrato",
+    "category": "cereal",
     "state": "cocido",
     "base_g": 100,
     "kcal": 71,
@@ -2297,7 +2297,7 @@
   {
     "id": "tortilla_maiz",
     "name": "Tortilla de maíz",
-    "category": "carbohidrato",
+    "category": "pan_tortilla",
     "state": "listo para consumir",
     "base_g": 100,
     "kcal": 218,
@@ -2353,7 +2353,7 @@
   {
     "id": "tortilla_harina",
     "name": "Tortilla de harina",
-    "category": "carbohidrato",
+    "category": "pan_tortilla",
     "state": "listo para consumir",
     "base_g": 100,
     "kcal": 312,
@@ -2410,7 +2410,7 @@
   {
     "id": "pan_blanco",
     "name": "Pan blanco",
-    "category": "carbohidrato",
+    "category": "pan_tortilla",
     "state": "listo para consumir",
     "base_g": 100,
     "kcal": 265,
@@ -2467,7 +2467,7 @@
   {
     "id": "pan_integral",
     "name": "Pan integral",
-    "category": "carbohidrato",
+    "category": "pan_tortilla",
     "state": "listo para consumir",
     "base_g": 100,
     "kcal": 247,
@@ -2524,7 +2524,7 @@
   {
     "id": "pan_multigrano",
     "name": "Pan multigrano",
-    "category": "carbohidrato",
+    "category": "pan_tortilla",
     "state": "listo para consumir",
     "base_g": 100,
     "kcal": 265,
@@ -2581,7 +2581,7 @@
   {
     "id": "bolillo",
     "name": "Bolillo",
-    "category": "carbohidrato",
+    "category": "pan_tortilla",
     "state": "listo para consumir",
     "base_g": 100,
     "kcal": 290,
@@ -2638,7 +2638,7 @@
   {
     "id": "papa_cocida",
     "name": "Papa cocida",
-    "category": "carbohidrato",
+    "category": "cereal",
     "state": "cocido",
     "base_g": 100,
     "kcal": 87,
@@ -2694,7 +2694,7 @@
   {
     "id": "camote_cocido",
     "name": "Camote cocido",
-    "category": "carbohidrato",
+    "category": "cereal",
     "state": "cocido",
     "base_g": 100,
     "kcal": 90,
@@ -2750,7 +2750,7 @@
   {
     "id": "tostada_horneada",
     "name": "Tostada horneada",
-    "category": "carbohidrato",
+    "category": "pan_tortilla",
     "state": "horneado",
     "base_g": 100,
     "kcal": 380,
@@ -2806,7 +2806,7 @@
   {
     "id": "cereal_maiz",
     "name": "Cereal de maíz (hojuelas)",
-    "category": "carbohidrato",
+    "category": "cereal",
     "state": "listo para consumir",
     "base_g": 100,
     "kcal": 357,
@@ -2861,7 +2861,7 @@
   {
     "id": "granola",
     "name": "Granola",
-    "category": "carbohidrato",
+    "category": "cereal",
     "state": "listo para consumir",
     "base_g": 100,
     "kcal": 471,
@@ -2916,7 +2916,7 @@
   {
     "id": "elote_cocido",
     "name": "Elote cocido",
-    "category": "carbohidrato",
+    "category": "cereal",
     "state": "cocido",
     "base_g": 100,
     "kcal": 96,
@@ -3636,7 +3636,7 @@
   {
     "id": "almendras",
     "name": "Almendras",
-    "category": "grasa",
+    "category": "nuez_semilla",
     "state": "listo para consumir",
     "base_g": 100,
     "kcal": 579,
@@ -3695,7 +3695,7 @@
   {
     "id": "nueces",
     "name": "Nueces",
-    "category": "grasa",
+    "category": "nuez_semilla",
     "state": "listo para consumir",
     "base_g": 100,
     "kcal": 654,
@@ -3754,7 +3754,7 @@
   {
     "id": "cacahuates",
     "name": "Cacahuates",
-    "category": "grasa",
+    "category": "nuez_semilla",
     "state": "listo para consumir",
     "base_g": 100,
     "kcal": 567,
@@ -3813,7 +3813,7 @@
   {
     "id": "crema_cacahuate",
     "name": "Crema de cacahuate natural",
-    "category": "grasa",
+    "category": "nuez_semilla",
     "state": "listo para consumir",
     "base_g": 100,
     "kcal": 588,
@@ -3872,7 +3872,7 @@
   {
     "id": "semillas_chia",
     "name": "Semillas de chía",
-    "category": "grasa",
+    "category": "nuez_semilla",
     "state": "listo para consumir",
     "base_g": 100,
     "kcal": 486,
@@ -3931,7 +3931,7 @@
   {
     "id": "semillas_linaza",
     "name": "Semillas de linaza",
-    "category": "grasa",
+    "category": "nuez_semilla",
     "state": "listo para consumir",
     "base_g": 100,
     "kcal": 534,
@@ -3990,7 +3990,7 @@
   {
     "id": "semillas_girasol",
     "name": "Semillas de girasol",
-    "category": "grasa",
+    "category": "nuez_semilla",
     "state": "listo para consumir",
     "base_g": 100,
     "kcal": 584,
@@ -4561,7 +4561,7 @@
   {
     "id": "cafe_preparado",
     "name": "Café preparado (negro)",
-    "category": "condimento",
+    "category": "bebida",
     "state": "preparado",
     "base_g": 100,
     "kcal": 1,
@@ -7359,7 +7359,7 @@
   {
     "id": "queso_cheddar_light",
     "name": "Queso cheddar bajo en grasa",
-    "category": "lacteo",
+    "category": "queso",
     "state": "procesado",
     "base_g": 100,
     "kcal": 280,
@@ -7410,7 +7410,7 @@
   {
     "id": "quinoa_cocida",
     "name": "Quinoa cocida",
-    "category": "carbohidrato",
+    "category": "cereal",
     "state": "cocido",
     "base_g": 100,
     "kcal": 120,
@@ -7872,7 +7872,7 @@
   {
     "id": "tortilla_trigo_integral",
     "name": "Tortilla de trigo integral",
-    "category": "carbohidrato",
+    "category": "pan_tortilla",
     "state": "horneado",
     "base_g": 100,
     "kcal": 300,
@@ -7924,7 +7924,7 @@
   {
     "id": "pan_pita",
     "name": "Pan pita integral",
-    "category": "carbohidrato",
+    "category": "pan_tortilla",
     "state": "horneado",
     "base_g": 100,
     "kcal": 275,
@@ -7975,7 +7975,7 @@
   {
     "id": "galleta_maria",
     "name": "Galleta María",
-    "category": "carbohidrato",
+    "category": "pan_tortilla",
     "state": "horneado",
     "base_g": 100,
     "kcal": 440,
@@ -8026,7 +8026,7 @@
   {
     "id": "galletas_saladas_integrales",
     "name": "Galletas saladas integrales",
-    "category": "carbohidrato",
+    "category": "pan_tortilla",
     "state": "horneado",
     "base_g": 100,
     "kcal": 420,
@@ -8646,7 +8646,7 @@
   {
     "id": "semillas_ajonjoli",
     "name": "Semillas de ajonjolí",
-    "category": "grasa",
+    "category": "nuez_semilla",
     "state": "crudo",
     "base_g": 100,
     "kcal": 573,
@@ -8697,7 +8697,7 @@
   {
     "id": "nuez_india",
     "name": "Nuez de la India (anacardo)",
-    "category": "grasa",
+    "category": "nuez_semilla",
     "state": "crudo",
     "base_g": 100,
     "kcal": 553,
@@ -8799,7 +8799,7 @@
   {
     "id": "agua_coco",
     "name": "Agua de coco",
-    "category": "fruta",
+    "category": "bebida",
     "state": "liquido",
     "base_g": 100,
     "kcal": 19,
@@ -9007,7 +9007,7 @@
   {
     "id": "jugo_tomate",
     "name": "Jugo de tomate",
-    "category": "condimento",
+    "category": "bebida",
     "state": "liquido",
     "base_g": 100,
     "kcal": 17,
@@ -9728,7 +9728,7 @@
   {
     "id": "galletas_arroz",
     "name": "Galletas de arroz",
-    "category": "cereal",
+    "category": "pan_tortilla",
     "state": "horneado",
     "base_g": 100,
     "kcal": 387,
@@ -9779,7 +9779,7 @@
   {
     "id": "crutones_integrales",
     "name": "Crutones integrales",
-    "category": "cereal",
+    "category": "pan_tortilla",
     "state": "horneado",
     "base_g": 100,
     "kcal": 407,
@@ -9984,7 +9984,7 @@
   {
     "id": "queso_parmesano",
     "name": "Queso parmesano",
-    "category": "lacteo",
+    "category": "queso",
     "state": "listo para consumir",
     "base_g": 100,
     "kcal": 392,
@@ -10035,7 +10035,7 @@
   {
     "id": "queso_feta",
     "name": "Queso feta",
-    "category": "lacteo",
+    "category": "queso",
     "state": "listo para consumir",
     "base_g": 100,
     "kcal": 264,
@@ -10341,7 +10341,7 @@
   {
     "id": "semillas_calabaza",
     "name": "Semillas de calabaza",
-    "category": "grasa",
+    "category": "nuez_semilla",
     "state": "listo para consumir",
     "base_g": 100,
     "kcal": 559,
