@@ -14,8 +14,10 @@ function sha256(value) {
 function matchesStableHash(filePath, expectedHash) {
   const contents = fs.readFileSync(filePath);
   const rawHash = sha256(contents);
-  const lfHash = sha256(contents.toString('utf8').replace(/\r\n/g, '\n'));
-  return rawHash === expectedHash || lfHash === expectedHash;
+  const normalizedText = contents.toString('utf8').replace(/\r\n/g, '\n');
+  const lfHash = sha256(normalizedText);
+  const crlfHash = sha256(normalizedText.replace(/\n/g, '\r\n'));
+  return rawHash === expectedHash || lfHash === expectedHash || crlfHash === expectedHash;
 }
 
 test('los archivos estables del motor fueron migrados byte por byte', () => {

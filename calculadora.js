@@ -4,7 +4,28 @@ let objetivoPreferidoIdx = 1;
 let vaAlGym = false;
 let ultimoContexto = null;
 let ultimoInputSnapshot = null;
-const CALC_VERSION = 'v1-2026-08';
+let calculationMode = 'standard';
+const STANDARD_CALC_VERSION = 'v1-2026-08';
+
+function setCalculationMode(mode){
+  calculationMode = mode === 'precision' ? 'precision' : 'standard';
+  const app = document.getElementById('app');
+  if(app) app.dataset.calculationMode = calculationMode;
+  document.getElementById('mode-standard')?.setAttribute('aria-pressed', String(calculationMode === 'standard'));
+  document.getElementById('mode-precision')?.setAttribute('aria-pressed', String(calculationMode === 'precision'));
+  const precisionFields = document.getElementById('precision-fields');
+  if(precisionFields) precisionFields.setAttribute('aria-hidden', String(calculationMode !== 'precision'));
+  const title = document.getElementById('calculator-title');
+  if(title) title.textContent = calculationMode === 'precision' ? 'Calculadora de precisión' : 'Calculadora estándar';
+  document.getElementById('carrusel-section').style.display = 'none';
+  document.getElementById('error').style.display = 'none';
+}
+
+function setCalculationModeFromKeyboard(event, mode){
+  if(event.key !== 'Enter' && event.key !== ' ') return;
+  event.preventDefault();
+  setCalculationMode(mode);
+}
 
 function setGym(valor){
   vaAlGym = valor;
@@ -14,6 +35,11 @@ function setGym(valor){
   document.getElementById('gym-no').setAttribute('aria-pressed', String(valor === false));
   document.getElementById('dias-gym-wrap').style.display = valor ? 'block' : 'none';
   document.getElementById('gym-kcal-box').style.display = valor ? 'block' : 'none';
+  const precisionType = document.getElementById('precision-training-type');
+  if(precisionType && calculationMode === 'precision'){
+    if(valor && precisionType.value === 'none') precisionType.value = 'strength';
+    if(!valor) precisionType.value = 'none';
+  }
   if(valor) actualizarKcalGym();
 }
 
@@ -133,9 +159,28 @@ function esRutaMacros(){
     window.location.pathname.replace(/\/$/, '') === '/macros';
 }
 
-function cerrarModalAuth(){
+let authModalReturnFocus = null;
+
+function mostrarModalAuth(){
+  const modal = document.getElementById('modal-overlay');
+  if(!modal) return;
+  if(modal.classList.contains('hidden')){
+    const activeElement = document.activeElement;
+    authModalReturnFocus = activeElement instanceof HTMLElement ? activeElement : document.getElementById('hero-cta');
+  }
+  modal.classList.remove('hidden');
+  window.requestAnimationFrame(function(){
+    document.getElementById('auth-modal-close')?.focus();
+  });
+}
+
+function cerrarModalAuth(restaurarFoco){
   const modal = document.getElementById('modal-overlay');
   if(modal) modal.classList.add('hidden');
+  if(restaurarFoco && authModalReturnFocus && document.contains(authModalReturnFocus)){
+    authModalReturnFocus.focus();
+  }
+  authModalReturnFocus = null;
 }
 
 async function abrirModal(){
@@ -152,8 +197,35 @@ async function abrirModal(){
     mostrarCalculadoraAutenticada();
     return;
   }
-  document.getElementById('modal-overlay').classList.remove('hidden');
+  mostrarModalAuth();
 }
+
+document.addEventListener('keydown', function(event){
+  const modal = document.getElementById('modal-overlay');
+  if(!modal || modal.classList.contains('hidden')) return;
+  if(event.key === 'Escape'){
+    event.preventDefault();
+    cerrarModalAuth(true);
+    return;
+  }
+  if(event.key !== 'Tab') return;
+  const focusable = Array.from(modal.querySelectorAll('button:not([disabled]), [href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])'))
+    .filter(function(element){ return element.getClientRects().length > 0; });
+  if(!focusable.length) return;
+  const first = focusable[0];
+  const last = focusable[focusable.length - 1];
+  if(event.shiftKey && document.activeElement === first){
+    event.preventDefault();
+    last.focus();
+  } else if(!event.shiftKey && document.activeElement === last){
+    event.preventDefault();
+    first.focus();
+  }
+});
+
+document.getElementById('modal-overlay')?.addEventListener('click', function(event){
+  if(event.target === event.currentTarget) cerrarModalAuth(true);
+});
 
 function mostrarEstadoAnonimo(){
   cerrarModalAuth();
@@ -220,7 +292,7 @@ async function mostrarCalculadoraAutenticada(){
      document.getElementById('loading').style.display === 'flex') return;
   const state = window.macroBalanceState;
   if(!state?.user){
-    if(state?.authReady) document.getElementById('modal-overlay').classList.remove('hidden');
+    if(state?.authReady) mostrarModalAuth();
     return;
   }
   cerrarModalAuth();
@@ -350,12 +422,15 @@ async function abrirModalHistorial(){
     const kcal = item.result ? item.result.kcal : '';
     const currentId = window.macroBalanceState?.currentGoal?.id || window.macroBalanceState?.userData?.currentObjectiveId;
     const esActual = item.id === currentId;
+    const modo = item.calculationMode === 'precision' || item.nutritionTarget?.calculationMode === 'precision'
+      ? 'Precisión'
+      : 'Estándar';
     const estado = esActual
       ? '<span class="historial-activo">Objetivo actual</span>'
       : '<button type="button" class="historial-eliminar" data-goal-id="' + encodeURIComponent(item.id) + '" onclick="eliminarObjetivoHistorial(this)" aria-label="Eliminar objetivo de ' + kcal + ' kilocalorías"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M4 7h16M9 7V4h6v3m-8 0 1 13h8l1-13M10 11v5m4-5v5"/></svg></button>';
     return '<div class="historial-item">' +
       '<div class="historial-kcal">' + kcal + ' kcal</div>' +
-      '<div class="historial-fecha">' + fecha + '</div>' +
+      '<div class="historial-fecha">' + fecha + ' · ' + modo + '</div>' +
       estado +
     '</div>';
   }).join('');
@@ -401,6 +476,103 @@ function interpretarAgua(texto){
   return numero;
 }
 
+function calcularPrecision(datos){
+  const core = window.MacroBalanceCalculator;
+  if(!core){
+    datos.errorBox.textContent = 'No se pudo cargar la Calculadora de Precisión. Recarga la página e intenta de nuevo.';
+    datos.errorBox.style.display = 'block';
+    return;
+  }
+  if(datos.edad < 18 || datos.edad > 100){
+    datos.errorBox.textContent = 'La Calculadora de Precisión admite personas adultas de 18 a 100 años.';
+    datos.errorBox.style.display = 'block';
+    return;
+  }
+
+  const nivelEstres = parseInt(document.getElementById('estres').value, 10) || null;
+  const diasEntrenamiento = datos.vaAlGym ? parseInt(document.getElementById('dias-gym').value, 10) || 0 : 0;
+  const trainingType = datos.vaAlGym ? document.getElementById('precision-training-type').value : 'none';
+  const stepsValue = parseFloat(document.getElementById('precision-steps').value);
+  const precisionInput = {
+    weightKg: datos.peso,
+    heightCm: datos.altura,
+    age: datos.edad,
+    sex: datos.sexo,
+    bodyFatPct: Number.isFinite(datos.grasaPct) ? datos.grasaPct : null,
+    activityFactor: datos.factorNeat,
+    stepsPerDay: Number.isFinite(stepsValue) && stepsValue > 0 ? stepsValue : null,
+    sleepHours: Number.isFinite(datos.horasSueno) ? datos.horasSueno : null,
+    stressLevel: nivelEstres,
+    trainingType: trainingType,
+    trainingIntensity: document.getElementById('precision-training-intensity').value,
+    trainingDays: diasEntrenamiento,
+    trainingMinutes: parseFloat(document.getElementById('precision-training-minutes').value) || 0,
+    cardioType: document.getElementById('precision-cardio-type').value,
+    cardioDays: parseFloat(document.getElementById('precision-cardio-days').value) || 0,
+    cardioMinutes: parseFloat(document.getElementById('precision-cardio-minutes').value) || 0,
+    changeRate: document.getElementById('precision-rate').value
+  };
+
+  let resultado;
+  try{
+    resultado = core.calculatePrecisionTargets(precisionInput);
+  }catch(error){
+    datos.errorBox.textContent = error.message || 'No fue posible completar el cálculo de precisión.';
+    datos.errorBox.style.display = 'block';
+    return;
+  }
+
+  planes = resultado.plans;
+  const metodo = resultado.bmr.method + ' + actividad y ejercicio neto por MET';
+  const metaAgua = datos.peso * 0.035;
+  const consumoActual = interpretarAgua(datos.aguaTexto);
+  const faltanteAgua = metaAgua - consumoActual;
+  ultimoInputSnapshot = {
+    peso: datos.peso,
+    altura: datos.altura,
+    edad: datos.edad,
+    sexo: datos.sexo,
+    grasaPct: Number.isFinite(datos.grasaPct) ? datos.grasaPct : null,
+    actividadFactor: datos.factorNeat,
+    horasSueno: Number.isFinite(datos.horasSueno) ? datos.horasSueno : null,
+    aguaTexto: datos.aguaTexto || null,
+    nivelEstres: nivelEstres,
+    vaAlGym: datos.vaAlGym,
+    diasGym: datos.vaAlGym ? diasEntrenamiento : null,
+    metodo: metodo,
+    calculationMode: 'precision',
+    calculatorVersion: resultado.calculatorVersion,
+    precision: precisionInput
+  };
+
+  const recuperacion = resultado.diagnostics.recovery;
+  const cardioActivo = precisionInput.cardioType !== 'none' && precisionInput.cardioDays > 0;
+  activo = objetivoPreferidoIdx;
+  document.getElementById('guardar-status').textContent = '';
+  datos.carruselSection.style.display = 'block';
+  renderCarrusel({
+    metodo: metodo,
+    tagSueno: recuperacion.constrained ? 'Revisar recuperación' : 'Sin restricción',
+    tipSueno: recuperacion.reason ? '<b>Recuperación:</b> ' + recuperacion.reason : '',
+    metaAgua: metaAgua.toFixed(1),
+    consumoActual: consumoActual,
+    faltanteAgua: faltanteAgua,
+    horasSueno: datos.horasSueno,
+    vaAlGym: datos.vaAlGym,
+    diasGym: diasEntrenamiento,
+    tipGym: datos.vaAlGym
+      ? 'Entrenamiento: ' + trainingType + ', ' + diasEntrenamiento + ' día(s)/semana, ' + precisionInput.trainingMinutes + ' min por sesión. El cálculo usa gasto neto por MET para evitar contar dos veces el reposo.'
+      : 'No se añadió entrenamiento estructurado.',
+    nivelEstres: nivelEstres,
+    tagEstres: nivelEstres ? nivelEstres + '/5' : 'Sin datos',
+    tipEstres: cardioActivo
+      ? 'Cardio adicional: ' + precisionInput.cardioType + ', ' + precisionInput.cardioDays + ' día(s)/semana, ' + precisionInput.cardioMinutes + ' min por sesión.'
+      : 'No se añadió cardio adicional.',
+    precisionDiagnostics: resultado.diagnostics
+  });
+  datos.carruselSection.scrollIntoView({behavior:'smooth', block:'start'});
+}
+
 function calcular(){
   const peso = parseFloat(document.getElementById('peso').value);
   const altura = parseFloat(document.getElementById('altura').value);
@@ -435,6 +607,15 @@ function calcular(){
 
   objetivoPreferidoIdx = parseInt(document.getElementById('objetivoPreferido').value, 10);
   if(isNaN(objetivoPreferidoIdx)) objetivoPreferidoIdx = 1;
+
+  if(calculationMode === 'precision'){
+    calcularPrecision({
+      peso: peso, altura: altura, edad: edad, sexo: sexo, factorNeat: factorNeat,
+      grasaPct: grasaPct, horasSueno: horasSueno, aguaTexto: aguaTexto,
+      vaAlGym: vaAlGym, errorBox: errorBox, carruselSection: carruselSection
+    });
+    return;
+  }
 
   // 1) BMR: Katch-McArdle si hay % de grasa (usa masa magra, más preciso), si no Mifflin-St Jeor
   let bmr, metodo;
@@ -544,11 +725,24 @@ function calcular(){
     };
   });
 
+  planes.forEach(function(plan){
+    if(window.MacroBalanceCalculator){
+      plan.nutritionTarget = window.MacroBalanceCalculator.createNutritionTarget({
+        plan: plan,
+        calculationMode: 'standard',
+        calculatorVersion: STANDARD_CALC_VERSION,
+        method: { bmrMethod: metodo }
+      });
+    }
+  });
+
   ultimoInputSnapshot = {
     peso: peso, altura: altura, edad: edad, sexo: sexo, grasaPct: grasaPct || null,
     actividadFactor: factorNeat, horasSueno: horasSueno || null, aguaTexto: aguaTexto || null,
     nivelEstres: nivelEstres || null, vaAlGym: vaAlGym, diasGym: vaAlGym ? diasGym : null,
-    metodo: metodo
+    metodo: metodo,
+    calculationMode: 'standard',
+    calculatorVersion: STANDARD_CALC_VERSION
   };
 
   document.getElementById('guardar-status').textContent = '';
@@ -646,6 +840,7 @@ function renderDetalle(){
     (c.tipSueno ? '<div class="sueno-tip">'+c.tipSueno+'</div>' : '') +
     (c.tipGym ? '<div class="sueno-tip">'+c.tipGym+'</div>' : '') +
     (c.tipEstres ? '<div class="sueno-tip">'+c.tipEstres+'</div>' : '') +
+    (p.nutritionTarget ? '<div class="sueno-tip"><b>Coherencia energética:</b> macros = ' + p.nutritionTarget.energyCheck.macroKcal + ' kcal (' + (p.nutritionTarget.energyCheck.differenceKcal >= 0 ? '+' : '') + p.nutritionTarget.energyCheck.differenceKcal + ' kcal por redondeo).</div>' : '') +
     (c.metodo ? '<div class="sueno-tip" style="border-top:none;padding-top:0;">Cálculo base: '+c.metodo+'</div>' : '');
 }
 
@@ -668,7 +863,13 @@ async function guardarObjetivoActual(){
   btn.disabled = true;
   statusBox.textContent = 'Guardando...';
   try{
-    await window.guardarObjetivoFirestore(planes[activo], ultimoInputSnapshot, CALC_VERSION);
+    const calculatorVersion = ultimoInputSnapshot.calculatorVersion || STANDARD_CALC_VERSION;
+    await window.guardarObjetivoFirestore(
+      planes[activo],
+      ultimoInputSnapshot,
+      calculatorVersion,
+      planes[activo].nutritionTarget || null
+    );
     statusBox.textContent = 'Objetivo guardado. Abriendo tus preferencias…';
     if(window.mostrarObjetivoActualFirestore) await window.mostrarObjetivoActualFirestore();
     window.location.assign('/plan.html#config');
@@ -698,7 +899,7 @@ window.addEventListener('macrobalance:auth-changed', function(event){
     mostrarCalculadoraAutenticada();
   }
   if(new URLSearchParams(window.location.search).get('login') === '1' && !state?.user){
-    document.getElementById('modal-overlay').classList.remove('hidden');
+    mostrarModalAuth();
   }
   if(state?.authReady && !state?.user && !new URLSearchParams(window.location.search).has('login')){
     mostrarEstadoAnonimo();
