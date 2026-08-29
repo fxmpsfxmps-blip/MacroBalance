@@ -33,7 +33,8 @@
       calculatorMode: { state: mode ? 'PRESENT' : 'EMPTY', value: mode },
       fields: {
         sex: field('sexo'), age: field('edad'), heightCm: field('altura'), weightKg: field('peso'),
-        bodyFatPercent: field('grasa'), objectiveIndex: field('objetivoPreferido'), activityFactor: field('actividad'),
+        bodyFatPercent: field('grasa'), bodyFatKnown: pressed('bodyfat-yes'), bodyFatMethod: field('bodyfat-method'),
+        objectiveIndex: field('objetivoPreferido'), activityFactor: field('actividad'),
         sleepHours: field('sueno'), stressLevel: field('estres'),
         gymYesPressed: pressed('gym-si'), gymNoPressed: pressed('gym-no'), gymUnknownPressed: pressed('gym-unknown'), gymDays: field('dias-gym'),
         standardSteps: field('standard-steps'), standardStepsCoverage: field('standard-steps-coverage'),

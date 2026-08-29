@@ -21,21 +21,20 @@ function profile(overrides = {}) {
   };
 }
 
-test('PATCH3 Standard produces three finite compatibility targets from the frozen candidate', async () => {
+test('PATCH3 Standard produces one finite compatibility target for the selected goal', async () => {
   const { calculatePatch3Standard, ACTIVE_STANDARD_ID, ACTIVE_STANDARD_VERSION, ACTIVE_STANDARD_FREEZE_ID } = await adapter();
   const result = calculatePatch3Standard(profile());
   assert.equal(result.status, 'COMPATIBILITY_TARGETS_READY');
   assert.equal(result.activeStandardId, ACTIVE_STANDARD_ID);
   assert.equal(result.activeStandardVersion, ACTIVE_STANDARD_VERSION);
   assert.equal(result.activeStandardFreezeId, ACTIVE_STANDARD_FREEZE_ID);
-  assert.deepEqual(result.plans.map(plan => plan.id), ['deficit', 'mantenimiento', 'volumen']);
-  for (const plan of result.plans) {
-    for (const key of ['kcal', 'proteina', 'carbos', 'grasa']) assert.ok(Number.isFinite(plan[key]) && plan[key] >= 0);
-    assert.equal(plan.nutritionTarget.standardId, ACTIVE_STANDARD_ID);
-    assert.equal(plan.nutritionTarget.standardFreezeId, ACTIVE_STANDARD_FREEZE_ID);
-    assert.equal(plan.nutritionTarget.method.selectedPointIsCompatibilityOnly, true);
-    assert.ok(Math.abs(plan.nutritionTarget.energyCheck.differenceKcal) <= 10);
-  }
+  assert.deepEqual(result.plans.map(plan => plan.id), ['mantenimiento']);
+  const plan = result.plans[0];
+  for (const key of ['kcal', 'proteina', 'carbos', 'grasa']) assert.ok(Number.isFinite(plan[key]) && plan[key] >= 0);
+  assert.equal(plan.nutritionTarget.standardId, ACTIVE_STANDARD_ID);
+  assert.equal(plan.nutritionTarget.standardFreezeId, ACTIVE_STANDARD_FREEZE_ID);
+  assert.equal(plan.nutritionTarget.method.selectedPointIsCompatibilityOnly, true);
+  assert.ok(Math.abs(plan.nutritionTarget.energyCheck.differenceKcal) <= 10);
 });
 
 test('explicit NONE and unknown training remain distinct in the active input contract', async () => {
@@ -48,9 +47,20 @@ test('explicit NONE and unknown training remain distinct in the active input con
   assert.equal(unknownOutput.inputProvenance.trainingInputState, 'PARTIAL_OR_UNKNOWN_TRAINING');
 });
 
+test('steps are conditional: maintenance can resolve without them, loss requests evidence', async () => {
+  const { calculatePatch3Standard } = await adapter();
+  const noSteps = profile({ steps: null, stepsCoverage: null, stepsObservationDays: null });
+  const maintenance = calculatePatch3Standard(noSteps);
+  assert.equal(maintenance.status, 'COMPATIBILITY_TARGETS_READY');
+  assert.equal(maintenance.plans[0].id, 'mantenimiento');
+  const loss = calculatePatch3Standard({ ...noSteps, goal: 'LOSS' });
+  assert.equal(loss.status, 'PARTIAL_WITH_UNAVAILABLE_PLAN');
+  assert.equal(loss.plans[0].unavailable, true);
+});
+
 test('compatibility target reaches the unchanged menu engine contract', async () => {
   const { calculatePatch3Standard } = await adapter();
-  const target = calculatePatch3Standard(profile()).plans[1].nutritionTarget;
+  const target = calculatePatch3Standard(profile()).plans[0].nutritionTarget;
   const result = engine.generarMenuSemanal({
     objetivo: target, numeroComidas: 4, numDias: 1, numeroCandidatos: 2,
     usarSoloCarrito: false, alimentosSeleccionados: [], alimentosExcluidos: [],
