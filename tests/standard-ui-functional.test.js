@@ -2,11 +2,18 @@ const test = require('node:test');
 const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const path = require('node:path');
+const vm = require('node:vm');
 
 const root = path.resolve(__dirname, '..');
 const html = fs.readFileSync(path.join(root, 'index.html'), 'utf8');
 const calculator = fs.readFileSync(path.join(root, 'calculadora.js'), 'utf8');
 const firebase = fs.readFileSync(path.join(root, 'firebase-init.js'), 'utf8');
+
+test('calculator bootstrap compiles and exposes the inline EMPEZAR handler', () => {
+  assert.doesNotThrow(() => new vm.Script(calculator, { filename: 'calculadora.js' }));
+  assert.match(calculator, /async function abrirModal\(\)/);
+  assert.match(html, /onclick="abrirModal\(\)"/);
+});
 
 test('Standard is a single calculator with one final target', () => {
   assert.match(html, /id="mode-standard"/);

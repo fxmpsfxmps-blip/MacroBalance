@@ -776,7 +776,6 @@ async function calcular(){
   // no longer part of the active Standard form.
   const horasSueno = null;
   const aguaTexto = '';
-  const nivelEstres = 0;
   const errorBox = document.getElementById('error');
   const resultadoSection = document.getElementById('resultado-section');
 
