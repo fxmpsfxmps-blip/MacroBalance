@@ -8,9 +8,17 @@
     { "source": "/macros", "destination": "/index.html" }
   ],
   "functions": {
-    "api/*.mjs": {
+    "api/generar-*.mjs": {
       "maxDuration": 60,
       "includeFiles": "lib/menu-engine/**"
+    },
+    "api/foods.mjs": {
+      "maxDuration": 60,
+      "includeFiles": "lib/menu-engine/**"
+    },
+    "api/shadow-*.mjs": {
+      "maxDuration": 60,
+      "includeFiles": "lib/shadow/**"
     }
   },
   "headers": [

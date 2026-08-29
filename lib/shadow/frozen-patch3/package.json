@@ -1,0 +1,16 @@
+{
+  "name": "macrobalance-scientific-prototype",
+  "version": "0.1.0-p0",
+  "private": true,
+  "description": "Isolated local MacroBalance Scientific Challenger Prototype 0 laboratory.",
+  "type": "module",
+  "scripts": {
+    "test": "node --test",
+    "serve": "node server.js",
+    "audit": "node scripts/self-audit.js",
+    "validate:gauntlet": "node scripts/run-validation-gauntlet.js"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

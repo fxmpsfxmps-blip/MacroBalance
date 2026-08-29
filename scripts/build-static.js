@@ -42,6 +42,29 @@ for (const directory of ['media', 'assets', 'styles', 'js']) {
   });
 }
 
+function strictBoolean(value, fallback) {
+  if (value === true || value === 'true') return true;
+  if (value === false || value === 'false') return false;
+  return fallback;
+}
+function strictBps(value) {
+  const parsed = Number(value);
+  return Number.isInteger(parsed) && parsed >= 0 && parsed <= 10000 ? parsed : 0;
+}
+const publicKillSwitch = strictBoolean(process.env.MB_SHADOW_KILL_SWITCH, true);
+const publicSampleBps = strictBps(process.env.MB_SHADOW_SAMPLE_BPS);
+const publicRequested = strictBoolean(process.env.MB_SHADOW_CLIENT_ENABLED, false);
+const publicConfig = {
+  schemaVersion: 'shadow-public-config-v1',
+  clientEnabled: publicRequested && !publicKillSwitch && publicSampleBps > 0,
+  killSwitch: publicKillSwitch,
+  sampleBps: publicSampleBps,
+  endpoint: '/api/shadow-evaluate',
+  integrationVersion: 'shadow-deployment-integration-0.1.0',
+};
+fs.writeFileSync(path.join(output, 'js', 'shadow-runtime-config.js'),
+  `window.__MB_SHADOW_CONFIG__ = Object.freeze(${JSON.stringify(publicConfig)});\n`);
+
 for (const file of fs.readdirSync(root).filter(name => /^PLT_[A-Z]+_\d+\.jpg$/i.test(name))) {
   fs.copyFileSync(path.join(root, file), path.join(output, file));
 }

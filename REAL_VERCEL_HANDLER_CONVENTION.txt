@@ -1,0 +1,31 @@
+REAL VERCEL HANDLER CONVENTION — VERIFIED FROM PRODUCTION API SOURCE
+
+Repository: C:\Users\evall\Documents\Codex\2026-08-26\crear\shadow-deployment-integration-worktree
+Inspection date: 2026-08-28
+
+Classification: WEB_REQUEST_RESPONSE
+
+Evidence inspected directly:
+- api/foods.mjs:1-7 imports createHandler, creates handler('foods','GET'), and exports `export function GET(request) { return handler(request); }`.
+- api/generar-menu.mjs:1-7 exports `POST(request)` and returns `handler(request)`.
+- api/generar-menu-semanal.mjs:1-7 exports `POST(request)` and returns `handler(request)`.
+- api/generar-plan-dos-semanas.mjs:1-7 exports `POST(request)` and returns `handler(request)`.
+- lib/server/handler.mjs:1-60 creates Web-standard handlers, calls `await request.json()` inside POST handlers, and returns `new Response(JSON.stringify(...), { status, headers })`.
+
+Production pattern:
+1. Vercel discovers named HTTP exports GET or POST from api/*.mjs.
+2. The handler receives a Web Request.
+3. The handler returns a Web Response.
+4. Production does not use Node response.statusCode/setHeader/end in these serverless entrypoints.
+5. server.js is local Express development parity only, not the Vercel API contract.
+
+Shadow correction:
+- api/shadow-evaluate.mjs now exports named `POST(request)` returning createShadowEvaluateHandler()(request).
+- api/shadow-health.mjs now exports named `GET(request)` returning createShadowHealthHandler()(request).
+- lib/shadow/shadow-http.mjs now returns Web Response directly; send() has no Node req/res dependency.
+- lib/shadow/local-express.mjs is the explicit local-only adapter from Express req/res to Web Request/Web Response.
+
+Direct verification:
+- tests/shadow-deployment-integration.test.js imports POST from api/shadow-evaluate.mjs and GET from api/shadow-health.mjs.
+- Both assertions verify `result instanceof Response` and expected status under default OFF/protected conditions.
+- No compatibility dual contract is used in the Vercel entrypoints.

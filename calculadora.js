@@ -574,6 +574,7 @@ function calcularPrecision(datos){
 }
 
 function calcular(){
+  try { window.MacroBalanceShadow?.captureAndQueueCalculatorSubmission(); } catch (_shadowError) {}
   const peso = parseFloat(document.getElementById('peso').value);
   const altura = parseFloat(document.getElementById('altura').value);
   const edad = parseFloat(document.getElementById('edad').value);
