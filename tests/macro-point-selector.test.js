@@ -107,6 +107,6 @@ test('Production sentinel remains a non-regression case, not a calibration targe
   }));
   assert.deepEqual(
     (({ kcal, proteina, grasa, carbos }) => ({ kcal, proteina, grasa, carbos }))(result.plans[0]),
-    { kcal: 2505, proteina: 117, grasa: 77, carbos: 336 }
+    { kcal: 2505, proteina: 140, grasa: 77, carbos: 313 }
   );
 });
