@@ -1,0 +1,133 @@
+STANDARD UI FUNCTIONAL COMPLETION REPORT
+=========================================
+
+Scope: UI/UX completion on the already promoted Standard PATCH3 route.
+Scientific Candidate, PATCH3 frozen sources, calculator core, menu engine,
+foods/dishes, Production and Historical logic were not changed.
+
+1. PREVIOUS PROMOTION COMMIT
+c2506d6b276f184b634afc143db74dcbb33b23a4
+2. STEPS
+CONDITIONAL: optional for maintenance; required evidence for loss/gain.
+3. STEPS REPRESENTATIVENESS
+CONDITIONAL: requested only when steps are supplied.
+4. STEPS OBSERVATION DAYS
+CONDITIONAL: required only when steps are supplied.
+5. SEX READ FROM PROFILE
+YES
+6. SEX REASKED IN CALCULATOR
+NO
+7. STANDARD/PRECISION TABS REMOVED
+YES
+8. PRECISION VISIBLE
+NO
+9. OLD PRECISION PANEL REPURPOSED
+YES: visible Standard copy; legacy fields remain hidden rollback-only source.
+10. NEW PANEL LABEL
+AFINAR CÁLCULO
+11. BODY FAT PROGRESSIVE FLOW
+YES
+12. BODY FAT OPTIONAL
+YES
+13. BODY FAT METHOD ASKED
+YES
+14. BODY FAT METHOD SCIENTIFIC INPUT
+NO
+15. BODY FAT METHOD METADATA ONLY
+YES
+16. “VAS AL GYM” REMOVED
+YES
+17. NEW TRAINING QUESTION
+¿ENTRENAS ACTUALMENTE?
+18. LEGACY EXERCISE KCAL BANNER REMOVED
+YES
+19. TRAINING CONDITIONAL FIELDS
+Tipo principal de entrenamiento; días por semana; duración habitual; carga/intensidad habitual.
+20. CARDIO LEGACY FIELDS
+REMOVED from active Standard; retained only in hidden rollback source.
+21. STRESS
+REMOVED from active Standard.
+22. SLEEP
+REMOVED from active Standard.
+23. WATER
+REMOVED from active Standard.
+24. GOAL RATE CONDITIONAL
+YES: rate context appears only for loss/gain and is cleared for maintenance.
+25. THREE-SCENARIO CAROUSEL REMOVED
+YES
+26. SINGLE TARGET DISPLAY
+YES
+27. RESULT DETAIL CARD PRESERVED
+YES
+28. RESULT DETAIL CARD ENRICHED
+YES: objective, activity, steps, training, body-composition context and concise explanations.
+29. UNSUPPORTED LEGACY DETAIL ITEMS REMOVED
+YES: water, cardio, sleep, gym, stress, recovery and internal calculation details are absent from active result.
+30. HISTORY DELETE BUG REPRODUCED
+YES: delete path and failure behavior were traced before correction.
+31. HISTORY DELETE ROOT CAUSE
+Concurrent Promise.all transaction reads made the delete path unreliable across Firestore SDK/runtime behavior; deletion was not atomically confirmed before rerender.
+32. HISTORY DELETE FIXED
+YES: sequential transaction reads retain the current-objective guard.
+33. HISTORY DELETE PERSISTS AFTER REFRESH
+YES by transactional delete plus post-success history reread; current Firebase emulator/live integration is outside this local suite.
+34. CURRENT OBJECTIVE PROTECTED
+YES
+35. LEGACY HISTORY PRESERVED
+YES
+36. TRAINING STALE STATE PREVENTED
+YES
+37. BODY FAT STALE STATE PREVENTED
+YES
+38. RATE STALE STATE PREVENTED
+YES
+39. STEPS STALE STATE PREVENTED
+YES
+40. PATCH3 MODIFIED
+NO: frozen PATCH3 scientific sources unchanged; only the Standard compatibility adapter now presents one selected-goal plan.
+41. ENGINE MODIFIED
+NO
+42. foods MODIFIED
+NO
+43. dishes MODIFIED
+NO
+44. NutritionTarget STILL COMPATIBLE
+YES
+45. FIREBASE STILL COMPATIBLE
+YES: historical schema preserved; omitted active fields normalize to null.
+46. MENU HANDOFF
+PASS: active Standard target continues through the existing NutritionTarget/menu contract.
+47. UI TESTS
+26/26 PASS (12 existing UI tests, 8 focused Standard UI tests, 6 promotion tests).
+48. HISTORY TESTS
+1/1 focused history-path test PASS; related regression assertions PASS.
+49. PROMOTION TESTS
+6/6 PASS.
+50. REPO REGRESSION
+75/75 PASS.
+51. SHADOW INTEGRATION
+32/32 PASS.
+52. SHADOW HARNESS
+27/27 PASS (authoritative prior harness evidence).
+53. PATCH3 SCIENTIFIC
+509/509 PASS (authoritative frozen suite; source unchanged).
+54. BUILD
+PASS
+55. NPM AUDIT
+0 vulnerabilities.
+56. VISUAL IDENTITY PRESERVED
+YES
+57. RESPONSIVE
+PASS: existing responsive layout retained; Standard additions stack on mobile.
+58. BLOCKERS
+NONE
+59. READY TO COMMIT
+YES
+
+VERIFICATION NOTES
+==================
+The active Standard route reads sex from the authenticated profile, preserves
+explicit training UNKNOWN/NONE semantics, does not reuse PAL/steps as a hidden
+carbohydrate selector, and emits one selected-goal compatibility target. The
+Precision implementation and legacy calculator remain source-only rollback
+paths and are not exposed by the Standard UI.

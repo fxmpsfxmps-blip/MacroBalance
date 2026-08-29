@@ -1,0 +1,14 @@
+POST-PROMOTION SHADOW ROLE
+==========================
+
+After PATCH3 becomes the active Standard producer, the existing Shadow client
+remains observational only and is flag-off by default. It may be retained as
+transition telemetry to compare the promoted contract and detect regressions;
+it never supplies the active UI result, Firebase target, or menu authorization.
+The next Candidate can later reuse the isolated Shadow endpoint. Shadow failures,
+datastore issues, or disabled flags cannot prevent the active Standard adapter
+from calculating.
+
+RAW INPUT remains separate from normalized active input. Shadow capture now also
+records the Standard activity/training fields, while the mapper preserves
+explicit NONE versus UNKNOWN/PARTIAL semantics.

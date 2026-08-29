@@ -6,6 +6,7 @@ let ultimoContexto = null;
 let ultimoInputSnapshot = null;
 let calculationMode = 'standard';
 const STANDARD_CALC_VERSION = 'v1-2026-08';
+const STANDARD_PROMOTION_ENABLED = true;
 
 function setCalculationMode(mode){
   calculationMode = mode === 'precision' ? 'precision' : 'standard';
@@ -17,7 +18,7 @@ function setCalculationMode(mode){
   if(precisionFields) precisionFields.setAttribute('aria-hidden', String(calculationMode !== 'precision'));
   const title = document.getElementById('calculator-title');
   if(title) title.textContent = calculationMode === 'precision' ? 'Calculadora de precisión' : 'Calculadora estándar';
-  document.getElementById('carrusel-section').style.display = 'none';
+  document.getElementById('resultado-section')?.style.setProperty('display', 'none');
   document.getElementById('error').style.display = 'none';
 }
 
@@ -31,31 +32,35 @@ function setGym(valor){
   vaAlGym = valor;
   document.getElementById('gym-si').classList.toggle('selected', valor === true);
   document.getElementById('gym-no').classList.toggle('selected', valor === false);
+  document.getElementById('gym-unknown')?.classList.toggle('selected', valor === null);
   document.getElementById('gym-si').setAttribute('aria-pressed', String(valor === true));
   document.getElementById('gym-no').setAttribute('aria-pressed', String(valor === false));
+  document.getElementById('gym-unknown')?.setAttribute('aria-pressed', String(valor === null));
   document.getElementById('dias-gym-wrap').style.display = valor ? 'block' : 'none';
-  document.getElementById('gym-kcal-box').style.display = valor ? 'block' : 'none';
+  ['standard-training-type-wrap', 'standard-training-duration-wrap', 'standard-training-workload-wrap']
+    .forEach(function(id){ const element = document.getElementById(id); if(element) element.style.display = valor === true ? 'block' : 'none'; });
+  const days = document.getElementById('dias-gym');
+  const trainingType = document.getElementById('standard-training-type');
+  const trainingMinutes = document.getElementById('standard-training-minutes');
+  const trainingWorkload = document.getElementById('standard-training-workload');
+  if(valor !== true){
+    if(days) days.value = '';
+    if(trainingType) trainingType.value = '';
+    if(trainingMinutes) trainingMinutes.value = '';
+    if(trainingWorkload) trainingWorkload.value = '';
+  }
   const precisionType = document.getElementById('precision-training-type');
   if(precisionType && calculationMode === 'precision'){
     if(valor && precisionType.value === 'none') precisionType.value = 'strength';
     if(!valor) precisionType.value = 'none';
   }
-  if(valor) actualizarKcalGym();
-}
-
-function actualizarKcalGym(){
-  const peso = parseFloat(document.getElementById('peso').value) || 70;
-  const dias = parseInt(document.getElementById('dias-gym').value, 10);
-  const FACTOR_DESCANSO_SERIES = 0.65;
-  const kcalPorSesion = (6 * FACTOR_DESCANSO_SERIES * 3.5 * peso / 200) * 60;
-  const promedioDiario = Math.round((kcalPorSesion * dias) / 7);
-  document.getElementById('gym-kcal-valor').textContent = promedioDiario;
 }
 
 // Muestra el sufijo L o ml en vivo, según la misma regla que usa el cálculo real
 function actualizarUnidadAgua(){
   const input = document.getElementById('agua');
   const span = document.getElementById('agua-unidad');
+  if(!input || !span) return;
   const texto = input.value.trim();
   if(texto === ''){ span.textContent = ''; return; }
   const limpio = texto.toLowerCase().replace(',', '.');
@@ -144,14 +149,20 @@ document.querySelectorAll('.grid input').forEach(function(campo){
   marcarCampoLleno(campo);
   campo.addEventListener('input', function(){
     marcarCampoLleno(campo);
-    if(campo.id === 'agua') actualizarUnidadAgua();
-    if(campo.id === 'peso' && vaAlGym) actualizarKcalGym();
+    if(campo.id === 'standard-steps') actualizarStepsFollowup();
   });
 });
 document.querySelectorAll('.grid select').forEach(function(campo){
   marcarCampoLleno(campo);
   campo.addEventListener('change', function(){ marcarCampoLleno(campo); });
 });
+document.getElementById('bodyfat-yes')?.addEventListener('click', function(){ setBodyFatKnown(true); });
+document.getElementById('bodyfat-no')?.addEventListener('click', function(){ setBodyFatKnown(false); });
+document.getElementById('standard-steps')?.addEventListener('input', actualizarStepsFollowup);
+document.getElementById('objetivoPreferido')?.addEventListener('change', actualizarVisibilidadRitmo);
+setBodyFatKnown(false);
+actualizarStepsFollowup();
+actualizarVisibilidadRitmo();
 actualizarUnidadAgua();
 
 function esRutaMacros(){
@@ -489,7 +500,7 @@ function calcularPrecision(datos){
     return;
   }
 
-  const nivelEstres = parseInt(document.getElementById('estres').value, 10) || null;
+  const nivelEstres = parseInt(document.getElementById('estres')?.value, 10) || null;
   const diasEntrenamiento = datos.vaAlGym ? parseInt(document.getElementById('dias-gym').value, 10) || 0 : 0;
   const trainingType = datos.vaAlGym ? document.getElementById('precision-training-type').value : 'none';
   const stepsValue = parseFloat(document.getElementById('precision-steps').value);
@@ -549,8 +560,9 @@ function calcularPrecision(datos){
   const cardioActivo = precisionInput.cardioType !== 'none' && precisionInput.cardioDays > 0;
   activo = objetivoPreferidoIdx;
   document.getElementById('guardar-status').textContent = '';
-  datos.carruselSection.style.display = 'block';
-  renderCarrusel({
+  const resultSection = datos.resultadoSection || datos.carruselSection;
+  if(resultSection) resultSection.style.display = 'block';
+  renderResultado({
     metodo: metodo,
     tagSueno: recuperacion.constrained ? 'Revisar recuperación' : 'Sin restricción',
     tipSueno: recuperacion.reason ? '<b>Recuperación:</b> ' + recuperacion.reason : '',
@@ -570,23 +582,206 @@ function calcularPrecision(datos){
       : 'No se añadió cardio adicional.',
     precisionDiagnostics: resultado.diagnostics
   });
-  datos.carruselSection.scrollIntoView({behavior:'smooth', block:'start'});
+  resultSection?.scrollIntoView({behavior:'smooth', block:'start'});
 }
 
-function calcular(){
+function mostrarErrorCalculadora(mensaje){
+  const errorBox = document.getElementById('error');
+  if(errorBox){ errorBox.textContent = mensaje; errorBox.style.display = 'block'; }
+}
+
+function standardOccupation(value){
+  return ({
+    '1.2': 'SEATED',
+    '1.35': 'STANDING_WALKING',
+    '1.5': 'PHYSICAL'
+  })[String(value)] || null;
+}
+
+function standardGoal(value){
+  return ({ '0': 'LOSS', '1': 'MAINTENANCE', '2': 'GAIN' })[String(value)] || null;
+}
+
+function actualizarVisibilidadRitmo(){
+  const goal = standardGoal(document.getElementById('objetivoPreferido')?.value);
+  const wrap = document.getElementById('standard-rate-wrap');
+  const rate = document.getElementById('standard-rate');
+  const visible = goal === 'LOSS' || goal === 'GAIN';
+  if(wrap) wrap.style.display = visible ? 'block' : 'none';
+  if(!visible && rate) rate.value = '';
+}
+
+function setBodyFatKnown(known){
+  const yes = known === true;
+  document.getElementById('bodyfat-yes')?.classList.toggle('selected', yes);
+  document.getElementById('bodyfat-no')?.classList.toggle('selected', !yes);
+  document.getElementById('bodyfat-yes')?.setAttribute('aria-pressed', String(yes));
+  document.getElementById('bodyfat-no')?.setAttribute('aria-pressed', String(!yes));
+  const details = document.getElementById('bodyfat-details');
+  if(details) details.style.display = yes ? 'grid' : 'none';
+  if(!yes){
+    const value = document.getElementById('grasa');
+    const method = document.getElementById('bodyfat-method');
+    if(value) value.value = '';
+    if(method) method.value = '';
+  }
+}
+
+function actualizarStepsFollowup(){
+  const input = document.getElementById('standard-steps');
+  const hasSteps = input && input.value.trim() !== '';
+  const followup = document.getElementById('standard-steps-followup');
+  if(followup) followup.style.display = hasSteps ? 'grid' : 'none';
+  if(!hasSteps){
+    const coverage = document.getElementById('standard-steps-coverage');
+    const days = document.getElementById('standard-observation-days');
+    if(coverage) coverage.value = '';
+    if(days) days.value = '';
+  }
+}
+
+function readPatch3StandardProfile(datos){
+  const goal = standardGoal(document.getElementById('objetivoPreferido')?.value);
+  const occupation = standardOccupation(document.getElementById('actividad')?.value);
+  const steps = parseFloat(document.getElementById('standard-steps')?.value);
+  const stepsCoverage = parseFloat(document.getElementById('standard-steps-coverage')?.value);
+  const stepsObservationDays = parseInt(document.getElementById('standard-observation-days')?.value, 10);
+  const trainingType = document.getElementById('standard-training-type')?.value || null;
+  const trainingWorkload = document.getElementById('standard-training-workload')?.value || null;
+  const trainingMinutes = parseFloat(document.getElementById('standard-training-minutes')?.value);
+  const trainingDays = parseInt(document.getElementById('dias-gym')?.value, 10);
+  const requestedRateLabel = document.getElementById('standard-rate')?.value || null;
+
+  if(!goal) throw new Error('Selecciona tu objetivo para continuar.');
+  if(!occupation) throw new Error('Selecciona tu movimiento diario para continuar.');
+  const hasSteps = Number.isFinite(steps) && steps >= 0;
+  if(hasSteps && (!Number.isFinite(stepsCoverage) || !Number.isFinite(stepsObservationDays) || stepsObservationDays < 1)){
+    throw new Error('Indica si esos pasos representan un día habitual y cuántos días observaste.');
+  }
+  if(!hasSteps && goal !== 'MAINTENANCE'){
+    throw new Error('Para pérdida o ganancia necesitamos pasos aproximados, o elige Mantenimiento.');
+  }
+
+  let training;
+  if(vaAlGym === false){
+    training = { trainingStatus: 'REALIZED_HABITUAL', trainingModality: 'NONE', sessionsPerWeek: 0, sessionDurationMin: 0, workload: 'LOW' };
+  } else if(vaAlGym === null){
+    training = { trainingStatus: 'UNKNOWN', trainingModality: null, sessionsPerWeek: null, sessionDurationMin: null, workload: null };
+  } else {
+    if(!trainingType || !Number.isFinite(trainingDays) || trainingDays <= 0 || !Number.isFinite(trainingMinutes) || trainingMinutes <= 0 || !trainingWorkload){
+      throw new Error('Necesitamos un poco más de información sobre tu entrenamiento.');
+    }
+    training = { trainingStatus: 'REALIZED_HABITUAL', trainingModality: trainingType,
+      sessionsPerWeek: trainingDays, sessionDurationMin: trainingMinutes, workload: trainingWorkload };
+  }
+
+  return {
+    profileId: 'ACTIVE_STANDARD_PROFILE',
+    sex: datos.sexo === 'H' ? 'MALE' : datos.sexo === 'M' ? 'FEMALE' : null,
+    age: datos.edad,
+    heightCm: datos.altura,
+    weightKg: datos.peso,
+    bodyFatPercent: Number.isFinite(datos.grasaPct) ? datos.grasaPct : null,
+    bodyFatSource: 'UNKNOWN',
+    bodyFatQuality: 'UNKNOWN',
+    bodyFatMethod: datos.bodyFatMethod || null,
+    goal,
+    occupation,
+    steps: hasSteps ? steps : null,
+    stepsCoverage: hasSteps ? stepsCoverage : null,
+    stepsObservationDays: hasSteps ? stepsObservationDays : null,
+    activityClass: null,
+    activityClassSource: null,
+    requestedRatePerWeek: null,
+    requestedRateLabel,
+    dietPreference: null,
+    lowCarbPreference: null,
+    dietPattern: null,
+    scopeFlags: [],
+    sleepHours: Number.isFinite(datos.horasSueno) ? datos.horasSueno : null,
+    stressLevel: Number.isFinite(datos.nivelEstres) ? datos.nivelEstres : null,
+    longestSessionMinutes: vaAlGym === true ? trainingMinutes : null,
+    twoADay: null,
+    ...training
+  };
+}
+
+async function calcularStandardPatch3(datos){
+  const adapter = window.MacroBalancePatch3Standard;
+  if(!adapter) throw new Error('No se pudo cargar la Calculadora estándar. Recarga la página e intenta de nuevo.');
+  const profile = readPatch3StandardProfile(datos);
+  const result = await adapter.calculate(profile);
+  if(!result || !Array.isArray(result.plans) || result.plans.length !== 1 || result.plans[0].unavailable || !result.plans[0].nutritionTarget){
+    throw new Error('No se pudo resolver el objetivo con la información disponible. Revisa tu entrenamiento e inténtalo de nuevo.');
+  }
+  await Promise.all(result.plans.map(plan => adapter.assertFiniteNutritionTarget(plan.nutritionTarget)));
+
+  planes = result.plans;
+  activo = 0;
+  objetivoPreferidoIdx = activo;
+  ultimoInputSnapshot = {
+    peso: datos.peso, altura: datos.altura, edad: datos.edad, sexo: datos.sexo,
+    grasaPct: Number.isFinite(datos.grasaPct) ? datos.grasaPct : null,
+    bodyFatMethod: profile.bodyFatMethod || null,
+    requestedRateLabel: profile.requestedRateLabel || null,
+    actividadFactor: datos.factorNeat,
+    vaAlGym: vaAlGym === true, diasGym: vaAlGym === true ? profile.sessionsPerWeek : null,
+    metodo: 'PATCH3 Integrated Candidate + compatibility adapter', calculationMode: 'standard',
+    calculatorVersion: result.activeStandardVersion, standardId: result.activeStandardId,
+    standardFreezeId: result.activeStandardFreezeId, patch3Input: profile,
+    trainingInputState: result.candidateOutputs?.find(item => item.goal === profile.goal)?.output?.inputProvenance?.trainingInputState || null
+  };
+
+  document.getElementById('guardar-status').textContent = '';
+  const trainingLabel = vaAlGym === true
+    ? profile.trainingModality + ', ' + profile.sessionsPerWeek + ' día(s)/semana, ' + profile.sessionDurationMin + ' min por sesión, ' + profile.workload.toLowerCase()
+    : vaAlGym === null ? 'No confirmado; faltan datos de entrenamiento.' : 'Ninguno confirmado.';
+  const selectedOutput = result.candidateOutputs?.find(item => item.goal === profile.goal)?.output;
+  const selectedTarget = result.plans[activo].nutritionTarget;
+  datos.resultadoSection.style.display = 'block';
+  renderResultado({
+    objectiveLabel: ({ LOSS: 'Pérdida', MAINTENANCE: 'Mantenimiento', GAIN: 'Ganancia' })[profile.goal],
+    rateLabel: profile.requestedRateLabel ? ({ CONSERVATIVE: 'ritmo conservador', MODERATE: 'ritmo moderado' })[profile.requestedRateLabel] : null,
+    activityLabel: document.getElementById('actividad')?.selectedOptions?.[0]?.textContent || profile.occupation,
+    steps: profile.steps,
+    trainingLabel,
+    bodyFatPercent: profile.bodyFatPercent,
+    bodyFatMethod: profile.bodyFatMethod,
+    explanations: [
+      'El punto mostrado es una selección operativa dentro de la región científica autorizada.',
+      profile.steps == null ? 'Sin pasos: se conserva una estimación más amplia de actividad.' : 'Los pasos se usan como evidencia de movimiento cotidiano.'
+    ],
+    patch3: {
+      scientificStatus: selectedOutput?.scientificStatus || null,
+      presentationStatus: selectedOutput?.presentationStatus || null,
+      teeRange: selectedOutput?.energy?.teeRange || null,
+      targetRange: selectedOutput?.energy?.targetRange || null,
+      trainingState: profile.trainingInput?.state || selectedOutput?.inputProvenance?.trainingInputState || null,
+      selectionPolicy: selectedTarget.method.selectionPolicy
+    }
+  });
+  datos.resultadoSection.scrollIntoView?.({behavior:'smooth', block:'start'});
+}
+
+async function calcular(){
+  try { window.MacroBalanceShadow?.captureAndQueueCalculatorSubmission(); } catch (_shadowError) {}
   const peso = parseFloat(document.getElementById('peso').value);
   const altura = parseFloat(document.getElementById('altura').value);
   const edad = parseFloat(document.getElementById('edad').value);
   const sexo = document.getElementById('sexo').value;
   const factorNeat = parseFloat(document.getElementById('actividad').value) || 1.2;
-  const grasaPct = parseFloat(document.getElementById('grasa').value);
-  const horasSueno = parseFloat(document.getElementById('sueno').value);
-  const aguaTexto = document.getElementById('agua').value;
+  const grasaPct = parseFloat(document.getElementById('grasa')?.value);
+  const bodyFatMethod = document.getElementById('bodyfat-method')?.value || null;
+  // Legacy fallback is retained for rollback only; these contextual fields are
+  // no longer part of the active Standard form.
+  const horasSueno = null;
+  const aguaTexto = '';
+  const nivelEstres = 0;
   const errorBox = document.getElementById('error');
-  const carruselSection = document.getElementById('carrusel-section');
+  const resultadoSection = document.getElementById('resultado-section');
 
   errorBox.style.display = 'none';
-  carruselSection.style.display = 'none';
+  if(resultadoSection) resultadoSection.style.display = 'none';
 
   if(!peso || !altura || !edad || peso <= 0 || altura <= 0 || edad <= 0){
     errorBox.textContent = 'Completa peso, altura y edad con valores válidos.';
@@ -605,17 +800,32 @@ function calcular(){
     return;
   }
 
+  if(calculationMode === 'standard' && STANDARD_PROMOTION_ENABLED){
+    try{
+      await calcularStandardPatch3({
+        peso: peso, altura: altura, edad: edad, sexo: sexo, factorNeat: factorNeat,
+        grasaPct: grasaPct, bodyFatMethod, vaAlGym: vaAlGym, errorBox: errorBox, resultadoSection
+      });
+    }catch(error){
+      console.error('Error al calcular Standard PATCH3:', error);
+      mostrarErrorCalculadora(error.message || 'No fue posible completar el cálculo estándar.');
+    }
+    return;
+  }
+
   objetivoPreferidoIdx = parseInt(document.getElementById('objetivoPreferido').value, 10);
   if(isNaN(objetivoPreferidoIdx)) objetivoPreferidoIdx = 1;
 
   if(calculationMode === 'precision'){
     calcularPrecision({
       peso: peso, altura: altura, edad: edad, sexo: sexo, factorNeat: factorNeat,
-      grasaPct: grasaPct, horasSueno: horasSueno, aguaTexto: aguaTexto,
-      vaAlGym: vaAlGym, errorBox: errorBox, carruselSection: carruselSection
+      grasaPct: grasaPct, horasSueno: null, aguaTexto: '',
+      vaAlGym: vaAlGym, errorBox: errorBox, carruselSection: resultadoSection
     });
     return;
   }
+
+  const carruselSection = resultadoSection;
 
   // 1) BMR: Katch-McArdle si hay % de grasa (usa masa magra, más preciso), si no Mifflin-St Jeor
   let bmr, metodo;
@@ -749,7 +959,7 @@ function calcular(){
 
   activo = objetivoPreferidoIdx;
   carruselSection.style.display = 'block';
-  renderCarrusel({
+  renderResultado({
     metodo: metodo, tagSueno: tagSueno, tipSueno: tipSueno,
     metaAgua: metaAgua.toFixed(1), consumoActual: consumoActual, faltanteAgua: faltanteAgua,
     horasSueno: horasSueno, vaAlGym: vaAlGym, diasGym: diasGym, tipGym: tipGym,
@@ -764,46 +974,8 @@ function iconoSvg(tipo){
   return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 9h14M5 15h14"/></svg>';
 }
 
-function renderCarrusel(contexto){
+function renderResultado(contexto){
   if(contexto) ultimoContexto = contexto;
-  const track = document.getElementById('track');
-  const dots = document.getElementById('dots');
-  track.innerHTML = '';
-  dots.innerHTML = '';
-
-  planes.forEach(function(p, i){
-    let posClass = 'pos-hidden-right';
-    const diff = i - activo;
-    if(diff === 0) posClass = 'pos-center';
-    else if(diff === -1 || diff === planes.length-1) posClass = 'pos-left';
-    else if(diff === 1 || diff === -(planes.length-1)) posClass = 'pos-right';
-    else if(diff < 0) posClass = 'pos-hidden-left';
-
-    const card = document.createElement('button');
-    card.type = 'button';
-    card.className = 'plan-card ' + posClass;
-    card.setAttribute('aria-pressed', String(i === activo));
-    card.setAttribute('aria-label', 'Seleccionar plan ' + p.nombre + ', ' + p.kcal + ' kilocalorías');
-    card.onclick = function(){ activo = i; renderCarrusel(); };
-    const badge = (i === objetivoPreferidoIdx)
-      ? '<div class="marca-objetivo"><svg viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="10"/></svg>Tu objetivo</div>'
-      : '';
-    card.innerHTML = badge +
-      '<div class="tag">' + iconoSvg(p.icon) + p.nombre + '</div>' +
-      '<h3>' + p.kcal + ' kcal</h3>' +
-      '<div class="kcal">por día</div>' +
-      '<div class="macros-mini">' + p.proteina + 'P · ' + p.grasa + 'G · ' + p.carbos + 'C</div>';
-    track.appendChild(card);
-
-    const dot = document.createElement('button');
-    dot.type = 'button';
-    dot.className = 'dot' + (i === activo ? ' active' : '');
-    dot.setAttribute('aria-label', 'Mostrar plan ' + p.nombre);
-    dot.setAttribute('aria-pressed', String(i === activo));
-    dot.onclick = function(){ activo = i; renderCarrusel(); };
-    dots.appendChild(dot);
-  });
-
   renderDetalle();
 }
 
@@ -811,42 +983,34 @@ function renderDetalle(){
   const p = planes[activo];
   const c = ultimoContexto || {};
   const detalle = document.getElementById('detalle');
-
-  let aguaVal = c.metaAgua ? c.metaAgua + ' L' : '—';
-  let aguaClase = '';
-  let aguaSub = '';
-  if(c.consumoActual){
-    if(c.faltanteAgua > 0){ aguaSub = 'Te faltan ' + c.faltanteAgua.toFixed(1) + ' L hoy'; aguaClase='warn'; }
-    else { aguaSub = 'Ya cumpliste tu meta de hoy'; }
-  }
+  if(!detalle || !p) return;
+  const objective = c.objectiveLabel || p.nombre || 'Objetivo';
+  const activity = c.activityLabel || 'Sin especificar';
+  const steps = Number.isFinite(c.steps) ? Math.round(c.steps).toLocaleString('es-MX') + ' pasos/día' : 'No proporcionados';
+  const bodyFat = Number.isFinite(c.bodyFatPercent) ? c.bodyFatPercent + '%'+(c.bodyFatMethod ? ' · '+c.bodyFatMethod : '') : 'No proporcionado';
+  const explanations = Array.isArray(c.explanations) ? c.explanations.slice(0, 4) : [];
+  const explanationHtml = explanations.map(item => '<li>'+item+'</li>').join('');
 
   detalle.innerHTML =
-    '<div class="label-top">Plan seleccionado — ' + p.nombre + '</div>' +
+    '<div class="label-top">Tu objetivo diario · ' + objective + '</div>' +
     '<div class="kcal-grande">' + p.kcal + ' kcal / día</div>' +
     '<div class="macros">' +
       '<div class="macro"><div class="g">' + p.proteina + 'g</div><div class="l">Proteína</div></div>' +
       '<div class="macro"><div class="g">' + p.grasa + 'g</div><div class="l">Grasa</div></div>' +
       '<div class="macro"><div class="g">' + p.carbos + 'g</div><div class="l">Carbohidratos</div></div>' +
     '</div>' +
-    '<div class="extra-row">' +
-      '<div class="box"><div class="l">Agua meta</div><div class="v ' + aguaClase + '">' + aguaVal + '</div>' + (aguaSub ? '<div class="l" style="margin-top:4px;">'+aguaSub+'</div>' : '') + '</div>' +
-      '<div class="box"><div class="l">Cardio</div><div class="v">' + p.cardio + '</div></div>' +
-      '<div class="box"><div class="l">Sueño</div><div class="v">' + (c.horasSueno ? c.horasSueno+'h · '+c.tagSueno : '—') + '</div></div>' +
+    '<div class="result-context-grid">' +
+      '<div class="box"><div class="l">Objetivo</div><div class="v">' + objective + (c.rateLabel ? ' · '+c.rateLabel : '') + '</div></div>' +
+      '<div class="box"><div class="l">Actividad</div><div class="v">' + activity + '</div><div class="l">' + steps + '</div></div>' +
+      '<div class="box"><div class="l">Entrenamiento</div><div class="v">' + (c.trainingLabel || 'No confirmado') + '</div></div>' +
+      '<div class="box"><div class="l">Composición corporal</div><div class="v">' + bodyFat + '</div></div>' +
     '</div>' +
-    '<div class="extra-row" style="margin-top:10px;">' +
-      '<div class="box"><div class="l">Gym</div><div class="v">' + (c.vaAlGym ? c.diasGym + ' día(s)/sem' : 'No entrena') + '</div></div>' +
-      '<div class="box"><div class="l">Estrés</div><div class="v">' + (c.nivelEstres ? c.nivelEstres+'/5 · '+c.tagEstres : '—') + '</div></div>' +
-    '</div>' +
-    (c.tipSueno ? '<div class="sueno-tip">'+c.tipSueno+'</div>' : '') +
-    (c.tipGym ? '<div class="sueno-tip">'+c.tipGym+'</div>' : '') +
-    (c.tipEstres ? '<div class="sueno-tip">'+c.tipEstres+'</div>' : '') +
+    (explanationHtml ? '<div class="result-explanations"><div class="l">Sobre tu cálculo</div><ul>'+explanationHtml+'</ul></div>' : '') +
+    (c.patch3 ? '<div class="sueno-tip"><b>Base científica:</b> PATCH3 · '+(c.patch3.presentationStatus || 'REGION_READY')+
+      (Array.isArray(c.patch3.targetRange) ? ' · energía '+Math.round(c.patch3.targetRange[0])+'–'+Math.round(c.patch3.targetRange[1])+' kcal' : '')+
+      '. El punto mostrado es una selección operativa dentro de la región autorizada.</div>' : '') +
     (p.nutritionTarget ? '<div class="sueno-tip"><b>Coherencia energética:</b> macros = ' + p.nutritionTarget.energyCheck.macroKcal + ' kcal (' + (p.nutritionTarget.energyCheck.differenceKcal >= 0 ? '+' : '') + p.nutritionTarget.energyCheck.differenceKcal + ' kcal por redondeo).</div>' : '') +
     (c.metodo ? '<div class="sueno-tip" style="border-top:none;padding-top:0;">Cálculo base: '+c.metodo+'</div>' : '');
-}
-
-function mover(dir){
-  activo = (activo + dir + planes.length) % planes.length;
-  renderCarrusel();
 }
 
 async function guardarObjetivoActual(){

@@ -1,0 +1,44 @@
+PATCH3 STANDARD INPUT CONTRACT
+==============================
+
+Source: frozen PATCH3 candidate
+MB_CANDIDATE_V1_PATCH3_L005_INPUT_CONTRACT_STABILIZATION_2026-08-28.
+
+Required for every active Standard run
+---------------------------------------
+sex: MALE or FEMALE. Required by normalization and A1 equation selection.
+age: finite adult value accepted by the candidate (19+).
+heightCm: finite positive number.
+weightKg: finite positive number.
+goal: LOSS, MAINTENANCE, or GAIN.
+occupation: mapped movement context; current UI supplies one of SEATED,
+STANDING_WALKING, PHYSICAL.
+steps: finite non-negative number for the Standard activity evidence form.
+stepsCoverage: finite coverage value; the UI exposes 0.9 or 0.7.
+stepsObservationDays: positive observation window.
+
+Training tuple
+--------------
+CONFIRMED_NONE is represented explicitly as trainingModality=NONE,
+sessionsPerWeek=0, sessionDurationMin=0, workload=LOW, realized status.
+Realized training requires modality, sessionsPerWeek > 0,
+sessionDurationMin > 0, and broad workload. Missing any part remains
+PARTIAL_OR_UNKNOWN_TRAINING; it is never coerced to NONE.
+No estoy seguro sends UNKNOWN status with null tuple fields.
+Planned/future training is not represented by this UI and is not inferred.
+
+Optional/contextual
+-------------------
+bodyFatPercent is optional and may be null. The active adapter labels its source
+and quality UNKNOWN; it does not invent DXA/BODPOD evidence.
+sleepHours and stressLevel are optional context signals.
+body composition method, EFA intake, clinical flags, rate point, diet pattern,
+two-a-day, and longest session are not collected by the Standard UI; they remain
+null/unknown and may route to a broader region or future Advanced flow.
+
+Missingness semantics
+---------------------
+EMPTY and unknown training values remain distinct from explicit NONE.
+No field is imputed to avoid a user question. If the required Standard activity
+evidence is absent, the UI shows a short request-information message and does
+not activate the legacy formula fallback.

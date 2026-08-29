@@ -1,0 +1,23 @@
+STANDARD UI INPUT GAP ANALYSIS
+==============================
+
+Input                         Decision                 Reason
+sex                           KEEP_AS_IS               PATCH3 normalization/A1 requires it.
+age/height/weight             KEEP_AS_IS               Required anthropometry.
+body fat                      KEEP_BUT_REMAP           Optional; unknown quality remains explicit.
+goal                          KEEP_BUT_REMAP           UI index maps to PATCH3 direction.
+daily movement                KEEP_BUT_REMAP           Label remains; maps to occupation, not carb demand.
+steps                         ADD_REQUIRED             A1 activity evidence for a usable envelope.
+step coverage                 ADD_REQUIRED             A1 confidence/missingness signal.
+observation days              ADD_REQUIRED             A1 evidence-window signal.
+gym yes/no                    KEEP_BUT_REMAP           Explicit NONE or realized-training branch.
+training modality             ADD_CONDITIONAL          Needed only when Sí is selected.
+training days                 KEEP_BUT_REMAP           Existing dias-gym becomes sessionsPerWeek.
+session duration              ADD_CONDITIONAL          Required to distinguish a realized tuple.
+broad workload                ADD_CONDITIONAL          Required for training context without fake precision.
+stress/sleep/water            KEEP_BUT_REMAP           Context/display; no hidden physiological multipliers in PATCH3.
+precision fields              RETIRED_VISIBLE_ROUTE    Source fields remain for rollback/diagnostics; no Precision mode toggle is exposed.
+
+Progressive disclosure: the three training details are shown only after Sí.
+No estoy seguro preserves PARTIAL_OR_UNKNOWN_TRAINING. Body-fat blank remains
+valid. No visual redesign was made.

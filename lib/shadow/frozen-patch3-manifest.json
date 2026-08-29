@@ -1,0 +1,154 @@
+{
+  "manifestVersion": "frozen-patch3-manifest-1.0.0",
+  "candidateVersion": "SCIENTIFIC_CHALLENGER_V1_B4_SHADOW_PATCH3",
+  "candidateFreezeId": "MB_CANDIDATE_V1_PATCH3_L005_INPUT_CONTRACT_STABILIZATION_2026-08-28",
+  "parentFreezeId": "MB_CANDIDATE_V1_PATCH2_EXTERNAL_REVIEW_FREEZE_2026-08-28",
+  "targetContractVersion": "b4-target-contract-0.1.2",
+  "sourceRoot": "scientific-prototype validated local snapshot",
+  "createdAt": "2026-08-28T00:00:00.000Z",
+  "creationPurpose": "FLAG_OFF_DEPLOYMENT_INTEGRATION_SHADOW_ONLY",
+  "scientificFilesModified": false,
+  "fileCount": 28,
+  "files": [
+    {
+      "path": "benchmarks/profiles.js",
+      "sha256": "5ef341868deaa971806b0d3120153a5a19518cf4214b4069293c3cd164a61c3f",
+      "bytes": 1593
+    },
+    {
+      "path": "config/carbParameterRegistry.js",
+      "sha256": "355dae0dd067379b08faaa596d9542536201db2facda098de23ffa318520202f",
+      "bytes": 6262
+    },
+    {
+      "path": "config/challengerFreezeRegistry.js",
+      "sha256": "cdc8f5df11e8f2741dde843aaa1237eda1e03c126834afa00622560e7c04b866",
+      "bytes": 4213
+    },
+    {
+      "path": "config/fatParameterRegistry.js",
+      "sha256": "147d98dba338bb12069dd31740946d5ea89c4697b3ff92d9960d2d657fd66c44",
+      "bytes": 4731
+    },
+    {
+      "path": "config/guardrailParameterRegistry.js",
+      "sha256": "96d607ce4c13e6be640369c4c794d5855e93394d1644168bf3eb6b8b1a67f2fa",
+      "bytes": 1923
+    },
+    {
+      "path": "config/parameterRegistry.js",
+      "sha256": "c73dfa3b83d4197b9603c211ad9e1fd97b6861e3d6a1a1e4b447d516135aaee5",
+      "bytes": 10371
+    },
+    {
+      "path": "config/proteinParameterRegistry.js",
+      "sha256": "173761ffa1e920eef8d62caa3a6471c4ba9752114cbedd71205cec30629df969",
+      "bytes": 8531
+    },
+    {
+      "path": "config/rateEnergyParameterRegistry.js",
+      "sha256": "26785c7c453796c7dff0517b6717e562225da555e3a01fb56c4398826bc3a994",
+      "bytes": 3813
+    },
+    {
+      "path": "config/resolverCapabilityRegistry.js",
+      "sha256": "dafed063bb15ae74e8164a253fa55b164f2969f0673b6181e5510ba52d2ff623",
+      "bytes": 1022
+    },
+    {
+      "path": "config/solverParameterRegistry.js",
+      "sha256": "0eb5467bcea4c543cd5ebfdac6a5c39e36b4a24455a19725b48e7cd0f99b84b6",
+      "bytes": 1549
+    },
+    {
+      "path": "core/activityClassifier.js",
+      "sha256": "9029ad54c10c8ee92e9589104cdb4ccdd61c97f2f795399c31b06149a5cd70cd",
+      "bytes": 9937
+    },
+    {
+      "path": "core/carbExecutableLab.js",
+      "sha256": "4374e59462a27e22222ae62a69e5c794f120b74500e8ee4f914dd67df61ece1e",
+      "bytes": 5136
+    },
+    {
+      "path": "core/carbLab.js",
+      "sha256": "7023244d86e85ac7517bbf5848e7e067955d8c5e103cc1fcda9d9f5ea2b9083b",
+      "bytes": 13765
+    },
+    {
+      "path": "core/constraintSolverLab.js",
+      "sha256": "257ead07dcc768493c4aed9997883cb091f75deaec05f6b27d0b3e5f8980cd5e",
+      "bytes": 32806
+    },
+    {
+      "path": "core/energy.js",
+      "sha256": "c841dfe72d6cc984c16ff7ec10930b0621ab57acf94294b3e48cae6214386611",
+      "bytes": 5233
+    },
+    {
+      "path": "core/energyGuardrailLab.js",
+      "sha256": "d04624b5ab17e600d760a8669a4c0d49e20273a2a13e3b917bc3f14a8b8c8854",
+      "bytes": 33426
+    },
+    {
+      "path": "core/fatExecutableLab.js",
+      "sha256": "ebdca2c884efb2e2c07a8a3b627b47568972e985d745b01ee0283dafbdea6fc6",
+      "bytes": 1348
+    },
+    {
+      "path": "core/fatLab.js",
+      "sha256": "70a69f1260fc903b6120a6f84cf1d003bdd485ae366dd94519b80366d1d02250",
+      "bytes": 7137
+    },
+    {
+      "path": "core/inputScope.js",
+      "sha256": "7ec6857391644a540eaa8f8057a2cfd93e55f87bb7b4821add6004dff8aed6cf",
+      "bytes": 6708
+    },
+    {
+      "path": "core/integratedChallenger.js",
+      "sha256": "b7e30913ed0da178b6ca992d4cd625015e43473a23339c57d78783d6a337fb66",
+      "bytes": 22703
+    },
+    {
+      "path": "core/proteinLab.js",
+      "sha256": "c6292d4569af0d3dc0b5a8162c04420493addd41c85894ceaafc7c9cf7f85f4e",
+      "bytes": 21093
+    },
+    {
+      "path": "core/rateEnergyLab.js",
+      "sha256": "21c73af4a5379eef60dabfa735c34095d6652f8838844d482f9c78062b4c7e27",
+      "bytes": 17362
+    },
+    {
+      "path": "core/targetContract.js",
+      "sha256": "85f06853a966aaa1adbd81fa15fb8be3fa72417ec0520ca07e035dba46a82ee7",
+      "bytes": 34037
+    },
+    {
+      "path": "models/carbEnvelopeAdapter.js",
+      "sha256": "83520be569ce16ec55b14a3da5b9a7d5568c7ac7f8736664e4a56c8925139e60",
+      "bytes": 5472
+    },
+    {
+      "path": "models/fatEnvelopeAdapter.js",
+      "sha256": "7767fb83a39f6b31cb99b13593399d2c41f9e020afebb8f8b07f183a8a85442c",
+      "bytes": 4770
+    },
+    {
+      "path": "models/proteinEnvelopeAdapter.js",
+      "sha256": "6c421bef2f067a8349d16f361a62f62fce11c1723aa16fe808385f9ed49595c0",
+      "bytes": 5068
+    },
+    {
+      "path": "models/solverEnvelopeAdapter.js",
+      "sha256": "7451688cb2751fef241a8a8c79abdaedeaacd4801537a15695f1fd70404dcf36",
+      "bytes": 689
+    },
+    {
+      "path": "package.json",
+      "sha256": "26e5735b516cf89c1b80726ae52adb73d0f5baafea0e8b695fc1b314746e1c08",
+      "bytes": 435
+    }
+  ]
+}

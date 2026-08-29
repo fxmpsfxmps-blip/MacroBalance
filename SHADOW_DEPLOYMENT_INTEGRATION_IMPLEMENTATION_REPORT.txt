@@ -1,0 +1,74 @@
+SHADOW DEPLOYMENT INTEGRATION — LOCAL IMPLEMENTATION REPORT
+
+Identity
+- Worktree: shadow-deployment-integration-worktree
+- Branch: codex/shadow-deployment-integration-gate
+- Base: c98d279e5e0c1defe000cee831244bcb33e73be4
+- Integration: shadow-deployment-integration-0.1.0
+- State: local only; no deploy, merge, flag activation, external write, or real user.
+
+Architecture
+Calculator calcular() starts the unchanged synchronous Production calculation and invokes one guarded, non-awaited raw hook before Production parsing. With valid future flags only, a minimized snapshot is deferred to POST /api/shadow-evaluate. The server independently enforces flags, kill switch, sample, origin, content type/size, Firebase ID-token verification, keyed UID pseudonymization, semantic mapping, frozen PATCH3 hash verification, validated harness execution, isolated storage, and stop processing. The browser receives only a 202 receipt, never PATCH3 nutrition output.
+
+Changed integration boundary
+- calculadora.js: one inert guarded hook; no formula change.
+- index.html: nonvisual public config/client scripts.
+- scripts/build-static.js: emits public OFF config only.
+- server.js: local parity only; Vercel api/*.mjs remains Production architecture.
+- vercel.json: bundles lib/shadow only for shadow functions.
+- package.json/package-lock.json: jose Firebase JWT verification dependency.
+- .env.example: names flags and secret placeholders without values.
+
+New components
+- js/shadow-client.js and shadow-runtime-config.js
+- api/shadow-evaluate.mjs and api/shadow-health.mjs
+- lib/shadow: config, auth, mapper, store, alerts, HTTP handlers, integrity check, local adapter
+- exact frozen PATCH3 snapshot plus SHA-256 manifest and verifier
+- final validated shadow-harness.cjs/raw-capture.cjs preserved from the preactivation audit
+- tests and two operational/data-policy documents
+
+Raw hook and missingness
+DOM values are captured synchronously before Production normalization. Field state distinguishes PRESENT, EMPTY, MISSING_ELEMENT, and NOT_APPLICABLE; null and explicit zero remain values. The mapper maps only semantic equivalents. Missing/ambiguous training never becomes NONE/0/0/LOW. Mapping provenance, missingFields, contradictions from PATCH3, reason codes, and valuesImputed=false remain auditable.
+
+Flags
+Client=false; server=false; kill=true; sample=0 by default. Invalid/missing configuration is OFF. Kill wins; server is independently authoritative; zero sample prevents execution. Required server prerequisites keep execution disabled when absent.
+
+Authentication and pseudonymization
+Firebase ID tokens are verified against Google secure-token JWKS with exact issuer/audience and RS256. Browser UID is never trusted. A stable, versioned HMAC-SHA256 pseudonym uses a server-only secret of at least 32 characters. Token and raw UID have no persistence path.
+
+Frozen Candidate and harness
+Freeze MB_CANDIDATE_V1_PATCH3_L005_INPUT_CONTRACT_STABILIZATION_2026-08-28, parent PATCH2, 28 exact files. Every execution verifies the manifest; mismatch stops shadow without fallback. Harness version/hash are surfaced in protected health metadata. Vendored scientific and harness files were not edited.
+
+Datastore/retention/alerts
+No Production datastore fallback exists. A separate HTTPS adapter requires a non-Production project/path and token. macrobalance-502bb, users, and goals_history trigger refusal. Local absent infrastructure is DATASTORE_NOT_CONFIGURED and execution remains OFF. Retention is explicitly PROPOSED_OPERATIONAL_POLICY with raw 7d, result 30d, aggregate 90d, alerts incident closure + approved audit window. Critical stops are isolated; alert/control failures cannot escape.
+
+Health/security
+Protected health returns operational metadata only. Static tripwire bans menu-engine, firebase-init, or calculator authority imports. Client excludes PII, UID, water/free text, menus, history, and goals. Server secrets are not emitted into dist.
+
+Rollback
+Set kill=true, client/server=false, sample=0. Production is independent and never awaits shadow. Code rollback removes the guarded hook, script tags, endpoints, and shadow-only files.
+
+Known limitations / external prerequisites
+- Isolated HTTPS datastore service/credentials/TTL are not provisioned.
+- External alert destination is not configured.
+- Owner/privacy/legal approval of retention/access policy is open.
+- Allowed Production origin, 32+ byte pseudonym secret, and health token are not provisioned.
+- Runtime deployment secrets/flags and dashboard/operational ownership are not configured.
+- Production-equivalent output is unavailable at the raw hook and is recorded explicitly as NOT_AVAILABLE_AT_RAW_INPUT_HOOK; no equivalence is fabricated.
+- Real-user activation sample/duration remains unapproved.
+
+Test evidence
+- Deployment-integration tests: 29/29 PASS.
+- Flag-off equivalence: 4/4 PASS.
+- Endpoint adversarial selection: 25/25 PASS (including nested cases).
+- Repository regression (pre-existing suites): 29/29 PASS.
+- Full repository after integration: 58/58 PASS.
+- Independently validated Shadow Harness: 27/27 PASS.
+- Frozen PATCH3 scientific suite: 509/509 PASS.
+- Build: PASS; npm audit --omit=dev: 0 vulnerabilities.
+- Local HTTP flag-off smoke: POST /api/shadow-evaluate -> 202 DISABLED; health without token -> 401.
+- Dist server-secret scan: PASS, no findings.
+- Full transcripts and real-runner profiles are in the predeploy re-audit package.
+
+Readiness
+Ready for independent deployment-integration re-audit when all local gates pass. Not deployed and not authorized for activation.

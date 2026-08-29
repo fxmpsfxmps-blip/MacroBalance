@@ -198,16 +198,28 @@ window.precargarPerfilFirestore = async function precargarPerfilFirestore() {
   setValue('altura', profile.altura);
   setValue('edad', profile.edad);
   setValue('grasa', profile.grasaPct);
+  setValue('bodyfat-method', profile.bodyFatMethod);
+  setValue('standard-steps', profile.standardSteps);
+  setValue('standard-steps-coverage', profile.standardStepsCoverage);
+  setValue('standard-observation-days', profile.standardObservationDays);
   setValue('sueno', profile.horasSueno);
   setValue('agua', profile.aguaTexto);
   setValue('actividad', profile.actividadFactor);
   setValue('estres', profile.nivelEstres);
   if (profile.sexo) setValue('sexo', profile.sexo);
-  if (profile.vaAlGym && typeof window.setGym === 'function') {
-    window.setGym(true);
-    if (profile.diasGym) setValue('dias-gym', profile.diasGym);
-    if (typeof window.actualizarKcalGym === 'function') window.actualizarKcalGym();
+  if (typeof window.setGym === 'function') {
+    window.setGym(profile.vaAlGym === true ? true : profile.vaAlGym === null ? null : false);
   }
+  if (Number.isFinite(profile.grasaPct) && typeof window.setBodyFatKnown === 'function') {
+    window.setBodyFatKnown(true);
+  }
+  if (profile.vaAlGym === true) {
+    if (profile.diasGym) setValue('dias-gym', profile.diasGym);
+    setValue('standard-training-type', profile.trainingModality);
+    setValue('standard-training-minutes', profile.sessionDurationMin);
+    setValue('standard-training-workload', profile.workload);
+  }
+  if (typeof window.actualizarStepsFollowup === 'function') window.actualizarStepsFollowup();
   document.querySelectorAll('.grid input, .grid select').forEach(element => {
     if (typeof window.marcarCampoLleno === 'function') window.marcarCampoLleno(element);
   });
@@ -267,11 +279,22 @@ window.guardarObjetivoFirestore = async function guardarObjetivoFirestore(plan, 
     sexo: inputSnapshot.sexo,
     grasaPct: inputSnapshot.grasaPct,
     actividadFactor: inputSnapshot.actividadFactor,
-    horasSueno: inputSnapshot.horasSueno,
-    aguaTexto: inputSnapshot.aguaTexto,
-    nivelEstres: inputSnapshot.nivelEstres,
-    vaAlGym: inputSnapshot.vaAlGym,
+    // The promoted Standard flow intentionally omits legacy recovery fields.
+    // Persist explicit nulls so Firestore never receives undefined values.
+    horasSueno: inputSnapshot.horasSueno ?? null,
+    aguaTexto: inputSnapshot.aguaTexto ?? null,
+    nivelEstres: inputSnapshot.nivelEstres ?? null,
+    vaAlGym: inputSnapshot.trainingInputState === 'PARTIAL_OR_UNKNOWN_TRAINING'
+      ? null
+      : inputSnapshot.vaAlGym,
     diasGym: inputSnapshot.diasGym,
+    bodyFatMethod: inputSnapshot.bodyFatMethod || null,
+    standardSteps: inputSnapshot.patch3Input?.steps ?? null,
+    standardStepsCoverage: inputSnapshot.patch3Input?.stepsCoverage ?? null,
+    standardObservationDays: inputSnapshot.patch3Input?.stepsObservationDays ?? null,
+    trainingModality: inputSnapshot.patch3Input?.trainingModality ?? null,
+    sessionDurationMin: inputSnapshot.patch3Input?.sessionDurationMin ?? null,
+    workload: inputSnapshot.patch3Input?.workload ?? null,
     updatedAt: serverTimestamp()
   }, { merge: true });
 
@@ -335,10 +358,11 @@ window.eliminarObjetivoHistorialFirestore = async function eliminarObjetivoHisto
   const goalRef = doc(db, 'users', user.uid, 'goals_history', goalId);
   try {
     await runTransaction(db, async transaction => {
-      const [userSnapshot, goalSnapshot] = await Promise.all([
-        transaction.get(userRef),
-        transaction.get(goalRef)
-      ]);
+      // Firestore transactions require reads to be completed before writes;
+      // keep them sequential so the delete is reliable across SDK/runtime
+      // versions while retaining the current-objective guard atomically.
+      const userSnapshot = await transaction.get(userRef);
+      const goalSnapshot = await transaction.get(goalRef);
       if (!goalSnapshot.exists()) throw new Error('El objetivo ya no existe.');
       const currentId = userSnapshot.exists() ? userSnapshot.data().currentObjectiveId : null;
       if (goalId === currentId) throw new Error('El objetivo actual no se puede eliminar.');

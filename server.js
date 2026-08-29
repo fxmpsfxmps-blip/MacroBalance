@@ -7,6 +7,11 @@ const port = Number(process.env.PORT) || 3000;
 const staticDirectory = path.join(__dirname, 'dist');
 
 app.disable('x-powered-by');
+const localShadowReady = import('./lib/shadow/local-express.mjs').then(module => module.createLocalShadowHandlers());
+app.post('/api/shadow-evaluate', express.raw({ type: 'application/json', limit: '32kb' }),
+  (request, response, next) => localShadowReady.then(routes => import('./lib/shadow/local-express.mjs').then(m => m.invokeLocalWebHandler(routes.evaluate, request, response))).catch(next));
+app.get('/api/shadow-health',
+  (request, response, next) => localShadowReady.then(routes => import('./lib/shadow/local-express.mjs').then(m => m.invokeLocalWebHandler(routes.health, request, response))).catch(next));
 app.use(express.json({ limit: '256kb' }));
 
 function endpoint(operation) {
