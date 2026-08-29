@@ -6,6 +6,7 @@ let ultimoContexto = null;
 let ultimoInputSnapshot = null;
 let calculationMode = 'standard';
 const STANDARD_CALC_VERSION = 'v1-2026-08';
+const STANDARD_PROMOTION_ENABLED = true;
 
 function setCalculationMode(mode){
   calculationMode = mode === 'precision' ? 'precision' : 'standard';
@@ -31,10 +32,14 @@ function setGym(valor){
   vaAlGym = valor;
   document.getElementById('gym-si').classList.toggle('selected', valor === true);
   document.getElementById('gym-no').classList.toggle('selected', valor === false);
+  document.getElementById('gym-unknown')?.classList.toggle('selected', valor === null);
   document.getElementById('gym-si').setAttribute('aria-pressed', String(valor === true));
   document.getElementById('gym-no').setAttribute('aria-pressed', String(valor === false));
+  document.getElementById('gym-unknown')?.setAttribute('aria-pressed', String(valor === null));
   document.getElementById('dias-gym-wrap').style.display = valor ? 'block' : 'none';
   document.getElementById('gym-kcal-box').style.display = valor ? 'block' : 'none';
+  ['standard-training-type-wrap', 'standard-training-duration-wrap', 'standard-training-workload-wrap']
+    .forEach(function(id){ const element = document.getElementById(id); if(element) element.style.display = valor === true ? 'block' : 'none'; });
   const precisionType = document.getElementById('precision-training-type');
   if(precisionType && calculationMode === 'precision'){
     if(valor && precisionType.value === 'none') precisionType.value = 'strength';
@@ -573,7 +578,136 @@ function calcularPrecision(datos){
   datos.carruselSection.scrollIntoView({behavior:'smooth', block:'start'});
 }
 
-function calcular(){
+function mostrarErrorCalculadora(mensaje){
+  const errorBox = document.getElementById('error');
+  if(errorBox){ errorBox.textContent = mensaje; errorBox.style.display = 'block'; }
+}
+
+function standardOccupation(value){
+  return ({
+    '1.2': 'SEATED',
+    '1.35': 'STANDING_WALKING',
+    '1.5': 'PHYSICAL'
+  })[String(value)] || null;
+}
+
+function standardGoal(value){
+  return ({ '0': 'LOSS', '1': 'MAINTENANCE', '2': 'GAIN' })[String(value)] || null;
+}
+
+function readPatch3StandardProfile(datos){
+  const goal = standardGoal(document.getElementById('objetivoPreferido')?.value);
+  const occupation = standardOccupation(document.getElementById('actividad')?.value);
+  const steps = parseFloat(document.getElementById('standard-steps')?.value);
+  const stepsCoverage = parseFloat(document.getElementById('standard-steps-coverage')?.value);
+  const stepsObservationDays = parseInt(document.getElementById('standard-observation-days')?.value, 10);
+  const trainingType = document.getElementById('standard-training-type')?.value || null;
+  const trainingWorkload = document.getElementById('standard-training-workload')?.value || null;
+  const trainingMinutes = parseFloat(document.getElementById('standard-training-minutes')?.value);
+  const trainingDays = parseInt(document.getElementById('dias-gym')?.value, 10);
+
+  if(!goal) throw new Error('Selecciona tu objetivo para continuar.');
+  if(!occupation) throw new Error('Selecciona tu movimiento diario para continuar.');
+  if(!Number.isFinite(steps) || steps < 0 || !Number.isFinite(stepsCoverage) || !Number.isFinite(stepsObservationDays) || stepsObservationDays < 1){
+    throw new Error('Añade tus pasos aproximados y el periodo observado para afinar el cálculo.');
+  }
+
+  let training;
+  if(vaAlGym === false){
+    training = { trainingStatus: 'REALIZED_HABITUAL', trainingModality: 'NONE', sessionsPerWeek: 0, sessionDurationMin: 0, workload: 'LOW' };
+  } else if(vaAlGym === null){
+    training = { trainingStatus: 'UNKNOWN', trainingModality: null, sessionsPerWeek: null, sessionDurationMin: null, workload: null };
+  } else {
+    if(!trainingType || !Number.isFinite(trainingDays) || trainingDays <= 0 || !Number.isFinite(trainingMinutes) || trainingMinutes <= 0 || !trainingWorkload){
+      throw new Error('Necesitamos un poco más de información sobre tu entrenamiento.');
+    }
+    training = { trainingStatus: 'REALIZED_HABITUAL', trainingModality: trainingType,
+      sessionsPerWeek: trainingDays, sessionDurationMin: trainingMinutes, workload: trainingWorkload };
+  }
+
+  return {
+    profileId: 'ACTIVE_STANDARD_PROFILE',
+    sex: datos.sexo === 'H' ? 'MALE' : datos.sexo === 'M' ? 'FEMALE' : null,
+    age: datos.edad,
+    heightCm: datos.altura,
+    weightKg: datos.peso,
+    bodyFatPercent: Number.isFinite(datos.grasaPct) ? datos.grasaPct : null,
+    bodyFatSource: 'UNKNOWN',
+    bodyFatQuality: 'UNKNOWN',
+    goal,
+    occupation,
+    steps,
+    stepsCoverage,
+    stepsObservationDays,
+    activityClass: null,
+    activityClassSource: null,
+    requestedRatePerWeek: null,
+    dietPreference: null,
+    lowCarbPreference: null,
+    dietPattern: null,
+    scopeFlags: [],
+    sleepHours: Number.isFinite(datos.horasSueno) ? datos.horasSueno : null,
+    stressLevel: Number.isFinite(datos.nivelEstres) ? datos.nivelEstres : null,
+    longestSessionMinutes: vaAlGym === true ? trainingMinutes : null,
+    twoADay: null,
+    ...training
+  };
+}
+
+async function calcularStandardPatch3(datos){
+  const adapter = window.MacroBalancePatch3Standard;
+  if(!adapter) throw new Error('No se pudo cargar la Calculadora estándar. Recarga la página e intenta de nuevo.');
+  const profile = readPatch3StandardProfile(datos);
+  const result = await adapter.calculate(profile);
+  if(!result || !Array.isArray(result.plans) || result.plans.some(plan => plan.unavailable || !plan.nutritionTarget)){
+    throw new Error('No se pudo resolver el objetivo con la información disponible. Revisa tu entrenamiento e inténtalo de nuevo.');
+  }
+  await Promise.all(result.plans.map(plan => adapter.assertFiniteNutritionTarget(plan.nutritionTarget)));
+
+  planes = result.plans;
+  activo = ({ LOSS: 0, MAINTENANCE: 1, GAIN: 2 })[profile.goal];
+  objetivoPreferidoIdx = activo;
+  const metaAgua = (datos.peso * 0.035) + 0.09;
+  const consumoActual = interpretarAgua(datos.aguaTexto);
+  ultimoInputSnapshot = {
+    peso: datos.peso, altura: datos.altura, edad: datos.edad, sexo: datos.sexo,
+    grasaPct: Number.isFinite(datos.grasaPct) ? datos.grasaPct : null,
+    actividadFactor: datos.factorNeat, horasSueno: Number.isFinite(datos.horasSueno) ? datos.horasSueno : null,
+    aguaTexto: datos.aguaTexto || null, nivelEstres: datos.nivelEstres || null,
+    vaAlGym: vaAlGym === true, diasGym: vaAlGym === true ? profile.sessionsPerWeek : null,
+    metodo: 'PATCH3 Integrated Candidate + compatibility adapter', calculationMode: 'standard',
+    calculatorVersion: result.activeStandardVersion, standardId: result.activeStandardId,
+    standardFreezeId: result.activeStandardFreezeId, patch3Input: profile,
+    trainingInputState: result.candidateOutputs?.find(item => item.goal === profile.goal)?.output?.inputProvenance?.trainingInputState || null
+  };
+
+  document.getElementById('guardar-status').textContent = '';
+  const trainingLabel = vaAlGym === true
+    ? 'Entrenamiento: ' + profile.trainingModality + ', ' + profile.sessionsPerWeek + ' día(s)/semana, ' + profile.sessionDurationMin + ' min por sesión.'
+    : vaAlGym === null ? 'Entrenamiento no confirmado; se conserva como información incompleta.' : 'No se añadió entrenamiento estructurado.';
+  const selectedOutput = result.candidateOutputs?.find(item => item.goal === profile.goal)?.output;
+  const selectedTarget = result.plans[activo].nutritionTarget;
+  datos.carruselSection.style.display = 'block';
+  renderCarrusel({
+    metodo: 'PATCH3 Candidate · ' + result.activeStandardVersion,
+    tagSueno: 'Según configuración',
+    tipSueno: '',
+    metaAgua: metaAgua.toFixed(1), consumoActual, faltanteAgua: metaAgua - consumoActual,
+    horasSueno: datos.horasSueno, vaAlGym: vaAlGym === true, diasGym: profile.sessionsPerWeek || 0,
+    tipGym: trainingLabel, nivelEstres: datos.nivelEstres, tagEstres: datos.nivelEstres ? datos.nivelEstres + '/5' : 'Sin datos',
+    tipEstres: '', patch3: {
+      scientificStatus: selectedOutput?.scientificStatus || null,
+      presentationStatus: selectedOutput?.presentationStatus || null,
+      teeRange: selectedOutput?.energy?.teeRange || null,
+      targetRange: selectedOutput?.energy?.targetRange || null,
+      trainingState: profile.trainingInput?.state || selectedOutput?.inputProvenance?.trainingInputState || null,
+      selectionPolicy: selectedTarget.method.selectionPolicy
+    }
+  });
+  datos.carruselSection.scrollIntoView?.({behavior:'smooth', block:'start'});
+}
+
+async function calcular(){
   try { window.MacroBalanceShadow?.captureAndQueueCalculatorSubmission(); } catch (_shadowError) {}
   const peso = parseFloat(document.getElementById('peso').value);
   const altura = parseFloat(document.getElementById('altura').value);
@@ -603,6 +737,20 @@ function calcular(){
   if(alturaM < 1.45){
     errorBox.textContent = 'Error: con una altura menor a 1.45 m el cálculo no es confiable.';
     errorBox.style.display = 'block';
+    return;
+  }
+
+  if(calculationMode === 'standard' && STANDARD_PROMOTION_ENABLED){
+    try{
+      await calcularStandardPatch3({
+        peso: peso, altura: altura, edad: edad, sexo: sexo, factorNeat: factorNeat,
+        grasaPct: grasaPct, horasSueno: horasSueno, aguaTexto: aguaTexto,
+        nivelEstres: nivelEstres, vaAlGym: vaAlGym, errorBox: errorBox, carruselSection: carruselSection
+      });
+    }catch(error){
+      console.error('Error al calcular Standard PATCH3:', error);
+      mostrarErrorCalculadora(error.message || 'No fue posible completar el cálculo estándar.');
+    }
     return;
   }
 
@@ -841,6 +989,9 @@ function renderDetalle(){
     (c.tipSueno ? '<div class="sueno-tip">'+c.tipSueno+'</div>' : '') +
     (c.tipGym ? '<div class="sueno-tip">'+c.tipGym+'</div>' : '') +
     (c.tipEstres ? '<div class="sueno-tip">'+c.tipEstres+'</div>' : '') +
+    (c.patch3 ? '<div class="sueno-tip"><b>Base científica:</b> PATCH3 · '+(c.patch3.presentationStatus || 'REGION_READY')+
+      (Array.isArray(c.patch3.targetRange) ? ' · energía '+Math.round(c.patch3.targetRange[0])+'–'+Math.round(c.patch3.targetRange[1])+' kcal' : '')+
+      '. El punto mostrado es una selección operativa dentro de la región autorizada.</div>' : '') +
     (p.nutritionTarget ? '<div class="sueno-tip"><b>Coherencia energética:</b> macros = ' + p.nutritionTarget.energyCheck.macroKcal + ' kcal (' + (p.nutritionTarget.energyCheck.differenceKcal >= 0 ? '+' : '') + p.nutritionTarget.energyCheck.differenceKcal + ' kcal por redondeo).</div>' : '') +
     (c.metodo ? '<div class="sueno-tip" style="border-top:none;padding-top:0;">Cálculo base: '+c.metodo+'</div>' : '');
 }

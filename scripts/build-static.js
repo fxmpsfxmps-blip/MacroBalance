@@ -42,6 +42,12 @@ for (const directory of ['media', 'assets', 'styles', 'js']) {
   });
 }
 
+// The promoted Standard loads the byte-frozen PATCH3 candidate through an
+// explicit browser adapter. Only the adapter and frozen scientific snapshot
+// are public static assets; Shadow transport/telemetry remains server-side.
+fs.cpSync(path.join(root, 'lib', 'standard'), path.join(output, 'lib', 'standard'), { recursive: true });
+fs.cpSync(path.join(root, 'lib', 'shadow', 'frozen-patch3'), path.join(output, 'lib', 'shadow', 'frozen-patch3'), { recursive: true });
+
 function strictBoolean(value, fallback) {
   if (value === true || value === 'true') return true;
   if (value === false || value === 'false') return false;

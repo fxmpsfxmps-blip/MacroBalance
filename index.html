@@ -791,7 +791,7 @@
 
   .calculator-mode-switch{
     display:grid;
-    grid-template-columns:repeat(2,minmax(0,1fr));
+    grid-template-columns:1fr;
     gap:8px;
     margin:22px 0 24px;
     padding:5px;
@@ -828,7 +828,9 @@
     border-radius:2px;
     background:rgba(216,27,63,.045);
   }
-  #app[data-calculation-mode="precision"] .precision-panel{display:grid;}
+  /* Precision remains in source for rollback/diagnostics, but is retired
+     from the promoted Standard user route. */
+  #app[data-calculation-mode="precision"] .precision-panel{display:none;}
   .precision-panel__heading{grid-column:1 / -1;}
   .precision-panel__heading strong{
     display:block;
@@ -1023,7 +1025,6 @@
 
   <div class="calculator-mode-switch" role="group" aria-label="Modalidad de cálculo">
     <button type="button" id="mode-standard" aria-pressed="true" onclick="setCalculationMode('standard')" onkeydown="setCalculationModeFromKeyboard(event, 'standard')">Estándar</button>
-    <button type="button" id="mode-precision" aria-pressed="false" onclick="setCalculationMode('precision')" onkeydown="setCalculationModeFromKeyboard(event, 'precision')">Precisión</button>
   </div>
 
  <div class="grid">
@@ -1065,6 +1066,22 @@
         <option value="1.5">Trabajo físico demandante</option>
       </select>
     </div>
+    <div class="field standard-activity-evidence" id="standard-steps-wrap">
+      <label for="standard-steps">Pasos diarios aproximados</label>
+      <input type="number" id="standard-steps" min="0" max="50000" step="500" placeholder="ej: 8000">
+    </div>
+    <div class="field standard-activity-evidence" id="standard-steps-coverage-wrap">
+      <label for="standard-steps-coverage">Representatividad de esos pasos</label>
+      <select id="standard-steps-coverage">
+        <option value="" selected>Selecciona...</option>
+        <option value="0.9">Alta (la mayoría de los días)</option>
+        <option value="0.7">Variable</option>
+      </select>
+    </div>
+    <div class="field standard-activity-evidence" id="standard-observation-days-wrap">
+      <label for="standard-observation-days">Días observados</label>
+      <input type="number" id="standard-observation-days" min="1" max="365" step="1" placeholder="ej: 7">
+    </div>
     <div class="field">
       <label for="estres">Nivel de estrés (1-5)</label>
       <select id="estres">
@@ -1090,6 +1107,7 @@
       <div class="toggle-row">
       <button type="button" class="toggle-opt" id="gym-si" aria-pressed="false" onclick="setGym(true)">Sí</button>
       <button type="button" class="toggle-opt selected" id="gym-no" aria-pressed="true" onclick="setGym(false)">No</button>
+      <button type="button" class="toggle-opt" id="gym-unknown" aria-pressed="false" onclick="setGym(null)">No estoy seguro</button>
       </div>
     </div>
     <div class="field dias-gym-field" id="dias-gym-wrap" style="display:none;grid-column:1 / -1;">
@@ -1105,8 +1123,28 @@
       </select>
       <div class="gym-kcal-box" id="gym-kcal-box">+<b id="gym-kcal-valor">0</b> kcal/día promedio por tu entrenamiento</div>
     </div>
+    <div class="field standard-training-field" id="standard-training-type-wrap" style="display:none;">
+      <label for="standard-training-type">Tipo principal de entrenamiento</label>
+      <select id="standard-training-type">
+        <option value="RESISTANCE" selected>Fuerza / resistencia</option>
+        <option value="ENDURANCE">Cardio / resistencia aeróbica</option>
+        <option value="MIXED">Mixto</option>
+      </select>
+    </div>
+    <div class="field standard-training-field" id="standard-training-duration-wrap" style="display:none;">
+      <label for="standard-training-minutes">Duración habitual (min)</label>
+      <input type="number" id="standard-training-minutes" min="1" max="300" step="5" value="60">
+    </div>
+    <div class="field standard-training-field" id="standard-training-workload-wrap" style="display:none;">
+      <label for="standard-training-workload">Carga habitual</label>
+      <select id="standard-training-workload">
+        <option value="LOW">Ligera</option>
+        <option value="MODERATE" selected>Moderada</option>
+        <option value="HIGH">Alta</option>
+      </select>
+    </div>
 
-    <section class="precision-panel" id="precision-fields" aria-hidden="true" aria-labelledby="precision-fields-title">
+    <section class="precision-panel" id="precision-fields" aria-hidden="true" aria-disabled="true" aria-labelledby="precision-fields-title">
       <div class="precision-panel__heading">
         <strong id="precision-fields-title">Caracterización de precisión</strong>
         <p>Estos datos refinan movimiento, entrenamiento, cardio y velocidad del objetivo. No incluyen lógica clínica.</p>
@@ -1255,6 +1293,7 @@
 <script src="/js/calculator-core.js"></script>
 <script src="/js/shadow-runtime-config.js"></script>
 <script src="/js/shadow-client.js"></script>
+<script src="/js/patch3-standard-adapter.js"></script>
 <script src="calculadora.js"></script>
 <script src="/js/auth-coordinator.js"></script>
 <script src="/js/hero-video.js"></script>

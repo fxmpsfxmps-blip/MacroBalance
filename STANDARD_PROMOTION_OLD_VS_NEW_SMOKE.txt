@@ -1,0 +1,39 @@
+STANDARD PROMOTION OLD VS NEW SMOKE (OBSERVATIONAL)
+===================================================
+
+The comparison is intentionally observational; numerical deltas are not failures.
+Old values come from the legacy formula block preserved for rollback. New values
+come from PATCH3's joint region through the compatibility adapter.
+
+Profiles exercised locally:
+- sedentary young male, explicit NONE
+- sedentary young female, explicit NONE
+- resistance-trained male, 4 x 60 min, MODERATE
+- resistance-trained female, 4 x 60 min, MODERATE
+- overweight/obesity with body fat unknown
+- training UNKNOWN/PARTIAL
+- weight-loss, maintenance, and gain intents
+
+For each successful new run, kcal/P/C/F are finite and energyCheck is coherent
+after display rounding. UNKNOWN/PARTIAL training remains labeled in the PATCH3
+candidate output. The new route does not invoke the old standard formulas.
+
+Representative local values (deficit / maintenance / gain; kcal/P/C/F)
+-----------------------------------------------------------------------
+male 75 kg, NONE:       OLD 1976/160/211/55 | 2443/160/298/68 | 2628/160/333/73
+                         NEW 2265/105/306/69 | 2677/86/399/82  | 2811/86/423/86
+female 55 kg, NONE:     OLD 1500/110/171/42 | 1728/110/214/48 | 1860/110/239/52
+                         NEW 1631/77/218/50  | 1934/63/288/59  | 2031/63/305/62
+male 100 kg, 4x60:      OLD 2432/200/256/68 | 3006/200/364/84 | 3233/200/406/90
+                         NEW 2640/146/332/81  | 3190/146/433/97 | 3350/146/462/102
+male 140 kg, NONE:      OLD 2627/280/213/73 | 3237/280/327/90 | 3457/280/368/96
+                         NEW 2607/129/343/80  | 3377/106/507/103| 3546/106/538/108
+
+The female 55 kg row illustrates why deltas are diagnostic only: an envelope
+selection can make the displayed deficit endpoint close to or above the selected
+maintenance endpoint when uncertainty is wide. The adapter uses one common lower
+energy endpoint per candidate run and discloses the underlying range; it does not
+claim the old/new values are scientifically equivalent.
+
+No physiological equivalence claim is made, and no old/new delta is used as a
+promotion failure criterion.

@@ -95,15 +95,16 @@ test('branding, perfil e historial reflejan el producto actual', () => {
   assert.match(firebase, /transaction\.delete\(goalRef\)/);
 });
 
-test('V2.1 expone ambas calculadoras y persiste un NutritionTarget compatible', () => {
+test('V2.1 expone el Standard promovido y retira Precision de la ruta visible', () => {
   const html = fs.readFileSync(path.join(root, 'index.html'), 'utf8');
   const calculator = fs.readFileSync(path.join(root, 'calculadora.js'), 'utf8');
   const core = fs.readFileSync(path.join(root, 'js', 'calculator-core.js'), 'utf8');
   const firebase = fs.readFileSync(path.join(root, 'firebase-init.js'), 'utf8');
 
   assert.match(html, /id="mode-standard"/);
-  assert.match(html, /id="mode-precision"/);
   assert.match(html, /id="precision-fields"/);
+  assert.doesNotMatch(html, /id="mode-precision"/);
+  assert.match(html, /aria-disabled="true"/);
   assert.match(html, /\/js\/calculator-core\.js/);
   assert.match(calculator, /calculationMode === 'precision'/);
   assert.match(calculator, /STANDARD_CALC_VERSION/);

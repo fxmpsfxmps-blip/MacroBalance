@@ -1,0 +1,82 @@
+STANDARD PATCH3 PROMOTION REPORT
+================================
+
+Promotion branch: codex/standard-patch3-promotion
+Promotion base: 64e326253c1745dd63691e6503748a1676bfbacf
+Candidate freeze: MB_CANDIDATE_V1_PATCH3_L005_INPUT_CONTRACT_STABILIZATION_2026-08-28
+
+ACTIVE ROUTE
+------------
+The active Standard calculator calls calcularStandardPatch3() and the frozen
+PATCH3 integrated challenger through lib/standard/patch3-standard-adapter.mjs.
+The legacy Standard formula block remains byte-preserved below the guarded
+promotion branch as rollback-only code. The Precision source surface remains
+available for rollback/diagnostics but its mode toggle and panel are retired
+from the visible promoted route.
+
+ACTIVE_STANDARD_ID: MACROBALANCE_STANDARD_PATCH3
+ACTIVE_STANDARD_VERSION: standard-patch3-2026-08-29
+TARGET_CONTRACT_VERSION: 2.1
+SELECTION_POLICY: DOWNSTREAM_COMPATIBILITY_LOWER_ENERGY_ENDPOINT_WITH_REVALIDATION
+
+INPUT CONTRACT
+--------------
+Sex is required (MALE/FEMALE) by candidate normalization and A1 equations;
+the existing account sex selector remains the source. Body fat is optional;
+blank values remain null with UNKNOWN source/quality. The Standard form adds
+only the evidence required by PATCH3: approximate daily steps, step
+representativeness, observation days, and conditional realized-training type,
+duration, and broad workload. Explicit gym No maps to CONFIRMED_NONE with
+NONE/0/0/LOW. “No estoy seguro” maps to UNKNOWN with a null training tuple;
+missing training is never coerced to NONE.
+
+INPUT COUNTS
+------------
+Baseline input/select controls: 23. Current markup input/select controls: 29
+(six added; active Standard uses the required subset and keeps contextual
+legacy fields). Buttons are not included in these counts.
+
+OUTPUT/COMPATIBILITY
+--------------------
+Each complete candidate run yields deficit, maintenance, and gain plans with
+finite kcal/proteina/carbos/grasa, schemaVersion 2.1, calculatorVersion,
+standardId, standardFreezeId, scientificResolution, targetRegion, and an
+energyCheck. The selected point is explicitly marked
+selectedPointIsCompatibilityOnly=true and is revalidated against the
+authorized region. Existing Firebase save fields and the unchanged menu
+engine contract (kcal, proteina, carbos, grasa) are preserved. Unknown or
+unavailable candidate outputs remain partial and are not fabricated.
+
+INTEGRITY
+---------
+PATCH3 scientific source and frozen manifest are unchanged. js/calculator-core.js,
+lib/menu-engine/engine.js, foods.json, and dishes.json are unchanged from the
+promotion base. The CRLF-normalizing frozen verifier change is technical
+integrity handling only; it does not alter frozen candidate source semantics.
+
+VALIDATION
+----------
+Full suite: 66/66 PASS (0 fail, 0 skip).
+Promotion tests: 5/5 PASS.
+UI/assets test: 12/12 PASS.
+Shadow/deployment tests: 32/32 PASS.
+Build: PASS.
+npm audit --omit=dev --audit-level=high: 0 vulnerabilities.
+Frozen PATCH3 verification: VERIFIED, 28/28 files.
+Menu handoff smoke: PASS with unchanged engine/data.
+Representative local smoke: finite compatibility targets for sedentary NONE,
+resistance 4x60 MODERATE, female/small, and large-body profiles; UNKNOWN
+training remains PARTIAL_WITH_UNAVAILABLE_PLAN as required.
+Existing Shadow Harness evidence: 27/27 PASS (authoritative pre-promotion
+package). PATCH3 scientific suite: 509/509 PASS (authoritative frozen suite;
+no scientific source changes in this branch).
+git diff --check: PASS (only expected checkout line-ending notices).
+
+FOLLOW-UPS / GATES
+------------------
+No blocker before deployment integration was found. Nonblocking follow-ups
+remain telemetry changed-field reporting, R2 null/null/null/LOW coverage, and
+PC002 invariant versioning. Full visual redesign is future UI work; menu
+naturalness benchmarking/region-native execution is future engine work. This
+branch is prepared for a separately reviewed flag-off/staging deployment; no
+merge, deployment, flag activation, or real-user exposure occurred here.

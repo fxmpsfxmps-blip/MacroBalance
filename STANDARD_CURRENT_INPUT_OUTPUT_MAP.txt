@@ -1,0 +1,44 @@
+STANDARD CURRENT INPUT/OUTPUT MAP
+=================================
+
+Baseline audited at promotion-base 64e326253c1745dd63691e6503748a1676bfbacf.
+The legacy standard path remains in calculadora.js as rollback-only code; the
+active branch in calcular() now calls calcularStandardPatch3().
+
+UI -> DOM -> active PATCH3 profile
+-----------------------------------
+sexo (gate / hidden #sexo) -> sexo -> MALE/FEMALE -> A1 energy equations.
+peso (#peso) -> peso -> weightKg -> A1/B1/B2/B3/A8.
+altura (#altura) -> altura -> heightCm -> A1/B2.
+edad (#edad) -> edad -> age -> A1/B1/A9 context.
+grasa (#grasa, optional) -> grasa -> bodyFatPercent or null; source/quality stay
+UNKNOWN, so no unverified body-composition method is invented.
+objetivoPreferido -> goal -> LOSS/MAINTENANCE/GAIN; all three candidate plans
+are generated and the requested one is selected in the UI.
+actividad -> occupation -> SEATED/STANDING_WALKING/PHYSICAL. The old numeric
+activity factor is retained in the legacy snapshot only and is not reused as a
+carbohydrate selector.
+standard-steps -> steps -> direct finite number.
+standard-steps-coverage -> stepsCoverage -> 0.9 or 0.7.
+standard-observation-days -> stepsObservationDays -> direct finite number.
+gym toggle -> training state. No = CONFIRMED_NONE; Sí exposes the fields below;
+No estoy seguro = PARTIAL_OR_UNKNOWN_TRAINING.
+dias-gym -> sessionsPerWeek.
+standard-training-type -> trainingModality (RESISTANCE/ENDURANCE/MIXED).
+standard-training-minutes -> sessionDurationMin.
+standard-training-workload -> workload (LOW/MODERATE/HIGH).
+estres -> stressLevel (context only).
+sueno -> sleepHours (context only).
+agua -> aguaTexto (downstream hydration display only; not PATCH3 physiology).
+
+Active output path
+------------------
+PATCH3 frozen integratedChallenger -> targetContract joint feasible region ->
+lib/standard/patch3-standard-adapter.mjs compatibility selector -> plans[] /
+NutritionTarget-compatible object -> existing Firebase goal payload and existing
+menu service contract. The adapter point is explicitly marked
+selectedPointIsCompatibilityOnly and revalidated against the authorized region.
+
+Old Standard formulas are not called by the normal Standard path. Precision
+source code remains available for rollback/diagnostics, but its mode toggle and
+panel are retired from the visible promoted Standard route.

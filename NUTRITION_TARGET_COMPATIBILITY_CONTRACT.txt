@@ -1,0 +1,41 @@
+NUTRITIONTARGET COMPATIBILITY CONTRACT
+======================================
+
+Required downstream fields (unchanged names/units)
+--------------------------------------------------
+kcal       number, kcal/day, positive finite; old producer legacy plan.kcal,
+           new producer PATCH3 adapter point.kcal.
+proteina   number, grams/day; old plan.proteina, new point.protein.
+carbos     number, grams/day; old plan.carbos, new point.carbs.
+grasa      number, grams/day; old plan.grasa, new point.fat.
+
+Compatibility object
+--------------------
+schemaVersion: 2.1
+calculationMode: standard
+calculatorVersion: standard-patch3-2026-08-29
+standardId: MACROBALANCE_STANDARD_PATCH3
+standardFreezeId: MB_CANDIDATE_V1_PATCH3_L005_INPUT_CONTRACT_STABILIZATION_2026-08-28
+goalType: deficit | mantenimiento | volumen
+energyCheck: macroKcal and differenceKcal
+weeklyTarget.strategy: uniform
+weeklyTarget.dailyTarget: same four fields
+
+The adapter preserves the legacy Spanish field names consumed by
+firebase-init.js, js/menu-app.js, lib/server/menu-service.cjs, and
+lib/menu-engine/engine.js. It adds only nonbreaking metadata and scientific
+provenance. The selected values are a downstream compatibility selection inside
+PATCH3's authorized joint region; they are not a change to PATCH3 science.
+
+Firebase
+--------
+guardarObjetivoFirestore continues to write result.kcal/proteina/carbos/grasa,
+inputSnapshot, calcVersion, calculatorVersion, calculationMode,
+nutritionTargetVersion, and nutritionTarget. New metadata lives inside the
+NutritionTarget and inputSnapshot; no old document field is removed.
+
+Menu boundary
+-------------
+The unchanged menu engine receives the same four numeric fields. It may realize
+food quantities within that target. No menu-engine source, foods, or dishes were
+modified.

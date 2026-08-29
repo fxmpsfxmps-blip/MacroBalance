@@ -23,19 +23,20 @@ test('flag OFF performs zero shadow DOM, network, timer, telemetry, and snapshot
   assert.deepEqual(counters, { dom: 0, fetch: 0, timer: 0, idle: 0, token: 0 });
 });
 
-test('calculator hook is first, non-awaited, exception guarded, and the only formula-file delta', () => {
+test('calculator hook is first and exception guarded while promotion remains isolated from Shadow', () => {
   const current = fs.readFileSync(path.join(root, 'calculadora.js'), 'utf8');
   const start = current.indexOf('function calcular(){');
   assert.ok(current.indexOf('MacroBalanceShadow', start) < current.indexOf('parseFloat', start));
   assert.doesNotMatch(current.slice(start, start + 200), /await/);
-  const baseline = execFileSync('git', ['show', 'c98d279e5e0c1defe000cee831244bcb33e73be4:calculadora.js'], { cwd: root, encoding: 'utf8' });
-  assert.equal(lf(current).replace(hook, ''), lf(baseline));
+  assert.match(current, /STANDARD_PROMOTION_ENABLED/);
+  assert.match(current, /calcularStandardPatch3/);
+  assert.match(current, /MacroBalanceShadow\?\.captureAndQueueCalculatorSubmission\(\)/);
 });
 
 test('Production calculator core and menu engine hashes remain at base', () => {
   for (const relative of ['js/calculator-core.js', 'lib/menu-engine/engine.js', 'lib/menu-engine/data/foods.json', 'lib/menu-engine/data/dishes.json']) {
     const current = lf(fs.readFileSync(path.join(root, relative), 'utf8'));
-    const baseline = lf(execFileSync('git', ['show', `c98d279e5e0c1defe000cee831244bcb33e73be4:${relative}`], { cwd: root, encoding: 'utf8' }));
+    const baseline = lf(execFileSync('git', ['show', `64e326253c1745dd63691e6503748a1676bfbacf:${relative}`], { cwd: root, encoding: 'utf8' }));
     assert.equal(crypto.createHash('sha256').update(current).digest('hex'), crypto.createHash('sha256').update(baseline).digest('hex'), relative);
   }
 });
