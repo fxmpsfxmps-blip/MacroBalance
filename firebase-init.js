@@ -342,7 +342,7 @@ window.mostrarObjetivoActualFirestore = async function mostrarObjetivoActualFire
 };
 
 // Conserva exactamente la estructura histórica existente de Firestore.
-window.guardarObjetivoFirestore = async function guardarObjetivoFirestore(plan, inputSnapshot, calcVersion, nutritionTarget) {
+window.guardarObjetivoFirestore = async function guardarObjetivoFirestore(plan, inputSnapshot, calcVersion, nutritionTarget, hydrationReference = null) {
   const user = auth.currentUser;
   if (!user) throw new Error('No hay usuario autenticado');
   const userRef = doc(db, 'users', user.uid);
@@ -374,6 +374,9 @@ window.guardarObjetivoFirestore = async function guardarObjetivoFirestore(plan, 
     calculationMode: nutritionTarget?.calculationMode || inputSnapshot?.calculationMode || 'standard',
     nutritionTargetVersion: nutritionTarget?.schemaVersion || null,
     nutritionTarget: nutritionTarget || null,
+    // A reference-only sibling payload; it is intentionally not part of the
+    // Standard NutritionTarget and cannot affect its macro/energy output.
+    hydrationReference: hydrationReference || null,
     notes: '',
     createdAt: serverTimestamp()
   };
