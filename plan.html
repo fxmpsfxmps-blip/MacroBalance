@@ -106,6 +106,10 @@
       <div class="goal-stat"><output id="obj-proteina">—</output><span>Proteína (g)</span></div>
       <div class="goal-stat"><output id="obj-carbos">—</output><span>Carbohidratos (g)</span></div>
       <div class="goal-stat"><output id="obj-grasa">—</output><span>Grasa (g)</span></div>
+      <div class="goal-stat hydration-reference" id="hydration-reference-card" hidden>
+        <svg class="hydration-reference__icon" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M7 3h10l-1 17H8L7 3Z"/><path d="M8.3 13.2c2.1-1.1 5.3-1.1 7.4 0"/></svg>
+        <output id="hydration-reference-value">—</output><span id="hydration-reference-detail">Referencia de agua total</span>
+      </div>
     </div>
 
 
@@ -274,6 +278,11 @@
         >
           ← Editar preferencias
         </button>
+        <div class="plan-export-actions" id="plan-export-actions" hidden>
+          <button class="chip-btn" id="export-plan-pdf" type="button">Exportar PDF</button>
+          <button class="chip-btn" id="export-plan-zip" type="button">Exportar paquete ZIP</button>
+          <span class="plan-export-status" id="plan-export-status" aria-live="polite"></span>
+        </div>
       </div>
 
       <div id="resultado-plan"></div>
@@ -360,8 +369,10 @@
 <script src="/js/asset-resolver.js" defer></script>
 <script src="/js/navigation.js" defer></script>
 <script src="/js/auth-coordinator.js"></script>
+<script src="/js/v3-longitudinal-runtime-config.js"></script>
 <script type="module" src="/firebase-init.js"></script>
 <script src="/js/menu-app.js" defer></script>
+<script src="/js/plan-export.js" defer></script>
 </body>
 
 </html>

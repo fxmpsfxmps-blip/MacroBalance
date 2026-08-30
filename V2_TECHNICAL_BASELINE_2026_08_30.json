@@ -1,0 +1,52 @@
+{
+  "baselineId": "V2_TECHNICAL_BASELINE_2026_08_30",
+  "capturedFromCommit": "910bdf1626c8d3c2da7420bc36a4f50619f30e53",
+  "capturedAt": "2026-08-30",
+  "standard": {
+    "id": "MACROBALANCE_STANDARD_PATCH3",
+    "version": "standard-patch3-protein-r1-2026-08-29",
+    "freezeId": "MB_CANDIDATE_V1_PATCH3_L005_INPUT_CONTRACT_STABILIZATION_2026-08-28",
+    "precisionCalculatorStatus": "LEGACY_DORMANT_NOT_A_V3_DEPENDENCY"
+  },
+  "productionDataHashesSha256": {
+    "lib/menu-engine/data/foods.json": "99b4e0a46777b60d0c8bff58c3480b888f29e69bb256a6a8f546dec0065dc74c",
+    "lib/menu-engine/data/dishes.json": "c26e7db7b85186f6dc175e41ece0495c5937ecafdad9a05077b594f33c71b916",
+    "lib/menu-engine/engine.js": "7cf556ccf0cadec588734cd6f615e2077f90d08405a2a196be90da2a17913a6c",
+    "lib/menu-engine/sustitucion.js": "10da4033bf91807759020ae05291d1433b401cd44089f7b961a374132cedc6b4"
+  },
+  "v22Shadow": {
+    "module": "lib/menu-engine/micronutrient-shadow.cjs",
+    "moduleSha256": "094c587a48208cc5d989158dc777b956d22bfa353b88024a7c5f8afb6d3dbb46",
+    "workingFoodsSha256": "cf5a1bc14bea75be437ca69f6088c825ca0428499115dd70b542c0a7b8d8c044",
+    "provenanceSha256": "f8486e752562eed3c60e1bc0e710c16f53ece02c328cfe13a970dcbaa781fa23",
+    "statusSha256": "2e98fb03ac22cff760c79153949c19462ce9ffc720d5c04f4724e9fd900aadc7",
+    "semantics": "MISSING_NEQ_ZERO; PARTIAL_AND_NOT_ASSESSABLE_REMAIN_EXPLICIT"
+  },
+  "verification": {
+    "npmTest": "124/124 PASS",
+    "npmBuild": "PASS",
+    "gitDiffCheck": "PASS",
+    "dishStructuralValidation": "193 dishes; scale test 500+ dishes",
+    "standardInvariance": "PASS; V3 observation history does not alter NutritionTarget"
+  },
+  "closedTechnicalScope": [
+    "Foods working schema/provenance/status contract",
+    "Dish independence and structural validation",
+    "Micronutrient shadow aggregation",
+    "Generator/substitution/shopping-list compatibility",
+    "Reference-only hydration bridge",
+    "Client-side authoritative-plan PDF/ZIP export"
+  ],
+  "deferred": [
+    "Dish content volume is continuous catalog work, not a V2 closure blocker",
+    "Food and dish images are owner-managed",
+    "Micronutrient adequacy/clinical policy is not implemented",
+    "Professional longitudinal recalibration policy is not implemented"
+  ],
+  "blockedDecisions": [
+    "Firestore rule/index deployment verification requires Firebase project or emulator evidence",
+    "Longitudinal retention/deletion policy requires product governance",
+    "Subjective scale instruments require product decision",
+    "Exact generated-plan historical snapshot policy requires a reproducibility decision"
+  ]
+}

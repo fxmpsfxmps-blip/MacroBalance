@@ -47,6 +47,23 @@ for (const directory of ['media', 'assets', 'styles', 'js']) {
 // are public static assets; Shadow transport/telemetry remains server-side.
 fs.cpSync(path.join(root, 'lib', 'standard'), path.join(output, 'lib', 'standard'), { recursive: true });
 fs.cpSync(path.join(root, 'lib', 'shadow', 'frozen-patch3'), path.join(output, 'lib', 'shadow', 'frozen-patch3'), { recursive: true });
+// V3 longitudinal modules are browser-side, feature-gated infrastructure. They
+// do not modify the Standard calculator and remain dormant by default.
+fs.cpSync(path.join(root, 'lib', 'longitudinal'), path.join(output, 'lib', 'longitudinal'), { recursive: true });
+fs.cpSync(path.join(root, 'lib', 'hydration'), path.join(output, 'lib', 'hydration'), { recursive: true });
+// Dashboard exports consume already-authoritative plan objects. The browser
+// receives only their renderer/serializer plus pinned local vendor modules;
+// the export path never imports a calculator or the menu engine.
+fs.cpSync(path.join(root, 'lib', 'export'), path.join(output, 'lib', 'export'), { recursive: true });
+fs.mkdirSync(path.join(output, 'vendor'), { recursive: true });
+fs.copyFileSync(
+  path.join(root, 'node_modules', 'pdf-lib', 'dist', 'pdf-lib.esm.min.js'),
+  path.join(output, 'vendor', 'pdf-lib.esm.min.js')
+);
+fs.copyFileSync(
+  path.join(root, 'node_modules', 'fflate', 'esm', 'browser.js'),
+  path.join(output, 'vendor', 'fflate.esm.js')
+);
 
 function strictBoolean(value, fallback) {
   if (value === true || value === 'true') return true;
@@ -70,6 +87,16 @@ const publicConfig = {
 };
 fs.writeFileSync(path.join(output, 'js', 'shadow-runtime-config.js'),
   `window.__MB_SHADOW_CONFIG__ = Object.freeze(${JSON.stringify(publicConfig)});\n`);
+
+const publicLongitudinalRequested = strictBoolean(process.env.V3_LONGITUDINAL_ENABLED, false);
+const publicLongitudinalConfig = {
+  schemaVersion: 'v3-longitudinal-public-config-v1',
+  enabled: publicLongitudinalRequested,
+  feature: 'V3_LONGITUDINAL_FOUNDATION',
+  mode: publicLongitudinalRequested ? 'ENABLED' : 'DISABLED',
+};
+fs.writeFileSync(path.join(output, 'js', 'v3-longitudinal-runtime-config.js'),
+  `window.__MB_V3_LONGITUDINAL_CONFIG__ = Object.freeze(${JSON.stringify(publicLongitudinalConfig)});\n`);
 
 for (const file of fs.readdirSync(root).filter(name => /^PLT_[A-Z]+_\d+\.jpg$/i.test(name))) {
   fs.copyFileSync(path.join(root, file), path.join(output, file));

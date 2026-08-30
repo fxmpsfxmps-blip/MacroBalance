@@ -22,6 +22,16 @@ service cloud.firestore {
             || get(/databases/$(database)/documents/users/$(userId)).data.get('currentObjectiveId', null) != goalId
           );
       }
+
+      // V3 observations are append-only. Corrections are represented by a new
+      // document with supersedesId, preserving the original measurement.
+      match /longitudinal_observations/{observationId} {
+        allow read: if isOwner(userId);
+        allow create: if isOwner(userId)
+          && request.resource.data.ownerId == userId
+          && request.resource.data.schemaVersion == 'LONGITUDINAL_SCHEMA_V1';
+        allow update, delete: if false;
+      }
     }
   }
 }

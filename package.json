@@ -16,7 +16,9 @@
   },
   "dependencies": {
     "express": "^5.2.1",
-    "jose": "^6.2.10"
+    "fflate": "0.8.2",
+    "jose": "^6.2.10",
+    "pdf-lib": "1.17.1"
   },
   "devDependencies": {
     "sharp": "^0.35.3"

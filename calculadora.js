@@ -716,7 +716,17 @@ async function calcularStandardPatch3(datos){
   }
   await Promise.all(result.plans.map(plan => adapter.assertFiniteNutritionTarget(plan.nutritionTarget)));
 
-  planes = result.plans;
+  // Hydration is a separate, reference-only payload. If its browser bridge is
+  // unavailable, Standard remains fully usable and no legacy water heuristic is
+  // used as a fallback.
+  let hydrationReference = null;
+  try{
+    hydrationReference = await window.MacroBalanceHydration?.buildReference?.(profile) || null;
+  }catch(hydrationError){
+    console.warn('No se pudo preparar la referencia de hidratación:', hydrationError);
+  }
+
+  planes = result.plans.map(plan => ({ ...plan, hydrationReference }));
   activo = 0;
   objetivoPreferidoIdx = activo;
   ultimoInputSnapshot = {
@@ -729,7 +739,8 @@ async function calcularStandardPatch3(datos){
     metodo: 'PATCH3 Integrated Candidate + compatibility adapter', calculationMode: 'standard',
     calculatorVersion: result.activeStandardVersion, standardId: result.activeStandardId,
     standardFreezeId: result.activeStandardFreezeId, patch3Input: profile,
-    trainingInputState: result.candidateOutputs?.find(item => item.goal === profile.goal)?.output?.inputProvenance?.trainingInputState || null
+    trainingInputState: result.candidateOutputs?.find(item => item.goal === profile.goal)?.output?.inputProvenance?.trainingInputState || null,
+    hydrationReference
   };
 
   document.getElementById('guardar-status').textContent = '';
@@ -745,8 +756,9 @@ async function calcularStandardPatch3(datos){
     activityLabel: document.getElementById('actividad')?.selectedOptions?.[0]?.textContent || profile.occupation,
     steps: profile.steps,
     trainingLabel,
-    bodyFatPercent: profile.bodyFatPercent,
-    bodyFatMethod: profile.bodyFatMethod,
+      bodyFatPercent: profile.bodyFatPercent,
+      bodyFatMethod: profile.bodyFatMethod,
+      hydrationReference,
     explanations: [
       'El punto mostrado es una selección operativa dentro de la región científica autorizada.',
       profile.steps == null ? 'Sin pasos: se conserva una estimación más amplia de actividad.' : 'Los pasos se usan como evidencia de movimiento cotidiano.'
@@ -989,6 +1001,10 @@ function renderDetalle(){
   const bodyFat = Number.isFinite(c.bodyFatPercent) ? c.bodyFatPercent + '%'+(c.bodyFatMethod ? ' · '+c.bodyFatMethod : '') : 'No proporcionado';
   const explanations = Array.isArray(c.explanations) ? c.explanations.slice(0, 4) : [];
   const explanationHtml = explanations.map(item => '<li>'+item+'</li>').join('');
+  const hydration = c.hydrationReference?.status === 'REFERENCE_ONLY'
+    && Number.isFinite(c.hydrationReference?.totalWaterReference?.valueLPerDay)
+    ? c.hydrationReference.totalWaterReference.valueLPerDay.toFixed(1) + ' L/día · agua total (bebidas + alimentos)'
+    : null;
 
   detalle.innerHTML =
     '<div class="label-top">Tu objetivo diario · ' + objective + '</div>' +
@@ -998,6 +1014,7 @@ function renderDetalle(){
       '<div class="macro"><div class="g">' + p.grasa + 'g</div><div class="l">Grasa</div></div>' +
       '<div class="macro"><div class="g">' + p.carbos + 'g</div><div class="l">Carbohidratos</div></div>' +
     '</div>' +
+    (hydration ? '<div class="sueno-tip"><b>Referencia de agua total:</b> '+hydration+'. No es una prescripción de agua simple.</div>' : '') +
     '<div class="result-context-grid">' +
       '<div class="box"><div class="l">Objetivo</div><div class="v">' + objective + (c.rateLabel ? ' · '+c.rateLabel : '') + '</div></div>' +
       '<div class="box"><div class="l">Actividad</div><div class="v">' + activity + '</div><div class="l">' + steps + '</div></div>' +
@@ -1031,7 +1048,8 @@ async function guardarObjetivoActual(){
       planes[activo],
       ultimoInputSnapshot,
       calculatorVersion,
-      planes[activo].nutritionTarget || null
+      planes[activo].nutritionTarget || null,
+      planes[activo].hydrationReference || null
     );
     statusBox.textContent = 'Objetivo guardado. Abriendo tus preferencias…';
     if(window.mostrarObjetivoActualFirestore) await window.mostrarObjetivoActualFirestore();
