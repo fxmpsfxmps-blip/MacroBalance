@@ -1,0 +1,21 @@
+{
+  "indexes": [
+    {
+      "collectionGroup": "longitudinal_observations",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "type", "order": "ASCENDING" },
+        { "fieldPath": "observedAtMs", "order": "ASCENDING" }
+      ]
+    },
+    {
+      "collectionGroup": "longitudinal_observations",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "type", "order": "ASCENDING" },
+        { "fieldPath": "observedAtMs", "order": "DESCENDING" }
+      ]
+    }
+  ],
+  "fieldOverrides": []
+}

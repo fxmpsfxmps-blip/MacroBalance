@@ -2112,6 +2112,20 @@ nav.mainnav a.activo{
   display:block;
 }
 
+.goal-stat.hydration-reference{
+  position:relative;
+  grid-template-columns:auto 1fr;
+  align-items:center;
+  column-gap:8px;
+}
+
+.hydration-reference__icon{
+  width:22px;
+  height:22px;
+  color:var(--accent);
+  grid-row:1 / span 2;
+}
+
 .goal-stat output{
   color:var(--text);
   font-size:clamp(20px, 3vw, 30px);
@@ -2124,6 +2138,19 @@ nav.mainnav a.activo{
   color:var(--muted);
   font-size:11px;
   line-height:1.3;
+}
+
+.plan-export-actions{
+  display:flex;
+  flex-wrap:wrap;
+  align-items:center;
+  gap:8px;
+  margin-top:12px;
+}
+
+.plan-export-status{
+  color:var(--muted);
+  font-size:12px;
 }
 
 .field input,

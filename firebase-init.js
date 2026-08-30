@@ -23,8 +23,26 @@ import {
   runTransaction,
   query,
   getDocs,
-  serverTimestamp
+  serverTimestamp,
+  where,
+  orderBy,
+  limit,
+  startAfter,
+  documentId
 } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js';
+import { createLongitudinalService } from './lib/longitudinal/repository.mjs';
+import { createFirestoreLongitudinalStore } from './lib/longitudinal/firestore-store.mjs';
+import {
+  createWeightObservation,
+  createBodyMeasurementObservation,
+  createSubjectiveObservation,
+  createAdherenceObservation,
+  createRealizedTrainingObservation,
+  createNutritionTargetSnapshot,
+  createPlanReference,
+} from './lib/longitudinal/longitudinal-core.mjs';
+import { buildLongitudinalDashboardData } from './lib/longitudinal/trend-utils.mjs';
+import { adaptGoalHistoryToTargetSnapshots } from './lib/longitudinal/goal-history-adapter.mjs';
 
 // La configuración web de Firebase identifica el proyecto, pero no es una llave
 // privada. Las reglas de Auth/Firestore siguen siendo la barrera de seguridad.
@@ -41,6 +59,15 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
+const longitudinalConfig = Object.freeze({
+  schemaVersion: 'v3-longitudinal-public-config-v1',
+  enabled: window.__MB_V3_LONGITUDINAL_CONFIG__?.enabled === true,
+  feature: window.__MB_V3_LONGITUDINAL_CONFIG__?.feature || 'V3_LONGITUDINAL_FOUNDATION',
+});
+const longitudinalStore = createFirestoreLongitudinalStore({
+  db,
+  sdk: { doc, collection, getDoc, getDocs, query, where, orderBy, limit, startAfter, documentId, runTransaction, serverTimestamp },
+});
 const googleProvider = new GoogleAuthProvider();
 const facebookProvider = new FacebookAuthProvider();
 const microsoftProvider = new OAuthProvider('microsoft.com');
@@ -165,6 +192,86 @@ window.refrescarEstadoMacroBalance = async () => {
   emit('macrobalance:auth-changed', state);
   return state;
 };
+
+function longitudinalServiceForCurrentUser() {
+  const user = auth.currentUser;
+  if (!user) throw new Error('LONGITUDINAL_AUTH_REQUIRED');
+  return createLongitudinalService({ ownerId: user.uid, store: longitudinalStore, enabled: longitudinalConfig.enabled });
+}
+
+function longitudinalInput(input = {}) {
+  return { ...input, ownerId: auth.currentUser?.uid };
+}
+
+// The facade intentionally has no automatic policy hook. A future flagged UI
+// may record observations, but their presence cannot alter Standard targets.
+window.MacroBalanceLongitudinal = Object.freeze({
+  schemaVersion: 'longitudinal-browser-facade-v1',
+  enabled: longitudinalConfig.enabled,
+  async recordObservation(input) {
+    return longitudinalServiceForCurrentUser().record(longitudinalInput(input));
+  },
+  async recordWeight(input) {
+    const observation = createWeightObservation(longitudinalInput(input));
+    return longitudinalServiceForCurrentUser().record(observation);
+  },
+  async recordBodyMeasurement(input) {
+    const observation = createBodyMeasurementObservation(longitudinalInput(input));
+    return longitudinalServiceForCurrentUser().record(observation);
+  },
+  async recordSubjectiveObservation(input) {
+    const observation = createSubjectiveObservation(longitudinalInput(input));
+    return longitudinalServiceForCurrentUser().record(observation);
+  },
+  async recordAdherenceObservation(input) {
+    const observation = createAdherenceObservation(longitudinalInput(input));
+    return longitudinalServiceForCurrentUser().record(observation);
+  },
+  async recordRealizedTrainingObservation(input) {
+    const observation = createRealizedTrainingObservation(longitudinalInput(input));
+    return longitudinalServiceForCurrentUser().record(observation);
+  },
+  async recordTargetSnapshot(input) {
+    const observation = createNutritionTargetSnapshot(longitudinalInput(input));
+    return longitudinalServiceForCurrentUser().record(observation);
+  },
+  async recordPlanReference(input) {
+    const observation = createPlanReference(longitudinalInput(input));
+    return longitudinalServiceForCurrentUser().record(observation);
+  },
+  async listObservations(options) {
+    return longitudinalServiceForCurrentUser().list(options);
+  },
+  async getObservation(id) {
+    return longitudinalServiceForCurrentUser().get(id);
+  },
+  async correctObservation(previousId, correction) {
+    return longitudinalServiceForCurrentUser().correct(previousId, longitudinalInput(correction));
+  },
+  async getDashboardData(options = {}) {
+    const service = longitudinalServiceForCurrentUser();
+    // This is a paged data bridge, not a lifetime-history download. A future
+    // flagged view must request the time window it needs and follow nextCursor.
+    const observationPage = await service.list({
+      direction: 'asc',
+      from: options.from,
+      to: options.to,
+      limit: options.limit == null ? 100 : options.limit,
+      includeSuperseded: options.includeSuperseded === true,
+    });
+    const goals = await window.obtenerHistorialObjetivosFirestore();
+    const targetHistory = adaptGoalHistoryToTargetSnapshots({ ownerId: auth.currentUser.uid, goals });
+    return Object.freeze({
+      ...buildLongitudinalDashboardData([...observationPage.items, ...targetHistory]),
+      observationQuery: Object.freeze({
+        state: observationPage.nextCursor ? 'PARTIAL_PAGED_HISTORY' : 'KNOWN',
+        returnedCount: observationPage.items.length,
+        nextCursor: observationPage.nextCursor,
+        direction: observationPage.direction,
+      }),
+    });
+  },
+});
 
 window.obtenerObjetivoActualFirestore = async function obtenerObjetivoActualFirestore() {
   if (!auth.currentUser) return null;

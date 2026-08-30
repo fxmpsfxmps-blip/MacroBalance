@@ -6,6 +6,7 @@ dist/
 !.env.example
 *.log
 npm-debug.log*
+.npm-cache-v3/
 .DS_Store
 Thumbs.db
 coverage/

@@ -1130,6 +1130,27 @@ function clavePlanSesion(){
 }
 
 
+// Exports receive the current, already-authoritative generated plan and goal.
+// This is intentionally a read-only source: PDF/ZIP code must never run
+// nutrition, hydration, micronutrient, generator, or shopping-list logic.
+window.MacroBalancePlanExportSource = function MacroBalancePlanExportSource(){
+  const currentGoal = window.macroBalanceState?.currentGoal || null;
+  if(!plan || !currentGoal) return null;
+  return Object.freeze({
+    plan,
+    currentGoal,
+    micronutrientObservability: null
+  });
+};
+
+
+function publicarCambioPlan(){
+  window.dispatchEvent(new CustomEvent('macrobalance:plan-changed', {
+    detail: Object.freeze({ available: Boolean(plan?.semana_1) })
+  }));
+}
+
+
 function guardarPlanEnSesion(){
   const key = clavePlanSesion();
   if(!key || !plan) return;
@@ -1174,6 +1195,7 @@ function restaurarPlanDeSesion(goalId){
         );
     }
     renderPlan();
+    publicarCambioPlan();
   }catch(error){
     console.warn('El plan temporal no pudo restaurarse:', error);
     sessionStorage.removeItem(key);
@@ -1297,6 +1319,7 @@ async function generar(){
       'todas';
 
     guardarPlanEnSesion();
+    publicarCambioPlan();
 
 
     renderPlan();
@@ -1312,6 +1335,7 @@ async function generar(){
 
 
     plan = null;
+    publicarCambioPlan();
     const mensaje = error.name === 'AbortError'
       ? 'La generación superó el tiempo de espera. Puedes reintentar sin perder tus preferencias.'
       : error.message || 'Ocurrió un error inesperado al generar el plan.';
@@ -2831,6 +2855,20 @@ function pintarObjetivoActivo(){
           : 'obj-kcal';
     document.getElementById(id).textContent = Math.round(value);
   });
+  // Dashboard consumes the versioned payload persisted with the goal. It never
+  // reconstructs hydration from calories, weight, training, or legacy fields.
+  const hydration = window.macroBalanceState?.currentGoal?.hydrationReference;
+  const card = document.getElementById('hydration-reference-card');
+  const value = document.getElementById('hydration-reference-value');
+  const detail = document.getElementById('hydration-reference-detail');
+  const liters = hydration?.status === 'REFERENCE_ONLY'
+    ? Number(hydration?.totalWaterReference?.valueLPerDay)
+    : null;
+  if(card) card.hidden = !Number.isFinite(liters);
+  if(Number.isFinite(liters)){
+    if(value) value.textContent = liters.toFixed(1) + ' L/día';
+    if(detail) detail.textContent = 'Agua total · bebidas + alimentos';
+  }
   actualizarConsistenciaObjetivo();
 }
 
