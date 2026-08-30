@@ -640,7 +640,7 @@ function actualizarStepsFollowup(){
   }
 }
 
-function readPatch3StandardProfile(datos){
+async function readPatch3StandardProfile(datos, adapter){
   const goal = standardGoal(document.getElementById('objetivoPreferido')?.value);
   const occupation = standardOccupation(document.getElementById('actividad')?.value);
   const steps = parseFloat(document.getElementById('standard-steps')?.value);
@@ -652,15 +652,7 @@ function readPatch3StandardProfile(datos){
   const trainingDays = parseInt(document.getElementById('dias-gym')?.value, 10);
   const requestedRateLabel = document.getElementById('standard-rate')?.value || null;
 
-  if(!goal) throw new Error('Selecciona tu objetivo para continuar.');
-  if(!occupation) throw new Error('Selecciona tu movimiento diario para continuar.');
   const hasSteps = Number.isFinite(steps) && steps >= 0;
-  if(hasSteps && (!Number.isFinite(stepsCoverage) || !Number.isFinite(stepsObservationDays) || stepsObservationDays < 1)){
-    throw new Error('Indica si esos pasos representan un día habitual y cuántos días observaste.');
-  }
-  if(!hasSteps && goal !== 'MAINTENANCE'){
-    throw new Error('Para pérdida o ganancia necesitamos pasos aproximados, o elige Mantenimiento.');
-  }
 
   let training;
   if(vaAlGym === false){
@@ -668,12 +660,21 @@ function readPatch3StandardProfile(datos){
   } else if(vaAlGym === null){
     training = { trainingStatus: 'UNKNOWN', trainingModality: null, sessionsPerWeek: null, sessionDurationMin: null, workload: null };
   } else {
-    if(!trainingType || !Number.isFinite(trainingDays) || trainingDays <= 0 || !Number.isFinite(trainingMinutes) || trainingMinutes <= 0 || !trainingWorkload){
-      throw new Error('Necesitamos un poco más de información sobre tu entrenamiento.');
-    }
     training = { trainingStatus: 'REALIZED_HABITUAL', trainingModality: trainingType,
       sessionsPerWeek: trainingDays, sessionDurationMin: trainingMinutes, workload: trainingWorkload };
   }
+
+  if(!adapter?.validateIntake) throw new Error('No se pudo cargar la validación de la Calculadora estándar. Recarga la página e intenta de nuevo.');
+  const preflight = await adapter.validateIntake({
+    goal,
+    occupation,
+    steps: hasSteps ? steps : null,
+    stepsCoverage: hasSteps ? stepsCoverage : null,
+    stepsObservationDays: hasSteps ? stepsObservationDays : null,
+    training,
+    trainingSelection: vaAlGym === true ? 'YES' : vaAlGym === false ? 'NO' : 'UNKNOWN'
+  });
+  if(!preflight.valid) throw new Error(preflight.issues[0].message);
 
   return {
     profileId: 'ACTIVE_STANDARD_PROFILE',
@@ -709,10 +710,13 @@ function readPatch3StandardProfile(datos){
 async function calcularStandardPatch3(datos){
   const adapter = window.MacroBalancePatch3Standard;
   if(!adapter) throw new Error('No se pudo cargar la Calculadora estándar. Recarga la página e intenta de nuevo.');
-  const profile = readPatch3StandardProfile(datos);
+  const profile = await readPatch3StandardProfile(datos, adapter);
   const result = await adapter.calculate(profile);
   if(!result || !Array.isArray(result.plans) || result.plans.length !== 1 || result.plans[0].unavailable || !result.plans[0].nutritionTarget){
-    throw new Error('No se pudo resolver el objetivo con la información disponible. Revisa tu entrenamiento e inténtalo de nuevo.');
+    const resolution = await adapter.resolveUnavailability?.(result);
+    const error = new Error(resolution?.userMessage || 'No se pudo resolver el objetivo con la información disponible.');
+    error.standardResolution = resolution || null;
+    throw error;
   }
   await Promise.all(result.plans.map(plan => adapter.assertFiniteNutritionTarget(plan.nutritionTarget)));
 
