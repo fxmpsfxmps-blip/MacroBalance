@@ -154,6 +154,7 @@ document.querySelectorAll('.grid input').forEach(function(campo){
   campo.addEventListener('input', function(){
     marcarCampoLleno(campo);
     if(campo.id === 'standard-steps') actualizarStepsFollowup();
+    if(['peso', 'altura', 'edad'].includes(campo.id)) actualizarLowBodySizePreflightVisibility();
   });
 });
 document.querySelectorAll('.grid select').forEach(function(campo){
@@ -168,6 +169,7 @@ setBodyFatKnown(false);
 actualizarStepsFollowup();
 actualizarVisibilidadRitmo();
 actualizarUnidadAgua();
+actualizarLowBodySizePreflightVisibility();
 
 function esRutaMacros(){
   return window.location.hash === '#macros' ||
@@ -704,6 +706,30 @@ function actualizarStepsFollowup(){
   }
 }
 
+function lowBodySizePreflightUiEnabled(){
+  return window.__MB_LOW_BODY_SIZE_PREFLIGHT_CONFIG__?.enabled === true;
+}
+
+function lowBodySizePreflightAnswers(){
+  const q1 = document.getElementById('low-body-size-q1')?.value || null;
+  const q2 = document.getElementById('low-body-size-q2')?.value || null;
+  return { q1, q2 };
+}
+
+function actualizarLowBodySizePreflightVisibility(){
+  const section = document.getElementById('low-body-size-preflight-v1');
+  if(!section) return;
+  const age = parseFloat(document.getElementById('edad')?.value);
+  const weightKg = parseFloat(document.getElementById('peso')?.value);
+  const heightCm = parseFloat(document.getElementById('altura')?.value);
+  const bmi = Number.isFinite(weightKg) && Number.isFinite(heightCm) && heightCm > 0
+    ? weightKg / Math.pow(heightCm / 100, 2) : null;
+  const applicable = lowBodySizePreflightUiEnabled() && Number.isFinite(age) && age >= 19
+    && Number.isFinite(bmi) && bmi < 18.5;
+  section.style.display = applicable ? 'grid' : 'none';
+  section.setAttribute('aria-hidden', String(!applicable));
+}
+
 async function readPatch3StandardProfile(datos, adapter){
   const goal = standardGoal(document.getElementById('objetivoPreferido')?.value);
   const occupation = standardOccupation(document.getElementById('actividad')?.value);
@@ -779,6 +805,15 @@ async function calcularStandardPatch3(datos){
   const adapter = window.MacroBalancePatch3Standard;
   if(!adapter) throw new Error('No se pudo cargar la Calculadora estándar. Recarga la página e intenta de nuevo.');
   const profile = await readPatch3StandardProfile(datos, adapter);
+  // Independent shadow classification. It does not enter `profile`, does not
+  // change the authoritative calculation, and cannot release a target that
+  // the current Standard path would reject.
+  try{
+    const lowBodySizeShadow = await adapter.evaluateLowBodySizePreflightShadow?.(profile, lowBodySizePreflightAnswers());
+    if(lowBodySizePreflightUiEnabled()) window.__MB_LOW_BODY_SIZE_PREFLIGHT_LAST_SHADOW__ = lowBodySizeShadow || null;
+  }catch(lowBodySizeShadowError){
+    console.warn('No se pudo ejecutar el preflight de tamaño corporal en sombra:', lowBodySizeShadowError);
+  }
   const result = await adapter.calculate(profile);
   if(!result || !Array.isArray(result.plans) || result.plans.length !== 1 || result.plans[0].unavailable || !result.plans[0].nutritionTarget){
     const resolution = await adapter.resolveUnavailability?.(result);

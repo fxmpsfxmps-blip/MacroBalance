@@ -98,6 +98,16 @@ const publicLongitudinalConfig = {
 fs.writeFileSync(path.join(output, 'js', 'v3-longitudinal-runtime-config.js'),
   `window.__MB_V3_LONGITUDINAL_CONFIG__ = Object.freeze(${JSON.stringify(publicLongitudinalConfig)});\n`);
 
+const publicLowBodySizePreflightRequested = strictBoolean(process.env.LOW_BODY_SIZE_PREFLIGHT_V1_ENABLED, false);
+const publicLowBodySizePreflightConfig = {
+  schemaVersion: 'low-body-size-preflight-public-config-v1',
+  enabled: publicLowBodySizePreflightRequested,
+  feature: 'LOW_BODY_SIZE_PREFLIGHT_V1_ENABLED',
+  mode: publicLowBodySizePreflightRequested ? 'SHADOW_UI' : 'SHADOW_SILENT',
+};
+fs.writeFileSync(path.join(output, 'js', 'low-body-size-preflight-runtime-config.js'),
+  `window.__MB_LOW_BODY_SIZE_PREFLIGHT_CONFIG__ = Object.freeze(${JSON.stringify(publicLowBodySizePreflightConfig)});\n`);
+
 for (const file of fs.readdirSync(root).filter(name => /^PLT_[A-Z]+_\d+\.jpg$/i.test(name))) {
   fs.copyFileSync(path.join(root, file), path.join(output, file));
 }

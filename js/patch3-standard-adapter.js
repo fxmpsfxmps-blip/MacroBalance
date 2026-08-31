@@ -11,6 +11,9 @@
   async function preflightModule() {
     return import('/lib/standard/standard-intake-preflight.mjs');
   }
+  async function lowBodySizePreflightModule() {
+    return import('/lib/standard/low-body-size-preflight-v1.mjs');
+  }
   root.MacroBalancePatch3Standard = Object.freeze({
     load,
     async calculate(profile) {
@@ -28,6 +31,14 @@
     async validateIntake(input) {
       const module = await preflightModule();
       return module.validateStandardIntakePreflight(input);
+    },
+    async evaluateLowBodySizePreflightShadow(profile, answers, options) {
+      const module = await lowBodySizePreflightModule();
+      return module.evaluateLowBodySizePreflightV1(profile, answers, options);
+    },
+    async lowBodySizePreflightUiConfig() {
+      const module = await lowBodySizePreflightModule();
+      return module.lowBodySizePreflightUiConfig();
     },
   });
 })(window);
