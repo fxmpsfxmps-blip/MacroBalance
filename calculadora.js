@@ -30,20 +30,24 @@ function setCalculationModeFromKeyboard(event, mode){
 
 function setGym(valor){
   vaAlGym = valor;
-  document.getElementById('gym-si').classList.toggle('selected', valor === true);
+  const realized = valor === true;
+  const planned = valor === 'planned';
+  document.getElementById('gym-si').classList.toggle('selected', realized);
   document.getElementById('gym-no').classList.toggle('selected', valor === false);
+  document.getElementById('gym-planned')?.classList.toggle('selected', planned);
   document.getElementById('gym-unknown')?.classList.toggle('selected', valor === null);
-  document.getElementById('gym-si').setAttribute('aria-pressed', String(valor === true));
+  document.getElementById('gym-si').setAttribute('aria-pressed', String(realized));
   document.getElementById('gym-no').setAttribute('aria-pressed', String(valor === false));
+  document.getElementById('gym-planned')?.setAttribute('aria-pressed', String(planned));
   document.getElementById('gym-unknown')?.setAttribute('aria-pressed', String(valor === null));
-  document.getElementById('dias-gym-wrap').style.display = valor ? 'block' : 'none';
+  document.getElementById('dias-gym-wrap').style.display = realized ? 'block' : 'none';
   ['standard-training-type-wrap', 'standard-training-duration-wrap', 'standard-training-workload-wrap']
-    .forEach(function(id){ const element = document.getElementById(id); if(element) element.style.display = valor === true ? 'block' : 'none'; });
+    .forEach(function(id){ const element = document.getElementById(id); if(element) element.style.display = realized ? 'block' : 'none'; });
   const days = document.getElementById('dias-gym');
   const trainingType = document.getElementById('standard-training-type');
   const trainingMinutes = document.getElementById('standard-training-minutes');
   const trainingWorkload = document.getElementById('standard-training-workload');
-  if(valor !== true){
+  if(!realized){
     if(days) days.value = '';
     if(trainingType) trainingType.value = '';
     if(trainingMinutes) trainingMinutes.value = '';
@@ -51,8 +55,8 @@ function setGym(valor){
   }
   const precisionType = document.getElementById('precision-training-type');
   if(precisionType && calculationMode === 'precision'){
-    if(valor && precisionType.value === 'none') precisionType.value = 'strength';
-    if(!valor) precisionType.value = 'none';
+    if(realized && precisionType.value === 'none') precisionType.value = 'strength';
+    if(!realized) precisionType.value = 'none';
   }
 }
 
@@ -585,9 +589,69 @@ function calcularPrecision(datos){
   resultSection?.scrollIntoView({behavior:'smooth', block:'start'});
 }
 
-function mostrarErrorCalculadora(mensaje){
+const STANDARD_RESOLUTION_ACTION_LABELS = Object.freeze({
+  COMPLETE_INFORMATION: 'Completar información',
+  DECLARE_PLANNED_TRAINING: 'Voy a empezar a entrenar',
+  CALCULATE_MAINTENANCE: 'Calcular mantenimiento',
+  CHANGE_GOAL: 'Cambiar objetivo',
+  PROVIDE_REALIZED_TRAINING: 'Ya empecé a entrenar'
+});
+
+function executeStandardResolutionAction(action){
+  if(action === 'COMPLETE_INFORMATION'){
+    document.getElementById('gym-si')?.focus();
+    return;
+  }
+  if(action === 'DECLARE_PLANNED_TRAINING'){
+    setGym('planned');
+    document.getElementById('gym-planned')?.focus();
+    return;
+  }
+  if(action === 'PROVIDE_REALIZED_TRAINING'){
+    setGym(true);
+    document.getElementById('standard-training-type')?.focus();
+    return;
+  }
+  if(action === 'CHANGE_GOAL'){
+    document.getElementById('objetivoPreferido')?.focus();
+    return;
+  }
+  if(action === 'CALCULATE_MAINTENANCE'){
+    const goal = document.getElementById('objetivoPreferido');
+    if(goal) goal.value = '1';
+    actualizarVisibilidadRitmo();
+    calcular();
+  }
+}
+
+function mostrarErrorCalculadora(mensaje, resolution = null){
   const errorBox = document.getElementById('error');
-  if(errorBox){ errorBox.textContent = mensaje; errorBox.style.display = 'block'; }
+  if(!errorBox) return;
+  errorBox.replaceChildren();
+  if(resolution?.title){
+    const title = document.createElement('strong');
+    title.className = 'error-title';
+    title.textContent = resolution.title;
+    errorBox.appendChild(title);
+  }
+  const body = document.createElement('span');
+  body.textContent = mensaje;
+  errorBox.appendChild(body);
+  const actions = (resolution?.allowedActions || []).filter(action => STANDARD_RESOLUTION_ACTION_LABELS[action]);
+  if(actions.length){
+    const row = document.createElement('div');
+    row.className = 'error-actions';
+    actions.forEach(action => {
+      const button = document.createElement('button');
+      button.type = 'button';
+      button.className = 'error-action';
+      button.textContent = STANDARD_RESOLUTION_ACTION_LABELS[action];
+      button.addEventListener('click', () => executeStandardResolutionAction(action));
+      row.appendChild(button);
+    });
+    errorBox.appendChild(row);
+  }
+  errorBox.style.display = 'block';
 }
 
 function standardOccupation(value){
@@ -599,7 +663,7 @@ function standardOccupation(value){
 }
 
 function standardGoal(value){
-  return ({ '0': 'LOSS', '1': 'MAINTENANCE', '2': 'GAIN' })[String(value)] || null;
+  return ({ '0': 'LOSS', '1': 'MAINTENANCE', '2': 'MUSCLE_GAIN' })[String(value)] || null;
 }
 
 function actualizarVisibilidadRitmo(){
@@ -657,6 +721,10 @@ async function readPatch3StandardProfile(datos, adapter){
   let training;
   if(vaAlGym === false){
     training = { trainingStatus: 'REALIZED_HABITUAL', trainingModality: 'NONE', sessionsPerWeek: 0, sessionDurationMin: 0, workload: 'LOW' };
+  } else if(vaAlGym === 'planned'){
+    // Planned training is explicit but remains outside current TEE/protein/carb
+    // evidence. It must never be serialized as a realized YES response.
+    training = { trainingStatus: 'PLANNED_FUTURE', trainingModality: null, sessionsPerWeek: null, sessionDurationMin: null, workload: null };
   } else if(vaAlGym === null){
     training = { trainingStatus: 'UNKNOWN', trainingModality: null, sessionsPerWeek: null, sessionDurationMin: null, workload: null };
   } else {
@@ -672,7 +740,7 @@ async function readPatch3StandardProfile(datos, adapter){
     stepsCoverage: hasSteps ? stepsCoverage : null,
     stepsObservationDays: hasSteps ? stepsObservationDays : null,
     training,
-    trainingSelection: vaAlGym === true ? 'YES' : vaAlGym === false ? 'NO' : 'UNKNOWN'
+    trainingSelection: vaAlGym === true ? 'YES' : vaAlGym === false ? 'NO' : vaAlGym === 'planned' ? 'PLANNED' : 'UNKNOWN'
   });
   if(!preflight.valid) throw new Error(preflight.issues[0].message);
 
@@ -750,12 +818,13 @@ async function calcularStandardPatch3(datos){
   document.getElementById('guardar-status').textContent = '';
   const trainingLabel = vaAlGym === true
     ? profile.trainingModality + ', ' + profile.sessionsPerWeek + ' día(s)/semana, ' + profile.sessionDurationMin + ' min por sesión, ' + profile.workload.toLowerCase()
-    : vaAlGym === null ? 'No confirmado; faltan datos de entrenamiento.' : 'Ninguno confirmado.';
+    : vaAlGym === 'planned' ? 'Planeado; todavía no se usa como entrenamiento realizado.'
+      : vaAlGym === null ? 'No confirmado; faltan datos de entrenamiento.' : 'Ninguno confirmado.';
   const selectedOutput = result.candidateOutputs?.find(item => item.goal === profile.goal)?.output;
   const selectedTarget = result.plans[activo].nutritionTarget;
   datos.resultadoSection.style.display = 'block';
   renderResultado({
-    objectiveLabel: ({ LOSS: 'Pérdida', MAINTENANCE: 'Mantenimiento', GAIN: 'Ganancia' })[profile.goal],
+    objectiveLabel: ({ LOSS: 'Pérdida', MAINTENANCE: 'Mantenimiento', GAIN: 'Ganancia', MUSCLE_GAIN: 'Ganancia muscular' })[profile.goal],
     rateLabel: profile.requestedRateLabel ? ({ CONSERVATIVE: 'ritmo conservador', MODERATE: 'ritmo moderado' })[profile.requestedRateLabel] : null,
     activityLabel: document.getElementById('actividad')?.selectedOptions?.[0]?.textContent || profile.occupation,
     steps: profile.steps,
@@ -823,7 +892,7 @@ async function calcular(){
       });
     }catch(error){
       console.error('Error al calcular Standard PATCH3:', error);
-      mostrarErrorCalculadora(error.message || 'No fue posible completar el cálculo estándar.');
+      mostrarErrorCalculadora(error.message || 'No fue posible completar el cálculo estándar.', error.standardResolution || null);
     }
     return;
   }

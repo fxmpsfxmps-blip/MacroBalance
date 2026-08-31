@@ -443,6 +443,10 @@
   button.primary:hover{background:var(--red-bright);}
   button.primary:active{transform:scale(0.97);}
   .error{display:none;margin-top:14px;padding:13px 14px;border-radius:2px;background:rgba(216,27,63,0.12);border:1px solid var(--red);color:#ffb8c4;font-size:13.5px;}
+  .error-title{display:block;margin-bottom:6px;color:#fff;font-size:14px;font-weight:700;}
+  .error-actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px;}
+  .error-action{padding:9px 11px;border:1px solid rgba(255,184,196,.65);background:transparent;color:#fff;font:inherit;font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;cursor:pointer;}
+  .error-action:hover{border-color:#fff;background:rgba(255,255,255,.08);}
   .results{display:none;margin-top:44px;}
   .plate{display:flex;height:6px;border-radius:999px;overflow:hidden;margin-bottom:26px;}
   .plate div{height:100%;transition:width .5s ease;}
@@ -1035,6 +1039,7 @@
       <div class="toggle-row">
       <button type="button" class="toggle-opt" id="gym-si" aria-pressed="false" onclick="setGym(true)">Sí</button>
       <button type="button" class="toggle-opt selected" id="gym-no" aria-pressed="true" onclick="setGym(false)">No</button>
+      <button type="button" class="toggle-opt" id="gym-planned" aria-pressed="false" onclick="setGym('planned')">Voy a empezar</button>
       <button type="button" class="toggle-opt" id="gym-unknown" aria-pressed="false" onclick="setGym(null)">No estoy seguro</button>
       </div>
     </div>
