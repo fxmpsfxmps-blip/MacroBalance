@@ -88,10 +88,10 @@ const REJECTED_CASES = [
   caseRow('GOAL-LOSS-UNKNOWN', { goal: 'LOSS', trainingStatus: 'UNKNOWN', trainingModality: null, sessionsPerWeek: null, sessionDurationMin: null, workload: null }, 'UNRESOLVED_MISSING_INFORMATION'),
   caseRow('GOAL-GAIN-UNKNOWN', { goal: 'GAIN', trainingStatus: 'UNKNOWN', trainingModality: null, sessionsPerWeek: null, sessionDurationMin: null, workload: null }, 'UNRESOLVED_MISSING_INFORMATION'),
   caseRow('GAIN-RHIGH', { goal: 'GAIN', trainingModality: 'RESISTANCE', sessionsPerWeek: 6, sessionDurationMin: 75, workload: 'HIGH' }, 'ROUTED_TARGET_NOT_IDENTIFIED'),
-  caseRow('WT40-MNT-NO', { weightKg: 40 }, 'UNRESOLVED_PHYSIOLOGY'),
-  caseRow('WT40-LOSS-NO', { weightKg: 40, goal: 'LOSS' }, 'UNRESOLVED_PHYSIOLOGY'),
-  caseRow('WT40-GAIN-NO', { weightKg: 40, goal: 'GAIN' }, 'UNRESOLVED_PHYSIOLOGY'),
-  caseRow('WT40-GAIN-RMOD', { weightKg: 40, goal: 'GAIN', trainingModality: 'RESISTANCE', sessionsPerWeek: 4, sessionDurationMin: 60, workload: 'MODERATE' }, 'UNRESOLVED_PHYSIOLOGY')
+  caseRow('WT40-MNT-NO', { weightKg: 40 }, 'LOW_BODY_SIZE_PREFLIGHT_INFORMATION_MISSING'),
+  caseRow('WT40-LOSS-NO', { weightKg: 40, goal: 'LOSS' }, 'LOW_BODY_SIZE_PREFLIGHT_INFORMATION_MISSING'),
+  caseRow('WT40-GAIN-NO', { weightKg: 40, goal: 'GAIN' }, 'LOW_BODY_SIZE_PREFLIGHT_INFORMATION_MISSING'),
+  caseRow('WT40-GAIN-RMOD', { weightKg: 40, goal: 'GAIN', trainingModality: 'RESISTANCE', sessionsPerWeek: 4, sessionDurationMin: 60, workload: 'MODERATE' }, 'LOW_BODY_SIZE_PREFLIGHT_INFORMATION_MISSING')
 ];
 
 test('all 47 previously resolved synthetic-female cases preserve availability and output', async () => {
@@ -137,10 +137,10 @@ test('reason-specific recovery never blames training when physics/reference revi
   assert.match(highDemand.userMessage, /rendimiento/i);
   assert.doesNotMatch(highDemand.userMessage, /indica tipo|completar información/i);
 
-  const referenceReview = resolution.resolveStandardPlan(adapter.calculatePatch3Standard(profile({ weightKg: 40 })));
-  assert.deepEqual(referenceReview.allowedActions, ['NO_SAFE_AUTOMATIC_RECOVERY']);
-  assert.match(referenceReview.detailReasonCodes.join(' '), /LOW_BMI_OUTSIDE_ORDINARY_STANDARD_REFERENCE_SIZE_DOMAIN/);
-  assert.doesNotMatch(referenceReview.userMessage, /entrenamiento/i);
+  const lowBodySize = resolution.resolveStandardPlan(adapter.calculatePatch3Standard(profile({ weightKg: 40 })));
+  assert.deepEqual(lowBodySize.allowedActions, ['COMPLETE_INFORMATION']);
+  assert.match(lowBodySize.detailReasonCodes.join(' '), /LOW_BODY_SIZE_PREFLIGHT_INFORMATION_MISSING/);
+  assert.doesNotMatch(lowBodySize.userMessage, /entrenamiento/i);
 });
 
 test('43 kg gain with confirmed NONE is resolved, and planned future training never becomes realized training', async () => {

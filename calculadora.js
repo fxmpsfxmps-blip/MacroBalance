@@ -710,6 +710,10 @@ function lowBodySizePreflightUiEnabled(){
   return window.__MB_LOW_BODY_SIZE_PREFLIGHT_CONFIG__?.enabled === true;
 }
 
+function lowBodySizePolicyR1UiEnabled(){
+  return window.__MB_LOW_BODY_SIZE_POLICY_R1_CONFIG__?.enabled === true;
+}
+
 function lowBodySizePreflightAnswers(){
   const q1 = document.getElementById('low-body-size-q1')?.value || null;
   const q2 = document.getElementById('low-body-size-q2')?.value || null;
@@ -724,7 +728,7 @@ function actualizarLowBodySizePreflightVisibility(){
   const heightCm = parseFloat(document.getElementById('altura')?.value);
   const bmi = Number.isFinite(weightKg) && Number.isFinite(heightCm) && heightCm > 0
     ? weightKg / Math.pow(heightCm / 100, 2) : null;
-  const applicable = lowBodySizePreflightUiEnabled() && Number.isFinite(age) && age >= 19
+  const applicable = lowBodySizePolicyR1UiEnabled() && Number.isFinite(age) && age >= 19
     && Number.isFinite(bmi) && bmi < 18.5;
   section.style.display = applicable ? 'grid' : 'none';
   section.setAttribute('aria-hidden', String(!applicable));
@@ -814,7 +818,10 @@ async function calcularStandardPatch3(datos){
   }catch(lowBodySizeShadowError){
     console.warn('No se pudo ejecutar el preflight de tamaño corporal en sombra:', lowBodySizeShadowError);
   }
-  const result = await adapter.calculate(profile);
+  const result = await adapter.calculate(profile, {
+    lowBodySizePolicyEnabled: lowBodySizePolicyR1UiEnabled(),
+    lowBodySizeAnswers: lowBodySizePreflightAnswers()
+  });
   if(!result || !Array.isArray(result.plans) || result.plans.length !== 1 || result.plans[0].unavailable || !result.plans[0].nutritionTarget){
     const resolution = await adapter.resolveUnavailability?.(result);
     const error = new Error(resolution?.userMessage || 'No se pudo resolver el objetivo con la información disponible.');
@@ -857,6 +864,7 @@ async function calcularStandardPatch3(datos){
       : vaAlGym === null ? 'No confirmado; faltan datos de entrenamiento.' : 'Ninguno confirmado.';
   const selectedOutput = result.candidateOutputs?.find(item => item.goal === profile.goal)?.output;
   const selectedTarget = result.plans[activo].nutritionTarget;
+  const lowBodySizeContext = selectedTarget?.lowBodySizeContext || null;
   datos.resultadoSection.style.display = 'block';
   renderResultado({
     objectiveLabel: ({ LOSS: 'Pérdida', MAINTENANCE: 'Mantenimiento', GAIN: 'Ganancia', MUSCLE_GAIN: 'Ganancia muscular' })[profile.goal],
@@ -869,7 +877,11 @@ async function calcularStandardPatch3(datos){
       hydrationReference,
     explanations: [
       'El punto mostrado es una selección operativa dentro de la región científica autorizada.',
-      profile.steps == null ? 'Sin pasos: se conserva una estimación más amplia de actividad.' : 'Los pasos se usan como evidencia de movimiento cotidiano.'
+      profile.steps == null ? 'Sin pasos: se conserva una estimación más amplia de actividad.' : 'Los pasos se usan como evidencia de movimiento cotidiano.',
+      ...(lowBodySizeContext ? [
+        'Cautela por tamaño corporal bajo: el ancla de proteína usa el peso corporal actual como valor razonable, no como una verdad biológica.',
+        'Recomendación firme: considera acompañamiento profesional para revisar tu contexto individual.'
+      ] : [])
     ],
     patch3: {
       scientificStatus: selectedOutput?.scientificStatus || null,
@@ -877,7 +889,8 @@ async function calcularStandardPatch3(datos){
       teeRange: selectedOutput?.energy?.teeRange || null,
       targetRange: selectedOutput?.energy?.targetRange || null,
       trainingState: profile.trainingInput?.state || selectedOutput?.inputProvenance?.trainingInputState || null,
-      selectionPolicy: selectedTarget.method.selectionPolicy
+      selectionPolicy: selectedTarget.method.selectionPolicy,
+      lowBodySizeContext
     }
   });
   datos.resultadoSection.scrollIntoView?.({behavior:'smooth', block:'start'});

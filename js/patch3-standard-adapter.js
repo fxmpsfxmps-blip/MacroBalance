@@ -14,11 +14,14 @@
   async function lowBodySizePreflightModule() {
     return import('/lib/standard/low-body-size-preflight-v1.mjs');
   }
+  async function lowBodySizePolicyModule() {
+    return import('/lib/standard/low-body-size-policy-r1.mjs');
+  }
   root.MacroBalancePatch3Standard = Object.freeze({
     load,
-    async calculate(profile) {
+    async calculate(profile, options) {
       const module = await load();
-      return module.calculatePatch3Standard(profile);
+      return module.calculatePatch3Standard(profile, options);
     },
     async assertFiniteNutritionTarget(target) {
       const module = await load();
@@ -39,6 +42,10 @@
     async lowBodySizePreflightUiConfig() {
       const module = await lowBodySizePreflightModule();
       return module.lowBodySizePreflightUiConfig();
+    },
+    async lowBodySizePolicyUiConfig() {
+      const module = await lowBodySizePolicyModule();
+      return module.lowBodySizePolicyUiConfig();
     },
   });
 })(window);

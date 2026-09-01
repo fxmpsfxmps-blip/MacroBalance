@@ -131,7 +131,7 @@ test('high-demand realized training remains routed and does not receive a generi
   assert.deepEqual(recovery.allowedActions, ['ADVANCED_HANDOFF', 'NO_SAFE_AUTOMATIC_RECOVERY']);
 });
 
-test('frozen low-BMI reference-size guard remains authoritative after MUSCLE_GAIN eligibility', async () => {
+test('low-BMI MUSCLE_GAIN asks Q1/Q2 before it can enter the R1 overlay', async () => {
   const { adapter, resolution } = await modules();
   const result = adapter.calculatePatch3Standard(profile({
     weightKg: 40, trainingModality: 'RESISTANCE', sessionsPerWeek: 4, sessionDurationMin: 60, workload: 'MODERATE'
@@ -140,13 +140,13 @@ test('frozen low-BMI reference-size guard remains authoritative after MUSCLE_GAI
   const recovery = resolution.resolveStandardPlan(result);
   assert.equal(result.preferredGoal, 'MUSCLE_GAIN');
   assert.equal(result.muscleGain.status, 'MUSCLE_GAIN_ELIGIBLE');
-  assert.equal(result.plans[0].unavailableReason, 'UNRESOLVED_PHYSIOLOGY');
+  assert.equal(result.plans[0].unavailableReason, 'LOW_BODY_SIZE_PREFLIGHT_INFORMATION_MISSING');
   assert.ok(output.trace.A4_A5.reasonCodes.includes('LOW_BMI_OUTSIDE_ORDINARY_STANDARD_REFERENCE_SIZE_DOMAIN'));
-  assert.equal(recovery.reasonCode, 'UNRESOLVED_PHYSIOLOGY');
+  assert.equal(recovery.reasonCode, 'LOW_BODY_SIZE_PREFLIGHT_INFORMATION_MISSING');
   assert.doesNotMatch(recovery.userMessage, /entrenamiento/i);
 });
 
-test('real-case low-BMI fixture preserves MUSCLE_GAIN intent and reports reference-size review, not training failure', async () => {
+test('real-case low-BMI fixture preserves MUSCLE_GAIN intent and reports the missing Q1/Q2 context, not training failure', async () => {
   const { adapter, resolution } = await modules();
   const result = adapter.calculatePatch3Standard(profile({
     profileId: 'real-case-low-bmi-muscle', age: 23, weightKg: 42.5, heightCm: 153,
@@ -157,8 +157,8 @@ test('real-case low-BMI fixture preserves MUSCLE_GAIN intent and reports referen
   const recovery = resolution.resolveStandardPlan(result);
   assert.equal(result.preferredGoal, 'MUSCLE_GAIN');
   assert.equal(result.muscleGain.trainingInputState, 'SUFFICIENTLY_OBSERVED_REALIZED_TRAINING');
-  assert.equal(result.plans[0].unavailableReason, 'UNRESOLVED_PHYSIOLOGY');
-  assert.equal(recovery.reasonCode, 'UNRESOLVED_PHYSIOLOGY');
+  assert.equal(result.plans[0].unavailableReason, 'LOW_BODY_SIZE_PREFLIGHT_INFORMATION_MISSING');
+  assert.equal(recovery.reasonCode, 'LOW_BODY_SIZE_PREFLIGHT_INFORMATION_MISSING');
   assert.doesNotMatch(recovery.userMessage, /entrenamiento/i);
 });
 

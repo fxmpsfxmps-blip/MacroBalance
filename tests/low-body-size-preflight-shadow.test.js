@@ -92,13 +92,13 @@ test('full low-body-size shadow matrix covers the requested BMI, goal, answer, a
     [{ trainingModality: 'NONE', sessionsPerWeek: 0, sessionDurationMin: 0, workload: 'LOW' }, 'MUSCLE_GAIN_TARGET_NOT_CONFIRMED'],
     [{ trainingStatus: 'PLANNED_FUTURE', trainingModality: null, sessionsPerWeek: null, sessionDurationMin: null, workload: null }, 'MUSCLE_GAIN_TARGET_NOT_CONFIRMED'],
     [{ trainingStatus: 'UNKNOWN', trainingModality: null, sessionsPerWeek: null, sessionDurationMin: null, workload: null }, 'MUSCLE_GAIN_MISSING_TRAINING_INFORMATION'],
-    [{ trainingModality: 'RESISTANCE', sessionsPerWeek: 4, sessionDurationMin: 60, workload: 'MODERATE' }, 'UNRESOLVED_PHYSIOLOGY'],
+    [{ trainingModality: 'RESISTANCE', sessionsPerWeek: 4, sessionDurationMin: 60, workload: 'MODERATE' }, 'FEASIBILITY_UNKNOWN'],
     [{ trainingModality: 'RESISTANCE', sessionsPerWeek: 6, sessionDurationMin: 75, workload: 'HIGH' }, 'ROUTED_TARGET_NOT_IDENTIFIED']
   ];
   for (const [training, expectedAuthoritativeReason] of trainingCases) {
     const item = profile(training);
     const shadow = preflight.evaluateLowBodySizePreflightV1(item, answers('NO', 'NO'));
-    const current = adapter.calculatePatch3Standard(item);
+    const current = adapter.calculatePatch3Standard(item, { lowBodySizeAnswers: answers('NO', 'NO') });
     assert.equal(shadow.status, 'PREFLIGHT_CLEARED');
     assert.equal(current.plans[0].unavailableReason, expectedAuthoritativeReason);
   }
@@ -159,9 +159,8 @@ test('existing scope flags route through the current scope authority, while dorm
   assert.equal(unknown.reasonCode, 'GENERAL_STANDARD_SAFETY_UNKNOWN');
 });
 
-test('real F23 case produces all six shadow records but frozen authoritative MUSCLE_GAIN remains unresolved', async () => {
+test('real F23 case keeps all six frozen shadow records while R1 controls the authoritative result', async () => {
   const { preflight, adapter } = await modules();
-  const authoritativeBefore = adapter.calculatePatch3Standard(profile());
   const matrix = [
     ['NO', 'NO', 'PREFLIGHT_CLEARED', 'LIMITED_STANDARD_CANDIDATE'],
     ['YES', 'NO', 'PROFESSIONAL_HANDOFF', 'PROFESSIONAL_HANDOFF'],
@@ -176,11 +175,12 @@ test('real F23 case produces all six shadow records but frozen authoritative MUS
     assert.equal(shadow.downstreamDisposition, disposition);
     assert.equal(shadow.authoritative, false);
   }
-  const authoritativeAfter = adapter.calculatePatch3Standard(profile());
-  assert.equal(authoritativeBefore.plans[0].unavailableReason, 'UNRESOLVED_PHYSIOLOGY');
-  assert.equal(authoritativeAfter.plans[0].unavailableReason, 'UNRESOLVED_PHYSIOLOGY');
-  assert.equal(authoritativeAfter.plans[0].nutritionTarget, null);
-  assert.deepEqual(authoritativeAfter, authoritativeBefore);
+  const missing = adapter.calculatePatch3Standard(profile());
+  const cleared = adapter.calculatePatch3Standard(profile(), { lowBodySizeAnswers: answers('NO', 'NO') });
+  assert.equal(missing.plans[0].unavailableReason, 'LOW_BODY_SIZE_PREFLIGHT_INFORMATION_MISSING');
+  assert.equal(cleared.plans[0].unavailable, true);
+  assert.equal(cleared.plans[0].nutritionTarget, null);
+  assert.equal(cleared.candidateOutputs[0].output.lowBodySizePolicy.status, 'PREFLIGHT_CLEARED');
 });
 
 test('control profiles establish the shadow boundary without changing existing Standard output behavior', async () => {
@@ -205,7 +205,7 @@ test('control profiles establish the shadow boundary without changing existing S
   assert.deepEqual(macro(after.plans[0]), macro(before.plans[0]));
 });
 
-test('shadow module and browser bridge preserve frozen adapter authority, and UI remains feature-flagged off by default', async () => {
+test('frozen V1 shadow remains feature-flagged off while the R1 successor owns the authoritative bridge', async () => {
   const { preflight } = await modules();
   const config = preflight.lowBodySizePreflightUiConfig(undefined);
   const adapterSource = fs.readFileSync(path.join(root, 'lib', 'standard', 'patch3-standard-adapter.mjs'), 'utf8');
@@ -213,16 +213,21 @@ test('shadow module and browser bridge preserve frozen adapter authority, and UI
   const calculator = fs.readFileSync(path.join(root, 'calculadora.js'), 'utf8');
   const html = fs.readFileSync(path.join(root, 'index.html'), 'utf8');
   const runtime = fs.readFileSync(path.join(root, 'js', 'low-body-size-preflight-runtime-config.js'), 'utf8');
+  const r1Runtime = fs.readFileSync(path.join(root, 'js', 'low-body-size-policy-r1-runtime-config.js'), 'utf8');
+  const r1Source = fs.readFileSync(path.join(root, 'lib', 'standard', 'low-body-size-policy-r1.mjs'), 'utf8');
   const shadowSource = fs.readFileSync(path.join(root, 'lib', 'standard', 'low-body-size-preflight-v1.mjs'), 'utf8');
   assert.equal(config.enabled, false);
   assert.equal(config.mode, 'SHADOW_SILENT');
-  assert.doesNotMatch(adapterSource, /lowBodySize|evaluateLowBody/);
+  assert.match(adapterSource, /evaluateLowBodySizePolicyR1/);
   assert.match(bridge, /evaluateLowBodySizePreflightShadow/);
   assert.match(calculator, /LOW_BODY_SIZE_PREFLIGHT_LAST_SHADOW/);
   assert.match(calculator, /does not enter `profile`/);
   assert.match(html, /id="low-body-size-preflight-v1"/);
+  assert.match(html, /low-body-size-policy-r1-runtime-config\.js/);
   assert.match(html, /En los últimos 6 meses, ¿has perdido peso sin proponértelo o sin buscarlo activamente\?/);
   assert.match(html, /Ahora mismo, ¿estás tratando de bajar de peso\?/);
   assert.match(runtime, /enabled: false/);
+  assert.match(r1Runtime, /enabled: true/);
+  assert.match(r1Source, /CURRENT_BODY_WEIGHT_LOW_BODY_SIZE_R1_REASONABLE_DEFAULT/);
   assert.doesNotMatch(shadowSource, /calculatePrecision|precision-calculator|runProteinPolicyR1IntegratedChallenger/);
 });

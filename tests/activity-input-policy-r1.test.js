@@ -112,11 +112,19 @@ test('F23 regression matrix exposes the expected routing state without forcing a
     ['7D_CONSISTENT', 7, 'MOSTLY_CONSISTENT', ['INACTIVE', 'LOW_ACTIVE', 'ACTIVE'], [1796.505, 2074.09], 'PASS']
   ];
   for (const [id, days, state, candidateClasses, teeRange, b1Status] of cases) {
-    const result = adapter.calculatePatch3Standard(profile({ stepsObservationDays: days, stepsRepresentativeness: state }));
+    const result = adapter.calculatePatch3Standard(
+      profile({ stepsObservationDays: days, stepsRepresentativeness: state }),
+      { lowBodySizeAnswers: { q1: 'NO', q2: 'NO' } }
+    );
     const candidate = output(result);
-    assert.equal(result.status, 'PARTIAL_WITH_UNAVAILABLE_PLAN', id);
-    assert.equal(result.plans[0].nutritionTarget, null, id);
-    assert.equal(result.plans[0].unavailableReason, 'UNRESOLVED_PHYSIOLOGY', id);
+    if (b1Status === 'PASS') {
+      assert.equal(result.status, 'COMPATIBILITY_TARGETS_READY', id);
+      assert.ok(result.plans[0].nutritionTarget, id);
+    } else {
+      assert.equal(result.status, 'PARTIAL_WITH_UNAVAILABLE_PLAN', id);
+      assert.equal(result.plans[0].nutritionTarget, null, id);
+      assert.equal(result.plans[0].unavailableReason, 'FEASIBILITY_UNKNOWN', id);
+    }
     assert.deepEqual(candidate.trace.A1.inference.classCandidates, candidateClasses, id);
     assert.deepEqual(candidate.energy.teeRange.map(value => Number(value.toFixed(3))), teeRange, id);
     assert.equal(candidate.trace.A2_A3.decision, 'B1_RATE_AND_INITIAL_ENERGY_ENVELOPES_EXECUTABLE', id);
