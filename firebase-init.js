@@ -301,13 +301,16 @@ window.precargarPerfilFirestore = async function precargarPerfilFirestore() {
     const element = document.getElementById(id);
     if (element && value !== null && value !== undefined) element.value = value;
   };
+  const persistedStepRepresentativeness = profile.standardStepsRepresentativeness
+    || (Number(profile.standardStepsCoverage) === 0.7 ? 'VARIABLE'
+      : Number(profile.standardStepsCoverage) === 0.9 ? 'MOSTLY_CONSISTENT' : null);
   setValue('peso', profile.peso);
   setValue('altura', profile.altura);
   setValue('edad', profile.edad);
   setValue('grasa', profile.grasaPct);
   setValue('bodyfat-method', profile.bodyFatMethod);
   setValue('standard-steps', profile.standardSteps);
-  setValue('standard-steps-coverage', profile.standardStepsCoverage);
+  setValue('standard-steps-coverage', persistedStepRepresentativeness);
   setValue('standard-observation-days', profile.standardObservationDays);
   setValue('sueno', profile.horasSueno);
   setValue('agua', profile.aguaTexto);
@@ -400,7 +403,9 @@ window.guardarObjetivoFirestore = async function guardarObjetivoFirestore(plan, 
     diasGym: inputSnapshot.diasGym,
     bodyFatMethod: inputSnapshot.bodyFatMethod || null,
     standardSteps: inputSnapshot.patch3Input?.steps ?? null,
-    standardStepsCoverage: inputSnapshot.patch3Input?.stepsCoverage ?? null,
+    // New writes use a named evidence state.  Existing numeric historical
+    // fields are read above only through the explicit R1 compatibility map.
+    standardStepsRepresentativeness: inputSnapshot.patch3Input?.stepsRepresentativeness ?? null,
     standardObservationDays: inputSnapshot.patch3Input?.stepsObservationDays ?? null,
     trainingModality: inputSnapshot.patch3Input?.trainingModality ?? null,
     sessionDurationMin: inputSnapshot.patch3Input?.sessionDurationMin ?? null,

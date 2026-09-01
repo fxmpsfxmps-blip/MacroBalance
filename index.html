@@ -1034,7 +1034,7 @@
       <select id="actividad">
         <option value="" disabled selected>Selecciona...</option>
         <option value="1.2">Sedentario (oficina, poco caminar)</option>
-        <option value="1.35">Moderado (de pie, caminas harto)</option>
+        <option value="1.35">Movimiento moderado (caminas o te desplazas buena parte del día)</option>
         <option value="1.5">Trabajo físico demandante</option>
       </select>
     </div>
@@ -1119,11 +1119,11 @@
       </div>
       <div class="standard-steps-followup" id="standard-steps-followup" style="display:none;">
         <div class="field" id="standard-steps-coverage-wrap">
-          <label for="standard-steps-coverage">¿Representan un día habitual?</label>
+          <label for="standard-steps-coverage">¿Qué tan representativos son esos pasos de tu rutina?</label>
           <select id="standard-steps-coverage">
             <option value="" selected>Selecciona...</option>
-            <option value="0.9">Sí, la mayoría de los días</option>
-            <option value="0.7">Varían bastante</option>
+            <option value="MOSTLY_CONSISTENT">Son parecidos la mayoría de los días</option>
+            <option value="VARIABLE">Varían bastante entre días</option>
           </select>
         </div>
         <div class="field" id="standard-observation-days-wrap">

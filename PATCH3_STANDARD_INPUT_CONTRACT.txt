@@ -14,8 +14,22 @@ goal: LOSS, MAINTENANCE, or GAIN.
 occupation: mapped movement context; current UI supplies one of SEATED,
 STANDING_WALKING, PHYSICAL.
 steps: finite non-negative number for the Standard activity evidence form.
-stepsCoverage: finite coverage value; the UI exposes 0.9 or 0.7.
+stepsRepresentativeness: named evidence state: VARIABLE or MOSTLY_CONSISTENT.
+VARIABLE means degraded representativeness evidence; MOSTLY_CONSISTENT means
+usable representativeness evidence. Neither name is a confidence percentage,
+probability, or TEE multiplier. Historical stepsCoverage=0.7 maps explicitly
+to VARIABLE and historical stepsCoverage=0.9 maps explicitly to
+MOSTLY_CONSISTENT. New active writes use stepsRepresentativeness; the numeric
+field is a read-only compatibility input for old saved profiles/fixtures.
 stepsObservationDays: positive observation window.
+
+Activity-evidence heuristics
+----------------------------
+Seven observed days is a PRODUCT_DEFAULT / DEFENSIBLE_HEURISTIC, not a
+biological boundary. Step bands are PRODUCT HEURISTICS pending future
+calibration. The B1 relative TEE width <=25% rule is a PRODUCT UNCERTAINTY
+ROUTING HEURISTIC, not a biological threshold. Their behavior is unchanged by
+ACTIVITY_INPUT_POLICY_R1.
 
 Training tuple
 --------------

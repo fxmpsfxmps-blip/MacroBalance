@@ -19,7 +19,12 @@ actividad -> occupation -> SEATED/STANDING_WALKING/PHYSICAL. The old numeric
 activity factor is retained in the legacy snapshot only and is not reused as a
 carbohydrate selector.
 standard-steps -> steps -> direct finite number.
-standard-steps-coverage -> stepsCoverage -> 0.9 or 0.7.
+standard-steps-coverage -> stepsRepresentativeness -> VARIABLE or
+MOSTLY_CONSISTENT. The frozen A1 snapshot still receives a private adapter
+branch value only; it is not stored as a new numeric confidence, probability,
+or TEE modifier. Historical standardStepsCoverage 0.7/0.9 records map on read
+to VARIABLE/MOSTLY_CONSISTENT respectively; new profile writes use
+standardStepsRepresentativeness.
 standard-observation-days -> stepsObservationDays -> direct finite number.
 gym toggle -> training state. No = CONFIRMED_NONE; Sí exposes the fields below;
 No estoy seguro = PARTIAL_OR_UNKNOWN_TRAINING.

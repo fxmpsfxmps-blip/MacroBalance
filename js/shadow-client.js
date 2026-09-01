@@ -37,7 +37,7 @@
         objectiveIndex: field('objetivoPreferido'), activityFactor: field('actividad'),
         sleepHours: field('sueno'), stressLevel: field('estres'),
         gymYesPressed: pressed('gym-si'), gymNoPressed: pressed('gym-no'), gymUnknownPressed: pressed('gym-unknown'), gymDays: field('dias-gym'),
-        standardSteps: field('standard-steps'), standardStepsCoverage: field('standard-steps-coverage'),
+        standardSteps: field('standard-steps'), standardStepsRepresentativeness: field('standard-steps-coverage'),
         standardObservationDays: field('standard-observation-days'), standardTrainingType: field('standard-training-type'),
         standardTrainingWorkload: field('standard-training-workload'), standardTrainingMinutes: field('standard-training-minutes'),
         precisionSteps: field('precision-steps'), precisionTrainingType: field('precision-training-type'),

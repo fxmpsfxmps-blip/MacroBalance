@@ -734,7 +734,7 @@ async function readPatch3StandardProfile(datos, adapter){
   const goal = standardGoal(document.getElementById('objetivoPreferido')?.value);
   const occupation = standardOccupation(document.getElementById('actividad')?.value);
   const steps = parseFloat(document.getElementById('standard-steps')?.value);
-  const stepsCoverage = parseFloat(document.getElementById('standard-steps-coverage')?.value);
+  const stepsRepresentativeness = document.getElementById('standard-steps-coverage')?.value || null;
   const stepsObservationDays = parseInt(document.getElementById('standard-observation-days')?.value, 10);
   const trainingType = document.getElementById('standard-training-type')?.value || null;
   const trainingWorkload = document.getElementById('standard-training-workload')?.value || null;
@@ -763,7 +763,7 @@ async function readPatch3StandardProfile(datos, adapter){
     goal,
     occupation,
     steps: hasSteps ? steps : null,
-    stepsCoverage: hasSteps ? stepsCoverage : null,
+    stepsRepresentativeness: hasSteps ? stepsRepresentativeness : null,
     stepsObservationDays: hasSteps ? stepsObservationDays : null,
     training,
     trainingSelection: vaAlGym === true ? 'YES' : vaAlGym === false ? 'NO' : vaAlGym === 'planned' ? 'PLANNED' : 'UNKNOWN'
@@ -783,7 +783,7 @@ async function readPatch3StandardProfile(datos, adapter){
     goal,
     occupation,
     steps: hasSteps ? steps : null,
-    stepsCoverage: hasSteps ? stepsCoverage : null,
+    stepsRepresentativeness: hasSteps ? stepsRepresentativeness : null,
     stepsObservationDays: hasSteps ? stepsObservationDays : null,
     activityClass: null,
     activityClassSource: null,
