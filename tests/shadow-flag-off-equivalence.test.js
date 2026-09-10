@@ -33,16 +33,24 @@ test('calculator hook is first and exception guarded while promotion remains iso
   assert.match(current, /MacroBalanceShadow\?\.captureAndQueueCalculatorSubmission\(\)/);
 });
 
-test('Production calculator core and menu engine hashes remain at pre-promotion main', () => {
+test('Production calculator core and engine remain at pre-promotion main', () => {
   // origin/main already contained the approved V2.2 foods taxonomy before the
   // PATCH3 promotion merge. Keep this integrity baseline anchored to that
   // exact pre-merge main commit rather than the older Shadow branch base.
   const productionBaseline = '9c51dccc09fae2d5fd8c2cf2c9ec094f447789b6';
-  for (const relative of ['js/calculator-core.js', 'lib/menu-engine/engine.js', 'lib/menu-engine/data/foods.json', 'lib/menu-engine/data/dishes.json']) {
+  for (const relative of ['js/calculator-core.js', 'lib/menu-engine/engine.js']) {
     const current = lf(fs.readFileSync(path.join(root, relative), 'utf8'));
     const baseline = lf(execFileSync('git', ['show', `${productionBaseline}:${relative}`], { cwd: root, encoding: 'utf8' }));
     assert.equal(crypto.createHash('sha256').update(current).digest('hex'), crypto.createHash('sha256').update(baseline).digest('hex'), relative);
   }
+});
+
+test('dishes matches the authorized V2.2 migration baseline', () => {
+  const current = lf(fs.readFileSync(path.join(root, 'lib/menu-engine/data/dishes.json'), 'utf8'));
+  assert.equal(
+    crypto.createHash('sha256').update(current).digest('hex'),
+    'c735d4e4dcb662333bef65be7e2adba15f768b7f6f006ca7507b168885cb0728'
+  );
 });
 
 test('server flag OFF exits before body, auth, PATCH3, harness, store, or alert', async () => {

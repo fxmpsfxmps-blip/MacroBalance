@@ -5,14 +5,20 @@ const path = require('node:path');
 
 const root = path.resolve(__dirname, '..');
 
-test('cada alimento y platillo tiene su recurso visual', () => {
+test('foods respetan image_status y los platillos conservan su recurso visual', () => {
   const foods = require('../lib/menu-engine/data/foods.json');
   const dishes = require('../lib/menu-engine/data/dishes.json');
+  const app = fs.readFileSync(path.join(root, 'js', 'menu-app.js'), 'utf8');
   for (const food of foods) {
     const file = path.join(root, 'assets', 'foods', `${food.id}.jpe`);
-    assert.ok(fs.existsSync(file), food.id);
-    assert.ok(fs.statSync(file).size < 200 * 1024, `${food.id} excede 200 KB`);
+    const exists = fs.existsSync(file);
+    assert.equal(food.image_status, exists ? 'PRESENT' : 'MISSING', food.id);
+    if (exists) {
+      assert.ok(fs.statSync(file).size < 200 * 1024, `${food.id} excede 200 KB`);
+    }
   }
+  assert.match(app, /this\.nextElementSibling\.style\.display/);
+  assert.match(app, /fc-fallback/);
   for (const dish of dishes) {
     const file = path.join(root, `${dish.dish_id}.jpg`);
     assert.ok(fs.existsSync(file), dish.dish_id);

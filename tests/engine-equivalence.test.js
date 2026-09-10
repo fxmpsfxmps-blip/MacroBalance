@@ -20,13 +20,14 @@ function matchesStableHash(filePath, expectedHash) {
   return rawHash === expectedHash || lfHash === expectedHash || crlfHash === expectedHash;
 }
 
-test('los archivos estables del motor fueron migrados byte por byte', () => {
+test('el motor y los datos controlados conservan su baseline autorizado', () => {
   const expected = {
     'engine.js': '7cf556ccf0cadec588734cd6f615e2077f90d08405a2a196be90da2a17913a6c',
-    'sustitucion.js': 'adecd395e3c15ef8fb6c86d0ede89a806814226c212081408914ede50530deaa',
+    'sustitucion.js': 'b65bde964c9e30172a5478772c7f7813b06e6fe3414670600bbc2924f144514a',
     'dashboard.js': '5188e2ef90692ab997ee75893032b0920212223b82a7d3ba7c34a06e58f62ad0',
-    'data/foods.json': '99b4e0a46777b60d0c8bff58c3480b888f29e69bb256a6a8f546dec0065dc74c',
-    'data/dishes.json': '2d6301faf4f1b12f27eefdf8c09c0f5817cacbe684b9a80ef7245de937ecb273'
+    'data/foods.json': '6243bccd5b4780bf322b02aac246f6c17a446360abd561a4929eeb54ce2a7b8b',
+    // Baseline autorizado por la migracion controlada de dishes V2.2.
+    'data/dishes.json': 'c735d4e4dcb662333bef65be7e2adba15f768b7f6f006ca7507b168885cb0728'
   };
 
   for (const [relativePath, expectedHash] of Object.entries(expected)) {
@@ -52,14 +53,14 @@ test('el baseline determinista semanal conserva exactamente su salida', () => {
 
   assert.equal(
     sha256(JSON.stringify(result)),
-    'c0d8190ddc0e0a30841089ea516aa918df4d7d8edb3e07cca6ff180fa67efd72'
+    '1e0adb6e8f3012681c07324fa3aa39847846bb6f1ebdf8e73f5fe76fbbebe9f8'
   );
   assert.equal(result.dias.length, 7);
   assert.equal(result.dias_no_factibles, 0);
   assert.deepEqual(result.resultado_semanal, {
-    kcal: 12592,
-    proteina: 876,
-    carbos: 1328,
-    grasa: 422
+    kcal: 12585,
+    proteina: 886,
+    carbos: 1334,
+    grasa: 419
   });
 });

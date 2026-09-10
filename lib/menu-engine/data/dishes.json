@@ -93,12 +93,12 @@
         "unit": "g"
       },
       {
-        "food_id": "aceite_vegetal",
+        "food_id": "aceite_soya",
         "role": "grasa",
-        "base_amount": 1,
-        "min_amount": 0.6,
-        "max_amount": 2,
-        "unit": "cdta"
+        "base_amount": 5,
+        "min_amount": 3,
+        "max_amount": 10,
+        "unit": "g"
       }
     ],
     "image": "/images/recipes/PLT_DES_002.jpg"
@@ -129,7 +129,7 @@
         "unit": "ml"
       },
       {
-        "food_id": "jamon_pavo",
+        "food_id": "jamon_pavo_light",
         "role": "proteina_secundaria",
         "base_amount": 40,
         "min_amount": 20,
@@ -145,12 +145,12 @@
         "unit": "pieza"
       },
       {
-        "food_id": "aceite_vegetal",
+        "food_id": "aceite_soya",
         "role": "grasa",
-        "base_amount": 0.6,
-        "min_amount": 0.4,
-        "max_amount": 1,
-        "unit": "cdta"
+        "base_amount": 3,
+        "min_amount": 2,
+        "max_amount": 5,
+        "unit": "g"
       }
     ],
     "image": "/images/recipes/PLT_DES_003.jpg"
@@ -207,14 +207,14 @@
       "colacion"
     ],
     "flavor_profile": "dulce",
-    "preparation": "Cocer la avena en agua. Retirar del fuego y mezclar vigorosamente la proteína en polvo. Coronar con fresas y almendras.",
+    "preparation": "Cocer la avena en agua. Retirar del fuego y mezclar vigorosamente la proteína whey. Coronar con fresas y almendras.",
     "ingredients": [
       {
-        "food_id": "avena_cocida",
+        "food_id": "avena_cruda",
         "role": "carbohidrato",
         "base_amount": 40,
         "min_amount": 30,
-        "max_amount": 80,
+        "max_amount": 60,
         "unit": "g"
       },
       {
@@ -254,10 +254,10 @@
     "preparation": "Licuar avena, claras, proteína y medio plátano. Cocinar en sartén antiadherente con un toque de aceite.",
     "ingredients": [
       {
-        "food_id": "avena_cocida",
+        "food_id": "avena_cruda",
         "role": "carbohidrato",
         "base_amount": 40,
-        "min_amount": 25,
+        "min_amount": 30,
         "max_amount": 60,
         "unit": "g"
       },
@@ -286,12 +286,12 @@
         "unit": "pieza"
       },
       {
-        "food_id": "aceite_vegetal",
+        "food_id": "aceite_soya",
         "role": "grasa",
-        "base_amount": 0.6,
-        "min_amount": 0.4,
-        "max_amount": 1,
-        "unit": "cdta"
+        "base_amount": 3,
+        "min_amount": 2,
+        "max_amount": 5,
+        "unit": "g"
       }
     ],
     "image": "/images/recipes/PLT_DES_006.jpg"
@@ -500,7 +500,7 @@
         "unit": "g"
       },
       {
-        "food_id": "queso_panela",
+        "food_id": "queso_panela_light",
         "role": "proteina_secundaria",
         "base_amount": 40,
         "min_amount": 20,
@@ -589,7 +589,7 @@
         "unit": "g"
       },
       {
-        "food_id": "queso_panela",
+        "food_id": "queso_panela_light",
         "role": "proteina_secundaria",
         "base_amount": 40,
         "min_amount": 30,
@@ -669,7 +669,7 @@
     "preparation": "Asar las rebanadas de queso panela en sartén antiadherente. Servir sobre rodajas de jitomate y aderezar con el aceite de oliva.",
     "ingredients": [
       {
-        "food_id": "queso_panela",
+        "food_id": "queso_panela_light",
         "role": "proteina_base",
         "base_amount": 120,
         "min_amount": 80,
@@ -921,7 +921,7 @@
         "sustituible": true
       },
       {
-        "food_id": "queso_panela",
+        "food_id": "queso_panela_light",
         "role": "proteina_base",
         "base_amount": 60,
         "min_amount": 42,
@@ -957,7 +957,8 @@
         "sustituible": true
       }
     ],
-    "image": "/images/recipes/PLT_DES_008.jpg"
+    "image": "/images/recipes/PLT_DES_008.jpg",
+    "preparation": "Saltear el ajo en el aceite, incorporar los camarones y reservar. Batir el huevo con las claras, cocinar el omelette, rellenar con camarón y queso panela, y servir con tortillas calientes."
   },
   {
     "dish_id": "PLT_DES_009",
@@ -1033,7 +1034,7 @@
         "sustituible": false
       },
       {
-        "food_id": "carne_molida_res_regular",
+        "food_id": "carne_molida_res_magra",
         "role": "proteina_base",
         "base_amount": 100,
         "min_amount": 70,
@@ -1042,8 +1043,8 @@
         "sustituible": false
       },
       {
-        "food_id": "pure_tomate",
-        "role": "verdura",
+        "food_id": "pure_tomate_sin_sal",
+        "role": "condimento_base",
         "base_amount": 150,
         "min_amount": 105,
         "max_amount": 195,
@@ -1069,7 +1070,8 @@
         "sustituible": true
       }
     ],
-    "image": "/images/recipes/PLT_DES_010.jpg"
+    "image": "/images/recipes/PLT_DES_010.jpg",
+    "preparation": "Dorar la carne molida magra en sartén. Añadir el puré de tomate sin sal y cocinar hasta espesar. Agregar los huevos, tapar hasta cuajar y terminar con queso cottage. Servir con pan integral."
   },
   {
     "dish_id": "PLT_DES_011",
@@ -1145,7 +1147,7 @@
         "sustituible": false
       },
       {
-        "food_id": "queso_panela",
+        "food_id": "queso_panela_light",
         "role": "proteina_base",
         "base_amount": 80,
         "min_amount": 56,
@@ -1172,7 +1174,8 @@
         "sustituible": true
       }
     ],
-    "image": "/images/recipes/PLT_DES_012.jpg"
+    "image": "/images/recipes/PLT_DES_012.jpg",
+    "preparation": "Ensartar alternadamente pechuga de pavo, queso panela y tomate. Dorar brevemente en sartén o plancha y servir con pan integral tostado."
   },
   {
     "dish_id": "PLT_DES_013",
@@ -1523,7 +1526,7 @@
         "sustituible": false
       },
       {
-        "food_id": "queso_panela",
+        "food_id": "queso_panela_light",
         "role": "proteina_base",
         "base_amount": 60,
         "min_amount": 42,
@@ -1550,16 +1553,17 @@
         "sustituible": true
       },
       {
-        "food_id": "galletas_saladas_integrales",
+        "food_id": "tostada_horneada",
         "role": "carbohidrato",
-        "base_amount": 30,
-        "min_amount": 21,
-        "max_amount": 39,
-        "unit": "g",
+        "base_amount": 2,
+        "min_amount": 1,
+        "max_amount": 3,
+        "unit": "pieza",
         "sustituible": true
       }
     ],
-    "image": "/images/recipes/PLT_COL_004.jpg"
+    "image": "/images/recipes/PLT_COL_004.jpg",
+    "preparation": "Mezclar el camarón frío con jugo de tomate y aguacate. Servir con queso panela en cubos y tostadas horneadas al lado para conservar su textura."
   },
   {
     "dish_id": "PLT_COL_005",
@@ -1655,7 +1659,7 @@
         "sustituible": true
       },
       {
-        "food_id": "queso_panela",
+        "food_id": "queso_panela_light",
         "role": "proteina_base",
         "base_amount": 50,
         "min_amount": 35,
@@ -1673,7 +1677,8 @@
         "sustituible": true
       }
     ],
-    "image": "/images/recipes/PLT_COL_006.jpg"
+    "image": "/images/recipes/PLT_COL_006.jpg",
+    "preparation": "Disponer la lechuga, las fresas y las almendras. Agregar el pollo a la parrilla en tiras y el queso panela en cubos; mezclar justo antes de servir."
   },
   {
     "dish_id": "PLT_COL_007",
@@ -1937,7 +1942,7 @@
     "flavor_profile": "salado",
     "ingredients": [
       {
-        "food_id": "carne_molida_res_regular",
+        "food_id": "carne_molida_res_magra",
         "role": "proteina_base",
         "base_amount": 180,
         "min_amount": 126,
@@ -1982,7 +1987,8 @@
         "sustituible": true
       }
     ],
-    "image": "/images/recipes/PLT_COM_009.jpg"
+    "image": "/images/recipes/PLT_COM_009.jpg",
+    "preparation": "Dorar la carne molida magra. Añadir pimiento y frijoles negros, cocinar hasta integrar y terminar con queso cheddar. Servir con tortillas calientes."
   },
   {
     "dish_id": "PLT_COM_010",
@@ -2197,7 +2203,7 @@
         "sustituible": true
       },
       {
-        "food_id": "col",
+        "food_id": "col_morada",
         "role": "verdura",
         "base_amount": 100,
         "min_amount": 70,
@@ -2215,7 +2221,8 @@
         "sustituible": true
       }
     ],
-    "image": "/images/recipes/PLT_COM_013.jpg"
+    "image": "/images/recipes/PLT_COM_013.jpg",
+    "preparation": "Calentar la tilapia ya cocida y cubrirla con avena molida para dar textura. Servir en tortillas con col morada finamente rebanada y aderezo de queso cottage con chipotle."
   },
   {
     "dish_id": "PLT_COM_014",
@@ -2273,7 +2280,7 @@
     "flavor_profile": "salado",
     "ingredients": [
       {
-        "food_id": "pescado_blanco_cocido",
+        "food_id": "tilapia_cocida",
         "role": "proteina_base",
         "base_amount": 180,
         "min_amount": 126,
@@ -2318,7 +2325,8 @@
         "sustituible": true
       }
     ],
-    "image": "/images/recipes/PLT_COM_015.jpg"
+    "image": "/images/recipes/PLT_COM_015.jpg",
+    "preparation": "Desmenuzar la tilapia cocida y enfriar. Mezclar con tomate, cebolla y aceitunas; servir el salpicón sobre tostadas horneadas."
   },
   {
     "dish_id": "PLT_COM_016",
@@ -2589,7 +2597,7 @@
         "sustituible": true
       },
       {
-        "food_id": "especias_secas",
+        "food_id": "paprika",
         "role": "condimento_base",
         "base_amount": 2,
         "min_amount": 1,
@@ -2616,7 +2624,8 @@
         "sustituible": true
       }
     ],
-    "image": "/images/recipes/PLT_CEN_007.jpg"
+    "image": "/images/recipes/PLT_CEN_007.jpg",
+    "preparation": "Calentar el pulpo con aceite de oliva, paprika, tomate y espinaca. Incorporar el camote cocido en cubos y saltear sólo hasta integrar."
   },
   {
     "dish_id": "PLT_CEN_008",
@@ -2797,14 +2806,14 @@
   },
   {
     "dish_id": "PLT_CEN_011",
-    "name": "Tostadas de bacalao o merluza a la vizcaína fit",
+    "name": "Tostadas de tilapia a la vizcaína",
     "meal_type": [
       "cena"
     ],
     "flavor_profile": "salado",
     "ingredients": [
       {
-        "food_id": "pescado_blanco_cocido",
+        "food_id": "tilapia_cocida",
         "role": "proteina_base",
         "base_amount": 160,
         "min_amount": 112,
@@ -2813,8 +2822,8 @@
         "sustituible": false
       },
       {
-        "food_id": "pure_tomate",
-        "role": "verdura",
+        "food_id": "pure_tomate_sin_sal",
+        "role": "condimento_base",
         "base_amount": 100,
         "min_amount": 70,
         "max_amount": 130,
@@ -2840,7 +2849,8 @@
         "sustituible": true
       }
     ],
-    "image": "/images/recipes/PLT_CEN_011.jpg"
+    "image": "/images/recipes/PLT_CEN_011.jpg",
+    "preparation": "Calentar el puré de tomate sin sal con las aceitunas. Incorporar la tilapia desmenuzada y cocinar unos minutos; servir sobre tostadas horneadas."
   },
   {
     "dish_id": "PLT_CEN_012",
@@ -3046,7 +3056,7 @@
         "sustituible": true
       },
       {
-        "food_id": "queso_panela",
+        "food_id": "queso_panela_light",
         "role": "proteina_base",
         "base_amount": 60,
         "min_amount": 42,
@@ -3073,7 +3083,8 @@
         "sustituible": true
       }
     ],
-    "image": "/images/recipes/PLT_CEN_015.jpg"
+    "image": "/images/recipes/PLT_CEN_015.jpg",
+    "preparation": "Cocinar las claras extendidas en sartén. Agregar espinaca y queso panela, doblar el omelette y servir con salsa verde y una tostada horneada."
   },
   {
     "dish_id": "PLT_CEN_016",
@@ -3167,7 +3178,7 @@
         "sustituible": true
       },
       {
-        "food_id": "queso_panela",
+        "food_id": "queso_panela_light",
         "role": "proteina_base",
         "base_amount": 30,
         "min_amount": 21,
@@ -3185,7 +3196,8 @@
         "sustituible": true
       }
     ],
-    "image": "/images/recipes/PLT_CEN_017.jpg"
+    "image": "/images/recipes/PLT_CEN_017.jpg",
+    "preparation": "Cocer la calabacita y la espinaca hasta suavizar, licuar con parte del líquido de cocción y recalentar. Añadir el pollo y terminar con queso panela; servir con tostada horneada."
   },
   {
     "dish_id": "PLT_CEN_018",
@@ -3353,7 +3365,7 @@
         "sustituible": true
       },
       {
-        "food_id": "col",
+        "food_id": "col_blanca",
         "role": "verdura",
         "base_amount": 150,
         "min_amount": 105,
@@ -3371,7 +3383,8 @@
         "sustituible": true
       }
     ],
-    "image": "/images/recipes/PLT_CEN_020.jpg"
+    "image": "/images/recipes/PLT_CEN_020.jpg",
+    "preparation": "Cocinar el pavo molido con los nopales. Suavizar las hojas de col blanca al vapor, rellenar con la mezcla y servir con salsa martajada."
   },
   {
     "dish_id": "PLT_CEN_021",
@@ -3457,7 +3470,7 @@
     "flavor_profile": "dulce",
     "ingredients": [
       {
-        "food_id": "proteina_polvo",
+        "food_id": "proteina_whey_polvo",
         "role": "proteina_base",
         "base_amount": 30,
         "min_amount": 21,
@@ -3502,7 +3515,8 @@
         "sustituible": true
       }
     ],
-    "image": "/images/recipes/PLT_COL_009.jpg"
+    "image": "/images/recipes/PLT_COL_009.jpg",
+    "preparation": "Licuar la proteína whey, la leche de almendra, la crema de cacahuate, el cacao y el hielo hasta obtener una mezcla uniforme."
   },
   {
     "dish_id": "PLT_COL_010",
@@ -3514,7 +3528,7 @@
     "flavor_profile": "dulce",
     "ingredients": [
       {
-        "food_id": "proteina_polvo",
+        "food_id": "proteina_whey_polvo",
         "role": "proteina_base",
         "base_amount": 30,
         "min_amount": 21,
@@ -3550,16 +3564,17 @@
         "sustituible": true
       },
       {
-        "food_id": "trace_aditivo",
+        "food_id": "extracto_vainilla",
         "role": "condimento_base",
         "base_amount": 2,
         "min_amount": 1,
-        "max_amount": 3,
-        "unit": "g",
+        "max_amount": 5,
+        "unit": "ml",
         "sustituible": true
       }
     ],
-    "image": "/images/recipes/PLT_COL_010.jpg"
+    "image": "/images/recipes/PLT_COL_010.jpg",
+    "preparation": "Licuar la proteína whey con las fresas, la leche de almendra, el hielo y el extracto de vainilla hasta espesar."
   },
   {
     "dish_id": "PLT_COL_011",
@@ -3571,7 +3586,7 @@
     "flavor_profile": "dulce",
     "ingredients": [
       {
-        "food_id": "proteina_polvo",
+        "food_id": "proteina_whey_polvo",
         "role": "proteina_base",
         "base_amount": 30,
         "min_amount": 21,
@@ -3616,7 +3631,8 @@
         "sustituible": true
       }
     ],
-    "image": "/images/recipes/PLT_COL_011.jpg"
+    "image": "/images/recipes/PLT_COL_011.jpg",
+    "preparation": "Licuar la proteína whey con espinaca, pepino, agua de coco y manzana hasta obtener una bebida homogénea."
   },
   {
     "dish_id": "PLT_COL_012",
@@ -3628,7 +3644,7 @@
     "flavor_profile": "dulce",
     "ingredients": [
       {
-        "food_id": "proteina_polvo",
+        "food_id": "proteina_whey_polvo",
         "role": "proteina_base",
         "base_amount": 30,
         "min_amount": 21,
@@ -3664,7 +3680,7 @@
         "sustituible": true
       },
       {
-        "food_id": "especias_secas",
+        "food_id": "canela",
         "role": "condimento_base",
         "base_amount": 2,
         "min_amount": 1,
@@ -3673,7 +3689,8 @@
         "sustituible": true
       }
     ],
-    "image": "/images/recipes/PLT_COL_012.jpg"
+    "image": "/images/recipes/PLT_COL_012.jpg",
+    "preparation": "Licuar la proteína whey con el café frío, la leche de almendra, el hielo y la canela. Servir de inmediato."
   },
   {
     "dish_id": "PLT_COL_013",
@@ -3685,7 +3702,7 @@
     "flavor_profile": "dulce",
     "ingredients": [
       {
-        "food_id": "proteina_polvo",
+        "food_id": "proteina_whey_polvo",
         "role": "proteina_base",
         "base_amount": 30,
         "min_amount": 21,
@@ -3721,7 +3738,7 @@
         "sustituible": true
       },
       {
-        "food_id": "especias_secas",
+        "food_id": "canela",
         "role": "condimento_base",
         "base_amount": 2,
         "min_amount": 1,
@@ -3730,7 +3747,8 @@
         "sustituible": true
       }
     ],
-    "image": "/images/recipes/PLT_COL_013.jpg"
+    "image": "/images/recipes/PLT_COL_013.jpg",
+    "preparation": "Licuar la proteína whey con zanahoria, leche de soya, nueces y canela hasta obtener una mezcla cremosa."
   },
   {
     "dish_id": "PLT_COL_014",
@@ -3760,7 +3778,7 @@
         "sustituible": true
       },
       {
-        "food_id": "leche_descremada",
+        "food_id": "leche_entera",
         "role": "proteina_secundaria",
         "base_amount": 150,
         "min_amount": 105,
@@ -3787,7 +3805,8 @@
         "sustituible": true
       }
     ],
-    "image": "/images/recipes/PLT_COL_014.jpg"
+    "image": "/images/recipes/PLT_COL_014.jpg",
+    "preparation": "Licuar el yogur griego natural, las fresas, la leche entera, la chía y el hielo hasta integrar."
   },
   {
     "dish_id": "PLT_COL_015",
@@ -3940,7 +3959,7 @@
         "sustituible": true
       },
       {
-        "food_id": "especias_secas",
+        "food_id": "curcuma",
         "role": "condimento_base",
         "base_amount": 2,
         "min_amount": 1,
@@ -3949,7 +3968,7 @@
         "sustituible": true
       },
       {
-        "food_id": "semillas_girasol",
+        "food_id": "semillas_calabaza",
         "role": "grasa",
         "base_amount": 10,
         "min_amount": 7,
@@ -3958,7 +3977,8 @@
         "sustituible": true
       }
     ],
-    "image": "/images/recipes/PLT_COL_017.jpg"
+    "image": "/images/recipes/PLT_COL_017.jpg",
+    "preparation": "Licuar el yogur griego natural con plátano, leche de almendra y cúrcuma. Terminar con semillas de calabaza."
   },
   {
     "dish_id": "PLT_COL_018",
@@ -4062,16 +4082,17 @@
         "sustituible": true
       },
       {
-        "food_id": "trace_aditivo",
+        "food_id": "polvo_hornear",
         "role": "condimento_base",
         "base_amount": 5,
-        "min_amount": 4,
-        "max_amount": 6,
+        "min_amount": 2,
+        "max_amount": 5,
         "unit": "g",
         "sustituible": true
       }
     ],
-    "image": "/images/recipes/PLT_DES_016.jpg"
+    "image": "/images/recipes/PLT_DES_016.jpg",
+    "preparation": "Licuar la avena, las claras, el queso cottage y el polvo para hornear. Cocinar porciones en sartén antiadherente y servir con fresas."
   },
   {
     "dish_id": "PLT_DES_017",
@@ -4165,7 +4186,7 @@
         "sustituible": true
       },
       {
-        "food_id": "especias_secas",
+        "food_id": "canela",
         "role": "condimento_base",
         "base_amount": 2,
         "min_amount": 1,
@@ -4183,7 +4204,8 @@
         "sustituible": true
       }
     ],
-    "image": "/images/recipes/PLT_DES_018.jpg"
+    "image": "/images/recipes/PLT_DES_018.jpg",
+    "preparation": "Batir las claras con la leche de almendra y la canela. Remojar el pan integral, dorar en sartén y servir con requesón."
   },
   {
     "dish_id": "PLT_DES_019",
@@ -4230,7 +4252,7 @@
         "sustituible": true
       },
       {
-        "food_id": "especias_secas",
+        "food_id": "canela",
         "role": "condimento_base",
         "base_amount": 2,
         "min_amount": 1,
@@ -4239,7 +4261,8 @@
         "sustituible": true
       }
     ],
-    "image": "/images/recipes/PLT_DES_019.jpg"
+    "image": "/images/recipes/PLT_DES_019.jpg",
+    "preparation": "Cocinar capas delgadas de claras como crepas. Rellenar con manzana caliente y canela; servir con yogur griego y nueces."
   },
   {
     "dish_id": "PLT_DES_020",
@@ -4391,16 +4414,17 @@
         "sustituible": true
       },
       {
-        "food_id": "trace_aditivo",
+        "food_id": "extracto_vainilla",
         "role": "condimento_base",
-        "base_amount": 5,
-        "min_amount": 4,
-        "max_amount": 6,
-        "unit": "g",
+        "base_amount": 2,
+        "min_amount": 1,
+        "max_amount": 5,
+        "unit": "ml",
         "sustituible": true
       }
     ],
-    "image": "/images/recipes/PLT_COL_020.jpg"
+    "image": "/images/recipes/PLT_COL_020.jpg",
+    "preparation": "Mezclar el queso cottage con extracto de vainilla hasta alisar. Servir con fresa y galleta María troceada."
   },
   {
     "dish_id": "PLT_COL_021",
@@ -4437,18 +4461,10 @@
         "max_amount": 104,
         "unit": "g",
         "sustituible": true
-      },
-      {
-        "food_id": "edulcorante",
-        "role": "condimento_base",
-        "base_amount": 5,
-        "min_amount": 4,
-        "max_amount": 6,
-        "unit": "g",
-        "sustituible": true
       }
     ],
-    "image": "/images/recipes/PLT_COL_021.jpg"
+    "image": "/images/recipes/PLT_COL_021.jpg",
+    "preparation": "Batir las claras pasteurizadas hasta espumar. Incorporar con suavidad el yogur griego y la fresa triturada; servir frío sin endulzante añadido."
   },
   {
     "dish_id": "PLT_COL_022",
@@ -4478,7 +4494,7 @@
         "sustituible": true
       },
       {
-        "food_id": "especias_secas",
+        "food_id": "canela",
         "role": "condimento_base",
         "base_amount": 2,
         "min_amount": 1,
@@ -4496,7 +4512,8 @@
         "sustituible": true
       }
     ],
-    "image": "/images/recipes/PLT_COL_022.jpg"
+    "image": "/images/recipes/PLT_COL_022.jpg",
+    "preparation": "Hornear la manzana hasta suavizar. Rellenar con requesón, espolvorear canela y terminar con almendras."
   },
   {
     "dish_id": "PLT_COL_023",
@@ -4550,7 +4567,7 @@
         "food_id": "pollo_pechuga_cocida",
         "role": "proteina_base",
         "base_amount": 150,
-        "min_amount": 120.0,
+        "min_amount": 120,
         "max_amount": 187.5,
         "unit": "g",
         "sustituible": false
@@ -4559,8 +4576,8 @@
         "food_id": "clara_huevo",
         "role": "proteina_refuerzo",
         "base_amount": 150,
-        "min_amount": 90.0,
-        "max_amount": 240.0,
+        "min_amount": 90,
+        "max_amount": 240,
         "unit": "ml",
         "sustituible": true
       },
@@ -4568,8 +4585,8 @@
         "food_id": "pimiento",
         "role": "verdura",
         "base_amount": 50,
-        "min_amount": 25.0,
-        "max_amount": 90.0,
+        "min_amount": 25,
+        "max_amount": 90,
         "unit": "g",
         "sustituible": true
       },
@@ -4577,8 +4594,8 @@
         "food_id": "cebolla",
         "role": "verdura",
         "base_amount": 30,
-        "min_amount": 15.0,
-        "max_amount": 54.0,
+        "min_amount": 15,
+        "max_amount": 54,
         "unit": "g",
         "sustituible": true
       },
@@ -4607,7 +4624,7 @@
         "food_id": "pollo_pechuga_cocida",
         "role": "proteina_base",
         "base_amount": 150,
-        "min_amount": 120.0,
+        "min_amount": 120,
         "max_amount": 187.5,
         "unit": "g",
         "sustituible": false
@@ -4616,8 +4633,8 @@
         "food_id": "tortilla_maiz",
         "role": "carbohidrato",
         "base_amount": 120,
-        "min_amount": 78.0,
-        "max_amount": 162.0,
+        "min_amount": 78,
+        "max_amount": 162,
         "unit": "g",
         "sustituible": true
       },
@@ -4625,17 +4642,17 @@
         "food_id": "salsa_verde",
         "role": "condimento_base",
         "base_amount": 100,
-        "min_amount": 60.0,
-        "max_amount": 140.0,
+        "min_amount": 60,
+        "max_amount": 140,
         "unit": "ml",
         "sustituible": true
       },
       {
-        "food_id": "queso_panela",
+        "food_id": "queso_panela_light",
         "role": "proteina_secundaria",
         "base_amount": 50,
         "min_amount": 32.5,
-        "max_amount": 70.0,
+        "max_amount": 70,
         "unit": "g",
         "sustituible": true
       },
@@ -4643,8 +4660,8 @@
         "food_id": "crema_acida",
         "role": "grasa",
         "base_amount": 30,
-        "min_amount": 15.0,
-        "max_amount": 39.0,
+        "min_amount": 15,
+        "max_amount": 39,
         "unit": "g",
         "sustituible": true
       }
@@ -4664,8 +4681,8 @@
         "food_id": "pavo_molido",
         "role": "proteina_base",
         "base_amount": 120,
-        "min_amount": 96.0,
-        "max_amount": 150.0,
+        "min_amount": 96,
+        "max_amount": 150,
         "unit": "g",
         "sustituible": false
       },
@@ -4691,17 +4708,17 @@
         "food_id": "salsa_roja",
         "role": "condimento_base",
         "base_amount": 100,
-        "min_amount": 60.0,
-        "max_amount": 140.0,
+        "min_amount": 60,
+        "max_amount": 140,
         "unit": "ml",
         "sustituible": true
       },
       {
-        "food_id": "queso_panela",
+        "food_id": "queso_panela_light",
         "role": "proteina_secundaria",
         "base_amount": 40,
-        "min_amount": 26.0,
-        "max_amount": 56.0,
+        "min_amount": 26,
+        "max_amount": 56,
         "unit": "g",
         "sustituible": true
       }
@@ -4721,8 +4738,8 @@
         "food_id": "pollo_pechuga_cocida",
         "role": "proteina_base",
         "base_amount": 120,
-        "min_amount": 96.0,
-        "max_amount": 150.0,
+        "min_amount": 96,
+        "max_amount": 150,
         "unit": "g",
         "sustituible": false
       },
@@ -4730,8 +4747,8 @@
         "food_id": "clara_huevo",
         "role": "proteina_refuerzo",
         "base_amount": 200,
-        "min_amount": 120.0,
-        "max_amount": 320.0,
+        "min_amount": 120,
+        "max_amount": 320,
         "unit": "ml",
         "sustituible": true
       },
@@ -4739,8 +4756,8 @@
         "food_id": "nopales",
         "role": "verdura",
         "base_amount": 100,
-        "min_amount": 50.0,
-        "max_amount": 180.0,
+        "min_amount": 50,
+        "max_amount": 180,
         "unit": "g",
         "sustituible": true
       },
@@ -4748,8 +4765,8 @@
         "food_id": "pico_de_gallo",
         "role": "verdura",
         "base_amount": 80,
-        "min_amount": 40.0,
-        "max_amount": 144.0,
+        "min_amount": 40,
+        "max_amount": 144,
         "unit": "g",
         "sustituible": true
       },
@@ -4778,7 +4795,7 @@
         "food_id": "pollo_pechuga_cocida",
         "role": "proteina_base",
         "base_amount": 150,
-        "min_amount": 120.0,
+        "min_amount": 120,
         "max_amount": 187.5,
         "unit": "g",
         "sustituible": false
@@ -4797,7 +4814,7 @@
         "role": "proteina_secundaria",
         "base_amount": 50,
         "min_amount": 32.5,
-        "max_amount": 70.0,
+        "max_amount": 70,
         "unit": "g",
         "sustituible": true
       },
@@ -4805,8 +4822,8 @@
         "food_id": "lechuga",
         "role": "verdura",
         "base_amount": 50,
-        "min_amount": 25.0,
-        "max_amount": 90.0,
+        "min_amount": 25,
+        "max_amount": 90,
         "unit": "g",
         "sustituible": true
       }
@@ -4826,7 +4843,7 @@
         "food_id": "pavo_molido",
         "role": "proteina_base",
         "base_amount": 150,
-        "min_amount": 120.0,
+        "min_amount": 120,
         "max_amount": 187.5,
         "unit": "g",
         "sustituible": false
@@ -4836,7 +4853,7 @@
         "role": "carbohidrato",
         "base_amount": 50,
         "min_amount": 32.5,
-        "max_amount": 70.0,
+        "max_amount": 70,
         "unit": "g",
         "sustituible": true
       },
@@ -4844,8 +4861,8 @@
         "food_id": "queso_oaxaca",
         "role": "proteina_secundaria",
         "base_amount": 40,
-        "min_amount": 26.0,
-        "max_amount": 56.0,
+        "min_amount": 26,
+        "max_amount": 56,
         "unit": "g",
         "sustituible": true
       },
@@ -4853,8 +4870,8 @@
         "food_id": "tortilla_maiz",
         "role": "carbohidrato",
         "base_amount": 120,
-        "min_amount": 78.0,
-        "max_amount": 162.0,
+        "min_amount": 78,
+        "max_amount": 162,
         "unit": "g",
         "sustituible": true
       },
@@ -4862,8 +4879,8 @@
         "food_id": "salsa_martajada",
         "role": "condimento_base",
         "base_amount": 50,
-        "min_amount": 30.0,
-        "max_amount": 70.0,
+        "min_amount": 30,
+        "max_amount": 70,
         "unit": "g",
         "sustituible": true
       }
@@ -4892,8 +4909,8 @@
         "food_id": "clara_huevo",
         "role": "proteina_refuerzo",
         "base_amount": 200,
-        "min_amount": 120.0,
-        "max_amount": 320.0,
+        "min_amount": 120,
+        "max_amount": 320,
         "unit": "ml",
         "sustituible": true
       },
@@ -4901,8 +4918,8 @@
         "food_id": "pollo_pechuga_cocida",
         "role": "proteina_base",
         "base_amount": 120,
-        "min_amount": 96.0,
-        "max_amount": 150.0,
+        "min_amount": 96,
+        "max_amount": 150,
         "unit": "g",
         "sustituible": false
       },
@@ -4910,8 +4927,8 @@
         "food_id": "cebolla",
         "role": "verdura",
         "base_amount": 60,
-        "min_amount": 30.0,
-        "max_amount": 108.0,
+        "min_amount": 30,
+        "max_amount": 108,
         "unit": "g",
         "sustituible": true
       },
@@ -4940,8 +4957,8 @@
         "food_id": "bistec_res_asado",
         "role": "proteina_base",
         "base_amount": 120,
-        "min_amount": 96.0,
-        "max_amount": 150.0,
+        "min_amount": 96,
+        "max_amount": 150,
         "unit": "g",
         "sustituible": false
       },
@@ -4949,17 +4966,17 @@
         "food_id": "clara_huevo",
         "role": "proteina_refuerzo",
         "base_amount": 150,
-        "min_amount": 90.0,
-        "max_amount": 240.0,
+        "min_amount": 90,
+        "max_amount": 240,
         "unit": "ml",
         "sustituible": true
       },
       {
-        "food_id": "frijol_pinto_cocido",
+        "food_id": "frijol_bayo_cocido",
         "role": "carbohidrato",
         "base_amount": 100,
-        "min_amount": 60.0,
-        "max_amount": 140.0,
+        "min_amount": 60,
+        "max_amount": 140,
         "unit": "g",
         "sustituible": true
       },
@@ -4967,8 +4984,8 @@
         "food_id": "salsa_verde",
         "role": "condimento_base",
         "base_amount": 50,
-        "min_amount": 30.0,
-        "max_amount": 70.0,
+        "min_amount": 30,
+        "max_amount": 70,
         "unit": "g",
         "sustituible": true
       },
@@ -4997,8 +5014,8 @@
         "food_id": "pollo_pechuga_cocida",
         "role": "proteina_base",
         "base_amount": 120,
-        "min_amount": 96.0,
-        "max_amount": 150.0,
+        "min_amount": 96,
+        "max_amount": 150,
         "unit": "g",
         "sustituible": false
       },
@@ -5006,8 +5023,8 @@
         "food_id": "queso_oaxaca",
         "role": "proteina_secundaria",
         "base_amount": 60,
-        "min_amount": 39.0,
-        "max_amount": 84.0,
+        "min_amount": 39,
+        "max_amount": 84,
         "unit": "g",
         "sustituible": true
       },
@@ -5015,8 +5032,8 @@
         "food_id": "tortilla_maiz",
         "role": "carbohidrato",
         "base_amount": 120,
-        "min_amount": 78.0,
-        "max_amount": 162.0,
+        "min_amount": 78,
+        "max_amount": 162,
         "unit": "g",
         "sustituible": true
       },
@@ -5024,8 +5041,8 @@
         "food_id": "pico_de_gallo",
         "role": "verdura",
         "base_amount": 80,
-        "min_amount": 40.0,
-        "max_amount": 144.0,
+        "min_amount": 40,
+        "max_amount": 144,
         "unit": "g",
         "sustituible": true
       }
@@ -5045,7 +5062,7 @@
         "food_id": "pollo_pechuga_cocida",
         "role": "proteina_base",
         "base_amount": 150,
-        "min_amount": 120.0,
+        "min_amount": 120,
         "max_amount": 187.5,
         "unit": "g",
         "sustituible": false
@@ -5054,8 +5071,8 @@
         "food_id": "pina",
         "role": "fruta",
         "base_amount": 40,
-        "min_amount": 20.0,
-        "max_amount": 64.0,
+        "min_amount": 20,
+        "max_amount": 64,
         "unit": "g",
         "sustituible": true
       },
@@ -5072,8 +5089,8 @@
         "food_id": "guacamole",
         "role": "grasa",
         "base_amount": 40,
-        "min_amount": 20.0,
-        "max_amount": 64.0,
+        "min_amount": 20,
+        "max_amount": 64,
         "unit": "g",
         "sustituible": true
       }
@@ -5102,8 +5119,8 @@
         "food_id": "clara_huevo",
         "role": "proteina_refuerzo",
         "base_amount": 100,
-        "min_amount": 60.0,
-        "max_amount": 160.0,
+        "min_amount": 60,
+        "max_amount": 160,
         "unit": "ml",
         "sustituible": true
       },
@@ -5111,8 +5128,8 @@
         "food_id": "pavo_molido",
         "role": "proteina_refuerzo",
         "base_amount": 100,
-        "min_amount": 60.0,
-        "max_amount": 150.0,
+        "min_amount": 60,
+        "max_amount": 150,
         "unit": "g",
         "sustituible": true
       },
@@ -5120,8 +5137,8 @@
         "food_id": "salsa_roja",
         "role": "condimento_base",
         "base_amount": 150,
-        "min_amount": 90.0,
-        "max_amount": 210.0,
+        "min_amount": 90,
+        "max_amount": 210,
         "unit": "ml",
         "sustituible": true
       },
@@ -5150,8 +5167,8 @@
         "food_id": "pollo_pechuga_cocida",
         "role": "proteina_base",
         "base_amount": 120,
-        "min_amount": 96.0,
-        "max_amount": 150.0,
+        "min_amount": 96,
+        "max_amount": 150,
         "unit": "g",
         "sustituible": false
       },
@@ -5159,8 +5176,8 @@
         "food_id": "clara_huevo",
         "role": "proteina_refuerzo",
         "base_amount": 150,
-        "min_amount": 90.0,
-        "max_amount": 240.0,
+        "min_amount": 90,
+        "max_amount": 240,
         "unit": "ml",
         "sustituible": true
       },
@@ -5168,8 +5185,8 @@
         "food_id": "quinoa_cocida",
         "role": "carbohidrato",
         "base_amount": 100,
-        "min_amount": 65.0,
-        "max_amount": 140.0,
+        "min_amount": 65,
+        "max_amount": 140,
         "unit": "g",
         "sustituible": true
       },
@@ -5177,8 +5194,8 @@
         "food_id": "jitomate",
         "role": "verdura",
         "base_amount": 30,
-        "min_amount": 15.0,
-        "max_amount": 54.0,
+        "min_amount": 15,
+        "max_amount": 54,
         "unit": "g",
         "sustituible": true
       },
@@ -5186,8 +5203,8 @@
         "food_id": "espinaca",
         "role": "verdura",
         "base_amount": 20,
-        "min_amount": 10.0,
-        "max_amount": 36.0,
+        "min_amount": 10,
+        "max_amount": 36,
         "unit": "g",
         "sustituible": true
       }
@@ -5216,8 +5233,8 @@
         "food_id": "pollo_pechuga_cocida",
         "role": "proteina_base",
         "base_amount": 100,
-        "min_amount": 80.0,
-        "max_amount": 125.0,
+        "min_amount": 80,
+        "max_amount": 125,
         "unit": "g",
         "sustituible": false
       },
@@ -5225,17 +5242,17 @@
         "food_id": "frijol_negro_cocido",
         "role": "carbohidrato",
         "base_amount": 80,
-        "min_amount": 48.0,
-        "max_amount": 112.0,
+        "min_amount": 48,
+        "max_amount": 112,
         "unit": "g",
         "sustituible": true
       },
       {
-        "food_id": "queso_panela",
+        "food_id": "queso_panela_light",
         "role": "proteina_secundaria",
         "base_amount": 60,
-        "min_amount": 39.0,
-        "max_amount": 84.0,
+        "min_amount": 39,
+        "max_amount": 84,
         "unit": "g",
         "sustituible": true
       },
@@ -5243,8 +5260,8 @@
         "food_id": "pico_de_gallo",
         "role": "verdura",
         "base_amount": 80,
-        "min_amount": 40.0,
-        "max_amount": 144.0,
+        "min_amount": 40,
+        "max_amount": 144,
         "unit": "g",
         "sustituible": true
       }
@@ -5264,8 +5281,8 @@
         "food_id": "clara_huevo",
         "role": "proteina_refuerzo",
         "base_amount": 250,
-        "min_amount": 150.0,
-        "max_amount": 375.0,
+        "min_amount": 150,
+        "max_amount": 375,
         "unit": "ml",
         "sustituible": true
       },
@@ -5273,7 +5290,7 @@
         "food_id": "salmon_ahumado",
         "role": "proteina_base",
         "base_amount": 90,
-        "min_amount": 72.0,
+        "min_amount": 72,
         "max_amount": 112.5,
         "unit": "g",
         "sustituible": false
@@ -5291,8 +5308,8 @@
         "food_id": "aguacate",
         "role": "grasa",
         "base_amount": 40,
-        "min_amount": 20.0,
-        "max_amount": 64.0,
+        "min_amount": 20,
+        "max_amount": 64,
         "unit": "g",
         "sustituible": true
       },
@@ -5300,8 +5317,8 @@
         "food_id": "cebollin",
         "role": "verdura",
         "base_amount": 10,
-        "min_amount": 5.0,
-        "max_amount": 16.0,
+        "min_amount": 5,
+        "max_amount": 16,
         "unit": "g",
         "sustituible": true
       }
@@ -5321,7 +5338,7 @@
         "food_id": "pollo_pechuga_cocida",
         "role": "proteina_base",
         "base_amount": 150,
-        "min_amount": 120.0,
+        "min_amount": 120,
         "max_amount": 187.5,
         "unit": "g",
         "sustituible": false
@@ -5330,8 +5347,8 @@
         "food_id": "lechuga",
         "role": "verdura",
         "base_amount": 40,
-        "min_amount": 20.0,
-        "max_amount": 72.0,
+        "min_amount": 20,
+        "max_amount": 72,
         "unit": "g",
         "sustituible": true
       },
@@ -5339,35 +5356,44 @@
         "food_id": "jitomate",
         "role": "verdura",
         "base_amount": 20,
-        "min_amount": 10.0,
-        "max_amount": 36.0,
+        "min_amount": 10,
+        "max_amount": 36,
         "unit": "g",
         "sustituible": true
       },
       {
-        "food_id": "vinagre_oregano",
+        "food_id": "vinagre_manzana",
         "role": "condimento_base",
         "base_amount": 15,
-        "min_amount": 9.0,
-        "max_amount": 21.0,
+        "min_amount": 9,
+        "max_amount": 21,
         "unit": "ml",
         "sustituible": true
+      },
+      {
+        "food_id": "oregano",
+        "role": "condimento_base",
+        "unit": "g",
+        "base_amount": 1,
+        "min_amount": 0.5,
+        "max_amount": 2,
+        "sustituible": false
       },
       {
         "food_id": "tortilla_maiz",
         "role": "carbohidrato",
         "base_amount": 120,
-        "min_amount": 78.0,
-        "max_amount": 162.0,
+        "min_amount": 78,
+        "max_amount": 162,
         "unit": "g",
         "sustituible": true
       },
       {
-        "food_id": "queso_panela",
+        "food_id": "queso_panela_light",
         "role": "proteina_secundaria",
         "base_amount": 40,
-        "min_amount": 26.0,
-        "max_amount": 56.0,
+        "min_amount": 26,
+        "max_amount": 56,
         "unit": "g",
         "sustituible": true
       }
@@ -5396,8 +5422,8 @@
         "food_id": "clara_huevo",
         "role": "proteina_refuerzo",
         "base_amount": 100,
-        "min_amount": 60.0,
-        "max_amount": 160.0,
+        "min_amount": 60,
+        "max_amount": 160,
         "unit": "ml",
         "sustituible": true
       },
@@ -5405,17 +5431,17 @@
         "food_id": "atun_agua",
         "role": "proteina_base",
         "base_amount": 120,
-        "min_amount": 96.0,
-        "max_amount": 150.0,
+        "min_amount": 96,
+        "max_amount": 150,
         "unit": "g",
         "sustituible": false
       },
       {
-        "food_id": "queso_panela",
+        "food_id": "queso_panela_light",
         "role": "proteina_secundaria",
         "base_amount": 50,
         "min_amount": 32.5,
-        "max_amount": 70.0,
+        "max_amount": 70,
         "unit": "g",
         "sustituible": true
       },
@@ -5441,20 +5467,20 @@
     "preparation": "Saltear el pollo picado con jitomate, cebolla y chile. Agregar las claras y cocinar. Rellenar la tortilla de trigo, cubrir con queso cheddar bajo en grasa y enrollar.",
     "ingredients": [
       {
-        "food_id": "tortilla_trigo_integral",
+        "food_id": "tortilla_harina",
         "role": "carbohidrato",
-        "base_amount": 60,
-        "min_amount": 39.0,
-        "max_amount": 81.0,
-        "unit": "g",
+        "base_amount": 2,
+        "min_amount": 1,
+        "max_amount": 3,
+        "unit": "pieza",
         "sustituible": true
       },
       {
         "food_id": "pollo_pechuga_cocida",
         "role": "proteina_base",
         "base_amount": 140,
-        "min_amount": 112.0,
-        "max_amount": 175.0,
+        "min_amount": 112,
+        "max_amount": 175,
         "unit": "g",
         "sustituible": false
       },
@@ -5462,8 +5488,8 @@
         "food_id": "clara_huevo",
         "role": "proteina_refuerzo",
         "base_amount": 100,
-        "min_amount": 60.0,
-        "max_amount": 160.0,
+        "min_amount": 60,
+        "max_amount": 160,
         "unit": "ml",
         "sustituible": true
       },
@@ -5471,8 +5497,8 @@
         "food_id": "jitomate",
         "role": "verdura",
         "base_amount": 80,
-        "min_amount": 40.0,
-        "max_amount": 144.0,
+        "min_amount": 40,
+        "max_amount": 144,
         "unit": "g",
         "sustituible": true
       },
@@ -5480,8 +5506,8 @@
         "food_id": "queso_cheddar_light",
         "role": "proteina_secundaria",
         "base_amount": 40,
-        "min_amount": 26.0,
-        "max_amount": 56.0,
+        "min_amount": 26,
+        "max_amount": 56,
         "unit": "g",
         "sustituible": true
       }
@@ -5501,8 +5527,8 @@
         "food_id": "tilapia_cocida",
         "role": "proteina_base",
         "base_amount": 140,
-        "min_amount": 112.0,
-        "max_amount": 175.0,
+        "min_amount": 112,
+        "max_amount": 175,
         "unit": "g",
         "sustituible": false
       },
@@ -5510,8 +5536,8 @@
         "food_id": "clara_huevo",
         "role": "proteina_refuerzo",
         "base_amount": 100,
-        "min_amount": 60.0,
-        "max_amount": 160.0,
+        "min_amount": 60,
+        "max_amount": 160,
         "unit": "ml",
         "sustituible": true
       },
@@ -5549,8 +5575,8 @@
         "food_id": "pollo_pechuga_cocida",
         "role": "proteina_base",
         "base_amount": 140,
-        "min_amount": 112.0,
-        "max_amount": 175.0,
+        "min_amount": 112,
+        "max_amount": 175,
         "unit": "g",
         "sustituible": false
       },
@@ -5558,8 +5584,8 @@
         "food_id": "clara_huevo",
         "role": "proteina_refuerzo",
         "base_amount": 150,
-        "min_amount": 90.0,
-        "max_amount": 240.0,
+        "min_amount": 90,
+        "max_amount": 240,
         "unit": "ml",
         "sustituible": true
       },
@@ -5567,8 +5593,8 @@
         "food_id": "germen_soya",
         "role": "verdura",
         "base_amount": 60,
-        "min_amount": 30.0,
-        "max_amount": 108.0,
+        "min_amount": 30,
+        "max_amount": 108,
         "unit": "g",
         "sustituible": true
       },
@@ -5576,8 +5602,8 @@
         "food_id": "calabacita",
         "role": "verdura",
         "base_amount": 40,
-        "min_amount": 20.0,
-        "max_amount": 72.0,
+        "min_amount": 20,
+        "max_amount": 72,
         "unit": "g",
         "sustituible": true
       },
@@ -5585,8 +5611,8 @@
         "food_id": "salsa_soya_baja_sodio",
         "role": "condimento_base",
         "base_amount": 15,
-        "min_amount": 9.0,
-        "max_amount": 21.0,
+        "min_amount": 9,
+        "max_amount": 21,
         "unit": "ml",
         "sustituible": true
       },
@@ -5615,8 +5641,8 @@
         "food_id": "pollo_pechuga_cocida",
         "role": "proteina_base",
         "base_amount": 120,
-        "min_amount": 96.0,
-        "max_amount": 150.0,
+        "min_amount": 96,
+        "max_amount": 150,
         "unit": "g",
         "sustituible": false
       },
@@ -5624,8 +5650,8 @@
         "food_id": "calabacita",
         "role": "verdura",
         "base_amount": 100,
-        "min_amount": 50.0,
-        "max_amount": 180.0,
+        "min_amount": 50,
+        "max_amount": 180,
         "unit": "g",
         "sustituible": true
       },
@@ -5633,8 +5659,8 @@
         "food_id": "clara_huevo",
         "role": "proteina_refuerzo",
         "base_amount": 150,
-        "min_amount": 90.0,
-        "max_amount": 240.0,
+        "min_amount": 90,
+        "max_amount": 240,
         "unit": "ml",
         "sustituible": true
       },
@@ -5642,8 +5668,8 @@
         "food_id": "avena_cruda",
         "role": "carbohidrato",
         "base_amount": 40,
-        "min_amount": 26.0,
-        "max_amount": 54.0,
+        "min_amount": 26,
+        "max_amount": 54,
         "unit": "g",
         "sustituible": true
       },
@@ -5652,7 +5678,7 @@
         "role": "proteina_secundaria",
         "base_amount": 50,
         "min_amount": 32.5,
-        "max_amount": 70.0,
+        "max_amount": 70,
         "unit": "g",
         "sustituible": true
       }
@@ -5672,8 +5698,8 @@
         "food_id": "pollo_pechuga_cocida",
         "role": "proteina_base",
         "base_amount": 180,
-        "min_amount": 144.0,
-        "max_amount": 225.0,
+        "min_amount": 144,
+        "max_amount": 225,
         "unit": "g",
         "sustituible": false
       },
@@ -5681,8 +5707,8 @@
         "food_id": "queso_cottage",
         "role": "proteina_secundaria",
         "base_amount": 100,
-        "min_amount": 65.0,
-        "max_amount": 140.0,
+        "min_amount": 65,
+        "max_amount": 140,
         "unit": "g",
         "sustituible": true
       },
@@ -5690,8 +5716,8 @@
         "food_id": "manzana",
         "role": "fruta",
         "base_amount": 100,
-        "min_amount": 50.0,
-        "max_amount": 150.0,
+        "min_amount": 50,
+        "max_amount": 150,
         "unit": "g",
         "sustituible": true
       },
@@ -5699,8 +5725,8 @@
         "food_id": "lechuga",
         "role": "verdura",
         "base_amount": 100,
-        "min_amount": 50.0,
-        "max_amount": 180.0,
+        "min_amount": 50,
+        "max_amount": 180,
         "unit": "g",
         "sustituible": true
       },
@@ -5708,8 +5734,8 @@
         "food_id": "espinaca",
         "role": "verdura",
         "base_amount": 20,
-        "min_amount": 10.0,
-        "max_amount": 36.0,
+        "min_amount": 10,
+        "max_amount": 36,
         "unit": "g",
         "sustituible": true
       },
@@ -5718,7 +5744,7 @@
         "role": "grasa",
         "base_amount": 15,
         "min_amount": 7.5,
-        "max_amount": 24.0,
+        "max_amount": 24,
         "unit": "g",
         "sustituible": true
       }
@@ -5727,29 +5753,29 @@
   },
   {
     "dish_id": "PLT_COM_018",
-    "name": "Wrap integral de pavo molido y aguacate",
+    "name": "Wrap de pavo molido y aguacate",
     "meal_type": [
       "comida",
       "cena"
     ],
     "flavor_profile": "salado",
-    "preparation": "Sazonar y cocinar el pavo molido. Rellenar la tortilla integral con el pavo, el aguacate y la lechuga con jitomate en rodajas, enrollar.",
+    "preparation": "Sazonar y cocinar el pavo molido. Rellenar la tortilla de harina con el pavo, el aguacate y la lechuga con jitomate en rodajas, enrollar.",
     "ingredients": [
       {
-        "food_id": "tortilla_trigo_integral",
+        "food_id": "tortilla_harina",
         "role": "carbohidrato",
-        "base_amount": 60,
-        "min_amount": 39.0,
-        "max_amount": 81.0,
-        "unit": "g",
+        "base_amount": 2,
+        "min_amount": 1,
+        "max_amount": 3,
+        "unit": "pieza",
         "sustituible": true
       },
       {
         "food_id": "pavo_molido",
         "role": "proteina_base",
         "base_amount": 160,
-        "min_amount": 128.0,
-        "max_amount": 200.0,
+        "min_amount": 128,
+        "max_amount": 200,
         "unit": "g",
         "sustituible": false
       },
@@ -5757,8 +5783,8 @@
         "food_id": "aguacate",
         "role": "grasa",
         "base_amount": 50,
-        "min_amount": 25.0,
-        "max_amount": 80.0,
+        "min_amount": 25,
+        "max_amount": 80,
         "unit": "g",
         "sustituible": true
       },
@@ -5766,8 +5792,8 @@
         "food_id": "lechuga",
         "role": "verdura",
         "base_amount": 60,
-        "min_amount": 30.0,
-        "max_amount": 108.0,
+        "min_amount": 30,
+        "max_amount": 108,
         "unit": "g",
         "sustituible": true
       },
@@ -5775,8 +5801,8 @@
         "food_id": "jitomate",
         "role": "verdura",
         "base_amount": 20,
-        "min_amount": 10.0,
-        "max_amount": 36.0,
+        "min_amount": 10,
+        "max_amount": 36,
         "unit": "g",
         "sustituible": true
       }
@@ -5797,8 +5823,8 @@
         "food_id": "tilapia_cocida",
         "role": "proteina_base",
         "base_amount": 180,
-        "min_amount": 144.0,
-        "max_amount": 225.0,
+        "min_amount": 144,
+        "max_amount": 225,
         "unit": "g",
         "sustituible": false
       },
@@ -5806,8 +5832,8 @@
         "food_id": "avena_cruda",
         "role": "carbohidrato",
         "base_amount": 25,
-        "min_amount": 15.0,
-        "max_amount": 35.0,
+        "min_amount": 15,
+        "max_amount": 35,
         "unit": "g",
         "sustituible": true
       },
@@ -5816,7 +5842,7 @@
         "role": "carbohidrato",
         "base_amount": 150,
         "min_amount": 97.5,
-        "max_amount": 210.0,
+        "max_amount": 210,
         "unit": "g",
         "sustituible": true
       },
@@ -5824,8 +5850,8 @@
         "food_id": "pepino",
         "role": "verdura",
         "base_amount": 50,
-        "min_amount": 25.0,
-        "max_amount": 90.0,
+        "min_amount": 25,
+        "max_amount": 90,
         "unit": "g",
         "sustituible": true
       },
@@ -5833,8 +5859,8 @@
         "food_id": "jitomate",
         "role": "verdura",
         "base_amount": 50,
-        "min_amount": 25.0,
-        "max_amount": 90.0,
+        "min_amount": 25,
+        "max_amount": 90,
         "unit": "g",
         "sustituible": true
       }
@@ -5855,17 +5881,17 @@
         "food_id": "sirloin_res_magro_cocido",
         "role": "proteina_base",
         "base_amount": 160,
-        "min_amount": 128.0,
-        "max_amount": 200.0,
+        "min_amount": 128,
+        "max_amount": 200,
         "unit": "g",
         "sustituible": false
       },
       {
-        "food_id": "queso_panela",
+        "food_id": "queso_panela_light",
         "role": "proteina_secundaria",
         "base_amount": 80,
-        "min_amount": 52.0,
-        "max_amount": 112.0,
+        "min_amount": 52,
+        "max_amount": 112,
         "unit": "g",
         "sustituible": true
       },
@@ -5873,8 +5899,8 @@
         "food_id": "tortilla_maiz",
         "role": "carbohidrato",
         "base_amount": 120,
-        "min_amount": 78.0,
-        "max_amount": 162.0,
+        "min_amount": 78,
+        "max_amount": 162,
         "unit": "g",
         "sustituible": true
       },
@@ -5882,8 +5908,8 @@
         "food_id": "salsa_verde",
         "role": "condimento_base",
         "base_amount": 60,
-        "min_amount": 36.0,
-        "max_amount": 84.0,
+        "min_amount": 36,
+        "max_amount": 84,
         "unit": "g",
         "sustituible": true
       }
@@ -5892,19 +5918,19 @@
   },
   {
     "dish_id": "PLT_COM_021",
-    "name": "Bowl de salmón fresco con edamames y quinoa",
+    "name": "Bowl de salmón, garbanzos y quinoa",
     "meal_type": [
       "comida",
       "cena"
     ],
     "flavor_profile": "salado",
-    "preparation": "Sellar el salmón a la plancha. Servir sobre la quinoa cocida junto con los edamames y el pepino en rodajas.",
+    "preparation": "Sellar el salmón a la plancha. Servir sobre la quinoa cocida junto con los garbanzos y el pepino en rodajas.",
     "ingredients": [
       {
         "food_id": "salmon_cocido",
         "role": "proteina_base",
         "base_amount": 150,
-        "min_amount": 120.0,
+        "min_amount": 120,
         "max_amount": 187.5,
         "unit": "g",
         "sustituible": false
@@ -5913,17 +5939,17 @@
         "food_id": "quinoa_cocida",
         "role": "carbohidrato",
         "base_amount": 120,
-        "min_amount": 78.0,
-        "max_amount": 168.0,
+        "min_amount": 78,
+        "max_amount": 168,
         "unit": "g",
         "sustituible": true
       },
       {
-        "food_id": "edamame_cocido",
+        "food_id": "garbanzo_cocido",
         "role": "carbohidrato",
         "base_amount": 80,
-        "min_amount": 48.0,
-        "max_amount": 112.0,
+        "min_amount": 48,
+        "max_amount": 112,
         "unit": "g",
         "sustituible": true
       },
@@ -5931,8 +5957,8 @@
         "food_id": "pepino",
         "role": "verdura",
         "base_amount": 50,
-        "min_amount": 25.0,
-        "max_amount": 90.0,
+        "min_amount": 25,
+        "max_amount": 90,
         "unit": "g",
         "sustituible": true
       }
@@ -5953,8 +5979,8 @@
         "food_id": "pavo_molido",
         "role": "proteina_base",
         "base_amount": 160,
-        "min_amount": 128.0,
-        "max_amount": 200.0,
+        "min_amount": 128,
+        "max_amount": 200,
         "unit": "g",
         "sustituible": false
       },
@@ -5962,8 +5988,8 @@
         "food_id": "jitomate",
         "role": "verdura",
         "base_amount": 50,
-        "min_amount": 25.0,
-        "max_amount": 90.0,
+        "min_amount": 25,
+        "max_amount": 90,
         "unit": "g",
         "sustituible": true
       },
@@ -5971,8 +5997,8 @@
         "food_id": "cebolla",
         "role": "verdura",
         "base_amount": 30,
-        "min_amount": 15.0,
-        "max_amount": 54.0,
+        "min_amount": 15,
+        "max_amount": 54,
         "unit": "g",
         "sustituible": true
       },
@@ -5980,17 +6006,17 @@
         "food_id": "lechuga",
         "role": "verdura",
         "base_amount": 50,
-        "min_amount": 25.0,
-        "max_amount": 90.0,
+        "min_amount": 25,
+        "max_amount": 90,
         "unit": "g",
         "sustituible": true
       },
       {
-        "food_id": "vinagre_simple",
+        "food_id": "vinagre_manzana",
         "role": "condimento_base",
         "base_amount": 15,
-        "min_amount": 9.0,
-        "max_amount": 21.0,
+        "min_amount": 9,
+        "max_amount": 21,
         "unit": "ml",
         "sustituible": true
       },
@@ -6020,8 +6046,8 @@
         "food_id": "lomo_cerdo_asado",
         "role": "proteina_base",
         "base_amount": 180,
-        "min_amount": 144.0,
-        "max_amount": 225.0,
+        "min_amount": 144,
+        "max_amount": 225,
         "unit": "g",
         "sustituible": false
       },
@@ -6029,8 +6055,8 @@
         "food_id": "pina",
         "role": "fruta",
         "base_amount": 60,
-        "min_amount": 30.0,
-        "max_amount": 96.0,
+        "min_amount": 30,
+        "max_amount": 96,
         "unit": "g",
         "sustituible": true
       },
@@ -6038,8 +6064,8 @@
         "food_id": "pimiento",
         "role": "verdura",
         "base_amount": 50,
-        "min_amount": 25.0,
-        "max_amount": 90.0,
+        "min_amount": 25,
+        "max_amount": 90,
         "unit": "g",
         "sustituible": true
       },
@@ -6047,8 +6073,8 @@
         "food_id": "camote_cocido",
         "role": "carbohidrato",
         "base_amount": 180,
-        "min_amount": 117.0,
-        "max_amount": 252.0,
+        "min_amount": 117,
+        "max_amount": 252,
         "unit": "g",
         "sustituible": true
       }
@@ -6069,8 +6095,8 @@
         "food_id": "camaron_cocido",
         "role": "proteina_base",
         "base_amount": 160,
-        "min_amount": 128.0,
-        "max_amount": 200.0,
+        "min_amount": 128,
+        "max_amount": 200,
         "unit": "g",
         "sustituible": false
       },
@@ -6078,8 +6104,8 @@
         "food_id": "queso_oaxaca",
         "role": "proteina_secundaria",
         "base_amount": 60,
-        "min_amount": 39.0,
-        "max_amount": 84.0,
+        "min_amount": 39,
+        "max_amount": 84,
         "unit": "g",
         "sustituible": true
       },
@@ -6087,8 +6113,8 @@
         "food_id": "tortilla_maiz",
         "role": "carbohidrato",
         "base_amount": 120,
-        "min_amount": 78.0,
-        "max_amount": 162.0,
+        "min_amount": 78,
+        "max_amount": 162,
         "unit": "g",
         "sustituible": true
       },
@@ -6096,8 +6122,8 @@
         "food_id": "pico_de_gallo",
         "role": "verdura",
         "base_amount": 80,
-        "min_amount": 40.0,
-        "max_amount": 144.0,
+        "min_amount": 40,
+        "max_amount": 144,
         "unit": "g",
         "sustituible": true
       }
@@ -6118,8 +6144,8 @@
         "food_id": "pollo_pechuga_cocida",
         "role": "proteina_base",
         "base_amount": 180,
-        "min_amount": 144.0,
-        "max_amount": 225.0,
+        "min_amount": 144,
+        "max_amount": 225,
         "unit": "g",
         "sustituible": false
       },
@@ -6127,8 +6153,8 @@
         "food_id": "garbanzo_cocido",
         "role": "carbohidrato",
         "base_amount": 100,
-        "min_amount": 60.0,
-        "max_amount": 140.0,
+        "min_amount": 60,
+        "max_amount": 140,
         "unit": "g",
         "sustituible": true
       },
@@ -6136,8 +6162,8 @@
         "food_id": "calabacita",
         "role": "verdura",
         "base_amount": 50,
-        "min_amount": 25.0,
-        "max_amount": 90.0,
+        "min_amount": 25,
+        "max_amount": 90,
         "unit": "g",
         "sustituible": true
       },
@@ -6145,8 +6171,8 @@
         "food_id": "zanahoria",
         "role": "verdura",
         "base_amount": 50,
-        "min_amount": 25.0,
-        "max_amount": 90.0,
+        "min_amount": 25,
+        "max_amount": 90,
         "unit": "g",
         "sustituible": true
       },
@@ -6154,8 +6180,8 @@
         "food_id": "caldo_desgrasado",
         "role": "condimento_base",
         "base_amount": 250,
-        "min_amount": 175.0,
-        "max_amount": 325.0,
+        "min_amount": 175,
+        "max_amount": 325,
         "unit": "ml",
         "sustituible": true
       },
@@ -6163,8 +6189,8 @@
         "food_id": "tortilla_maiz",
         "role": "carbohidrato",
         "base_amount": 60,
-        "min_amount": 39.0,
-        "max_amount": 81.0,
+        "min_amount": 39,
+        "max_amount": 81,
         "unit": "g",
         "sustituible": true
       }
@@ -6185,8 +6211,8 @@
         "food_id": "atun_fresco_sellado",
         "role": "proteina_base",
         "base_amount": 160,
-        "min_amount": 128.0,
-        "max_amount": 200.0,
+        "min_amount": 128,
+        "max_amount": 200,
         "unit": "g",
         "sustituible": false
       },
@@ -6194,8 +6220,8 @@
         "food_id": "semillas_ajonjoli",
         "role": "grasa",
         "base_amount": 10,
-        "min_amount": 5.0,
-        "max_amount": 16.0,
+        "min_amount": 5,
+        "max_amount": 16,
         "unit": "g",
         "sustituible": true
       },
@@ -6203,8 +6229,8 @@
         "food_id": "salsa_ponzu",
         "role": "condimento_base",
         "base_amount": 15,
-        "min_amount": 9.0,
-        "max_amount": 21.0,
+        "min_amount": 9,
+        "max_amount": 21,
         "unit": "ml",
         "sustituible": true
       },
@@ -6233,7 +6259,7 @@
         "food_id": "pollo_pechuga_cocida",
         "role": "proteina_base",
         "base_amount": 150,
-        "min_amount": 120.0,
+        "min_amount": 120,
         "max_amount": 187.5,
         "unit": "g",
         "sustituible": false
@@ -6242,8 +6268,8 @@
         "food_id": "pepino",
         "role": "verdura",
         "base_amount": 60,
-        "min_amount": 30.0,
-        "max_amount": 108.0,
+        "min_amount": 30,
+        "max_amount": 108,
         "unit": "g",
         "sustituible": true
       },
@@ -6251,8 +6277,8 @@
         "food_id": "cebolla",
         "role": "verdura",
         "base_amount": 30,
-        "min_amount": 15.0,
-        "max_amount": 54.0,
+        "min_amount": 15,
+        "max_amount": 54,
         "unit": "g",
         "sustituible": true
       },
@@ -6260,8 +6286,8 @@
         "food_id": "cilantro",
         "role": "verdura",
         "base_amount": 10,
-        "min_amount": 5.0,
-        "max_amount": 16.0,
+        "min_amount": 5,
+        "max_amount": 16,
         "unit": "g",
         "sustituible": true
       },
@@ -6291,8 +6317,8 @@
         "food_id": "queso_cottage",
         "role": "proteina_base",
         "base_amount": 200,
-        "min_amount": 160.0,
-        "max_amount": 250.0,
+        "min_amount": 160,
+        "max_amount": 250,
         "unit": "g",
         "sustituible": false
       },
@@ -6300,8 +6326,8 @@
         "food_id": "pavo_pechuga_cocida",
         "role": "proteina_refuerzo",
         "base_amount": 100,
-        "min_amount": 60.0,
-        "max_amount": 140.0,
+        "min_amount": 60,
+        "max_amount": 140,
         "unit": "g",
         "sustituible": true
       },
@@ -6309,8 +6335,8 @@
         "food_id": "jitomate",
         "role": "verdura",
         "base_amount": 80,
-        "min_amount": 40.0,
-        "max_amount": 144.0,
+        "min_amount": 40,
+        "max_amount": 144,
         "unit": "g",
         "sustituible": true
       },
@@ -6318,8 +6344,8 @@
         "food_id": "pepino",
         "role": "verdura",
         "base_amount": 50,
-        "min_amount": 25.0,
-        "max_amount": 90.0,
+        "min_amount": 25,
+        "max_amount": 90,
         "unit": "g",
         "sustituible": true
       }
@@ -6340,7 +6366,7 @@
         "food_id": "pollo_pechuga_cocida",
         "role": "proteina_base",
         "base_amount": 150,
-        "min_amount": 120.0,
+        "min_amount": 120,
         "max_amount": 187.5,
         "unit": "g",
         "sustituible": false
@@ -6349,8 +6375,8 @@
         "food_id": "pasta_cocida",
         "role": "carbohidrato",
         "base_amount": 80,
-        "min_amount": 52.0,
-        "max_amount": 108.0,
+        "min_amount": 52,
+        "max_amount": 108,
         "unit": "g",
         "sustituible": true
       },
@@ -6358,8 +6384,8 @@
         "food_id": "ejotes",
         "role": "verdura",
         "base_amount": 40,
-        "min_amount": 20.0,
-        "max_amount": 72.0,
+        "min_amount": 20,
+        "max_amount": 72,
         "unit": "g",
         "sustituible": true
       },
@@ -6367,8 +6393,8 @@
         "food_id": "calabacita",
         "role": "verdura",
         "base_amount": 40,
-        "min_amount": 20.0,
-        "max_amount": 72.0,
+        "min_amount": 20,
+        "max_amount": 72,
         "unit": "g",
         "sustituible": true
       },
@@ -6376,8 +6402,8 @@
         "food_id": "jitomate",
         "role": "verdura",
         "base_amount": 20,
-        "min_amount": 10.0,
-        "max_amount": 36.0,
+        "min_amount": 10,
+        "max_amount": 36,
         "unit": "g",
         "sustituible": true
       },
@@ -6386,7 +6412,7 @@
         "role": "proteina_secundaria",
         "base_amount": 30,
         "min_amount": 19.5,
-        "max_amount": 42.0,
+        "max_amount": 42,
         "unit": "g",
         "sustituible": true
       }
@@ -6406,8 +6432,8 @@
         "food_id": "tilapia_cocida",
         "role": "proteina_base",
         "base_amount": 180,
-        "min_amount": 144.0,
-        "max_amount": 225.0,
+        "min_amount": 144,
+        "max_amount": 225,
         "unit": "g",
         "sustituible": false
       },
@@ -6415,8 +6441,8 @@
         "food_id": "calabacita",
         "role": "verdura",
         "base_amount": 100,
-        "min_amount": 50.0,
-        "max_amount": 180.0,
+        "min_amount": 50,
+        "max_amount": 180,
         "unit": "g",
         "sustituible": true
       },
@@ -6433,8 +6459,8 @@
         "food_id": "lechuga",
         "role": "verdura",
         "base_amount": 60,
-        "min_amount": 30.0,
-        "max_amount": 108.0,
+        "min_amount": 30,
+        "max_amount": 108,
         "unit": "g",
         "sustituible": true
       },
@@ -6442,8 +6468,8 @@
         "food_id": "jitomate",
         "role": "verdura",
         "base_amount": 40,
-        "min_amount": 20.0,
-        "max_amount": 72.0,
+        "min_amount": 20,
+        "max_amount": 72,
         "unit": "g",
         "sustituible": true
       }
@@ -6463,7 +6489,7 @@
         "food_id": "pavo_molido",
         "role": "proteina_base",
         "base_amount": 150,
-        "min_amount": 120.0,
+        "min_amount": 120,
         "max_amount": 187.5,
         "unit": "g",
         "sustituible": false
@@ -6472,17 +6498,17 @@
         "food_id": "clara_huevo",
         "role": "proteina_refuerzo",
         "base_amount": 100,
-        "min_amount": 60.0,
-        "max_amount": 160.0,
+        "min_amount": 60,
+        "max_amount": 160,
         "unit": "ml",
         "sustituible": true
       },
       {
-        "food_id": "col",
+        "food_id": "col_blanca",
         "role": "verdura",
         "base_amount": 150,
-        "min_amount": 90.0,
-        "max_amount": 210.0,
+        "min_amount": 90,
+        "max_amount": 210,
         "unit": "g",
         "sustituible": true
       },
@@ -6490,8 +6516,8 @@
         "food_id": "salsa_martajada",
         "role": "condimento_base",
         "base_amount": 50,
-        "min_amount": 30.0,
-        "max_amount": 70.0,
+        "min_amount": 30,
+        "max_amount": 70,
         "unit": "g",
         "sustituible": true
       }
@@ -6512,8 +6538,8 @@
         "food_id": "pollo_pechuga_cocida",
         "role": "proteina_base",
         "base_amount": 180,
-        "min_amount": 144.0,
-        "max_amount": 225.0,
+        "min_amount": 144,
+        "max_amount": 225,
         "unit": "g",
         "sustituible": false
       },
@@ -6521,8 +6547,8 @@
         "food_id": "avena_cruda",
         "role": "carbohidrato",
         "base_amount": 20,
-        "min_amount": 12.0,
-        "max_amount": 28.0,
+        "min_amount": 12,
+        "max_amount": 28,
         "unit": "g",
         "sustituible": true
       },
@@ -6531,16 +6557,16 @@
         "role": "carbohidrato",
         "base_amount": 150,
         "min_amount": 97.5,
-        "max_amount": 210.0,
+        "max_amount": 210,
         "unit": "g",
         "sustituible": true
       },
       {
-        "food_id": "yogur_griego_light",
+        "food_id": "yogur_griego_natural",
         "role": "condimento_base",
         "base_amount": 25,
-        "min_amount": 15.0,
-        "max_amount": 35.0,
+        "min_amount": 15,
+        "max_amount": 35,
         "unit": "g",
         "sustituible": true
       },
@@ -6570,8 +6596,8 @@
         "food_id": "atun_agua",
         "role": "proteina_base",
         "base_amount": 140,
-        "min_amount": 112.0,
-        "max_amount": 175.0,
+        "min_amount": 112,
+        "max_amount": 175,
         "unit": "g",
         "sustituible": false
       },
@@ -6579,8 +6605,8 @@
         "food_id": "requeson",
         "role": "proteina_secundaria",
         "base_amount": 100,
-        "min_amount": 60.0,
-        "max_amount": 140.0,
+        "min_amount": 60,
+        "max_amount": 140,
         "unit": "g",
         "sustituible": true
       },
@@ -6588,8 +6614,8 @@
         "food_id": "germen_soya",
         "role": "verdura",
         "base_amount": 50,
-        "min_amount": 25.0,
-        "max_amount": 90.0,
+        "min_amount": 25,
+        "max_amount": 90,
         "unit": "g",
         "sustituible": true
       },
@@ -6619,8 +6645,8 @@
         "food_id": "pavo_pechuga_cocida",
         "role": "proteina_base",
         "base_amount": 160,
-        "min_amount": 128.0,
-        "max_amount": 200.0,
+        "min_amount": 128,
+        "max_amount": 200,
         "unit": "g",
         "sustituible": false
       },
@@ -6628,8 +6654,8 @@
         "food_id": "champinones",
         "role": "verdura",
         "base_amount": 100,
-        "min_amount": 50.0,
-        "max_amount": 180.0,
+        "min_amount": 50,
+        "max_amount": 180,
         "unit": "g",
         "sustituible": true
       },
@@ -6637,17 +6663,17 @@
         "food_id": "espinaca",
         "role": "verdura",
         "base_amount": 100,
-        "min_amount": 50.0,
-        "max_amount": 180.0,
+        "min_amount": 50,
+        "max_amount": 180,
         "unit": "g",
         "sustituible": true
       },
       {
-        "food_id": "queso_panela",
+        "food_id": "queso_panela_light",
         "role": "proteina_secundaria",
         "base_amount": 40,
-        "min_amount": 26.0,
-        "max_amount": 56.0,
+        "min_amount": 26,
+        "max_amount": 56,
         "unit": "g",
         "sustituible": true
       },
@@ -6655,8 +6681,8 @@
         "food_id": "vinagre_balsamico",
         "role": "condimento_base",
         "base_amount": 10,
-        "min_amount": 6.0,
-        "max_amount": 14.0,
+        "min_amount": 6,
+        "max_amount": 14,
         "unit": "ml",
         "sustituible": true
       }
@@ -6670,14 +6696,14 @@
       "cena"
     ],
     "flavor_profile": "salado",
-    "preparation": "Cocinar el filete de pescado blanco en trozos dentro del caldo desgrasado junto con la calabacita, zanahoria y chayote. Servir con tostadas horneadas.",
+    "preparation": "Cocinar el filete de tilapia en trozos dentro del caldo desgrasado junto con la calabacita, zanahoria y chayote. Servir con tostadas horneadas.",
     "ingredients": [
       {
-        "food_id": "pescado_blanco_cocido",
+        "food_id": "tilapia_cocida",
         "role": "proteina_base",
         "base_amount": 180,
-        "min_amount": 144.0,
-        "max_amount": 225.0,
+        "min_amount": 144,
+        "max_amount": 225,
         "unit": "g",
         "sustituible": false
       },
@@ -6685,8 +6711,8 @@
         "food_id": "calabacita",
         "role": "verdura",
         "base_amount": 50,
-        "min_amount": 25.0,
-        "max_amount": 90.0,
+        "min_amount": 25,
+        "max_amount": 90,
         "unit": "g",
         "sustituible": true
       },
@@ -6694,8 +6720,8 @@
         "food_id": "zanahoria",
         "role": "verdura",
         "base_amount": 50,
-        "min_amount": 25.0,
-        "max_amount": 90.0,
+        "min_amount": 25,
+        "max_amount": 90,
         "unit": "g",
         "sustituible": true
       },
@@ -6703,8 +6729,8 @@
         "food_id": "chayote_cocido",
         "role": "verdura",
         "base_amount": 50,
-        "min_amount": 25.0,
-        "max_amount": 90.0,
+        "min_amount": 25,
+        "max_amount": 90,
         "unit": "g",
         "sustituible": true
       },
@@ -6712,8 +6738,8 @@
         "food_id": "caldo_desgrasado",
         "role": "condimento_base",
         "base_amount": 250,
-        "min_amount": 175.0,
-        "max_amount": 325.0,
+        "min_amount": 175,
+        "max_amount": 325,
         "unit": "ml",
         "sustituible": true
       },
@@ -6743,8 +6769,8 @@
         "food_id": "clara_huevo",
         "role": "proteina_refuerzo",
         "base_amount": 250,
-        "min_amount": 150.0,
-        "max_amount": 350.0,
+        "min_amount": 150,
+        "max_amount": 350,
         "unit": "ml",
         "sustituible": true
       },
@@ -6752,8 +6778,8 @@
         "food_id": "pollo_pechuga_cocida",
         "role": "proteina_base",
         "base_amount": 120,
-        "min_amount": 96.0,
-        "max_amount": 150.0,
+        "min_amount": 96,
+        "max_amount": 150,
         "unit": "g",
         "sustituible": false
       },
@@ -6761,8 +6787,8 @@
         "food_id": "pimiento",
         "role": "verdura",
         "base_amount": 30,
-        "min_amount": 15.0,
-        "max_amount": 54.0,
+        "min_amount": 15,
+        "max_amount": 54,
         "unit": "g",
         "sustituible": true
       },
@@ -6770,17 +6796,17 @@
         "food_id": "cebolla",
         "role": "verdura",
         "base_amount": 20,
-        "min_amount": 10.0,
-        "max_amount": 36.0,
+        "min_amount": 10,
+        "max_amount": 36,
         "unit": "g",
         "sustituible": true
       },
       {
-        "food_id": "queso_panela",
+        "food_id": "queso_panela_light",
         "role": "proteina_secundaria",
         "base_amount": 40,
-        "min_amount": 26.0,
-        "max_amount": 56.0,
+        "min_amount": 26,
+        "max_amount": 56,
         "unit": "g",
         "sustituible": true
       }
@@ -6880,7 +6906,7 @@
         "sustituible": true
       },
       {
-        "food_id": "frijol_pinto_cocido",
+        "food_id": "frijol_bayo_cocido",
         "role": "carbohidrato",
         "unit": "g",
         "base_amount": 70,
@@ -6955,7 +6981,7 @@
         "sustituible": true
       },
       {
-        "food_id": "queso_fresco",
+        "food_id": "queso_panela_light",
         "role": "proteina_secundaria",
         "unit": "g",
         "base_amount": 30,
@@ -6974,7 +7000,7 @@
       }
     ],
     "image": "/images/recipes/PLT_COM_029.jpg",
-    "preparation": "Deshebrar el pollo. Pasar las tortillas por la salsa verde caliente, rellenar con pollo y enrollar. Acomodar en un plato, bañar con más salsa, crema, queso fresco y cebolla picada."
+    "preparation": "Deshebrar el pollo. Pasar las tortillas por la salsa verde caliente, rellenar con pollo y enrollar. Acomodar en un plato, bañar con más salsa, crema, queso panela y cebolla picada."
   },
   {
     "dish_id": "PLT_COM_030",
@@ -7153,7 +7179,7 @@
         "sustituible": true
       },
       {
-        "food_id": "pure_tomate",
+        "food_id": "pure_tomate_sin_sal",
         "role": "condimento_base",
         "unit": "g",
         "base_amount": 40,
@@ -7224,14 +7250,14 @@
   },
   {
     "dish_id": "PLT_COM_034",
-    "name": "Torta de pierna de pollo con aguacate",
+    "name": "Torta de pollo deshebrado con aguacate",
     "meal_type": [
       "comida"
     ],
     "flavor_profile": "salado",
     "ingredients": [
       {
-        "food_id": "pollo_pierna_cocida",
+        "food_id": "pollo_muslo_cocido",
         "role": "proteina_base",
         "unit": "g",
         "base_amount": 120,
@@ -7286,7 +7312,7 @@
       }
     ],
     "image": "/images/recipes/PLT_COM_034.jpg",
-    "preparation": "Abrir el bolillo y untar con mostaza. Rellenar con la pierna de pollo deshebrada, aguacate en rebanadas, jitomate y lechuga."
+    "preparation": "Abrir el bolillo y untar con mostaza. Rellenar con la pollo de muslo deshebrada, aguacate en rebanadas, jitomate y lechuga."
   },
   {
     "dish_id": "PLT_COM_035",
@@ -7315,7 +7341,7 @@
         "sustituible": true
       },
       {
-        "food_id": "queso_panela",
+        "food_id": "queso_panela_light",
         "role": "proteina_base",
         "unit": "g",
         "base_amount": 60,
@@ -7355,63 +7381,6 @@
     "preparation": "Machacar la papa cocida y mezclar con queso panela rallado. Rellenar las tortillas, enrollar y dorar en comal con un poco de aceite. Servir con lechuga, crema y salsa."
   },
   {
-    "dish_id": "PLT_COM_036",
-    "name": "Guisado de lentejas con chorizo y arroz",
-    "meal_type": [
-      "comida"
-    ],
-    "flavor_profile": "salado",
-    "ingredients": [
-      {
-        "food_id": "chorizo_cocido",
-        "role": "proteina_base",
-        "unit": "g",
-        "base_amount": 50,
-        "min_amount": 35,
-        "max_amount": 80,
-        "sustituible": false
-      },
-      {
-        "food_id": "lenteja_cocida",
-        "role": "carbohidrato",
-        "unit": "g",
-        "base_amount": 150,
-        "min_amount": 100,
-        "max_amount": 280,
-        "sustituible": true
-      },
-      {
-        "food_id": "arroz_blanco_cocido",
-        "role": "carbohidrato",
-        "unit": "g",
-        "base_amount": 100,
-        "min_amount": 60,
-        "max_amount": 200,
-        "sustituible": true
-      },
-      {
-        "food_id": "zanahoria",
-        "role": "verdura",
-        "unit": "g",
-        "base_amount": 40,
-        "min_amount": 20,
-        "max_amount": 80,
-        "sustituible": true
-      },
-      {
-        "food_id": "cebolla",
-        "role": "verdura",
-        "unit": "g",
-        "base_amount": 25,
-        "min_amount": 15,
-        "max_amount": 45,
-        "sustituible": true
-      }
-    ],
-    "image": "/images/recipes/PLT_COM_036.jpg",
-    "preparation": "Sofreír el chorizo con cebolla y zanahoria picada. Incorporar las lentejas cocidas y dejar sazonar unos minutos. Servir acompañado de arroz blanco."
-  },
-  {
     "dish_id": "PLT_COM_037",
     "name": "Espagueti a la boloñesa de pavo",
     "meal_type": [
@@ -7438,7 +7407,7 @@
         "sustituible": true
       },
       {
-        "food_id": "pure_tomate",
+        "food_id": "pure_tomate_sin_sal",
         "role": "condimento_base",
         "unit": "g",
         "base_amount": 60,
@@ -7882,7 +7851,7 @@
         "sustituible": false
       },
       {
-        "food_id": "queso_doble_crema",
+        "food_id": "queso_oaxaca",
         "role": "grasa",
         "unit": "g",
         "base_amount": 40,
@@ -7930,7 +7899,7 @@
         "sustituible": true
       },
       {
-        "food_id": "pure_tomate",
+        "food_id": "pure_tomate_sin_sal",
         "role": "condimento_base",
         "unit": "g",
         "base_amount": 60,
@@ -7987,7 +7956,7 @@
         "sustituible": false
       },
       {
-        "food_id": "pan_multigrano",
+        "food_id": "pan_integral",
         "role": "carbohidrato",
         "unit": "pieza",
         "base_amount": 2,
@@ -8033,7 +8002,7 @@
       }
     ],
     "image": "/images/recipes/PLT_COM_046.jpg",
-    "preparation": "Tostar el pan multigrano y armar el sándwich con pavo, jitomate, lechuga y mostaza. Acompañar con la papa horneada en gajos."
+    "preparation": "Tostar el pan integral y armar el sándwich con pavo, jitomate, lechuga y mostaza. Acompañar con la papa horneada en gajos."
   },
   {
     "dish_id": "PLT_CEN_032",
@@ -8167,7 +8136,7 @@
         "sustituible": false
       },
       {
-        "food_id": "tortilla_trigo_integral",
+        "food_id": "tortilla_harina",
         "role": "carbohidrato",
         "unit": "pieza",
         "base_amount": 1,
@@ -8204,7 +8173,7 @@
       }
     ],
     "image": "/images/recipes/PLT_CEN_034.jpg",
-    "preparation": "Untar la tortilla integral con hummus, agregar el pollo en tiras, lechuga y jitomate. Enrollar apretado y cortar a la mitad."
+    "preparation": "Untar la tortilla de harina con hummus, agregar el pollo en tiras, lechuga y jitomate. Enrollar apretado y cortar a la mitad."
   },
   {
     "dish_id": "PLT_CEN_035",
@@ -8290,7 +8259,7 @@
         "sustituible": false
       },
       {
-        "food_id": "queso_panela",
+        "food_id": "queso_panela_light",
         "role": "proteina_secundaria",
         "unit": "g",
         "base_amount": 30,
@@ -8377,7 +8346,7 @@
     "flavor_profile": "salado",
     "ingredients": [
       {
-        "food_id": "frijol_pinto_cocido",
+        "food_id": "frijol_bayo_cocido",
         "role": "proteina_base",
         "unit": "g",
         "base_amount": 160,
@@ -8395,7 +8364,7 @@
         "sustituible": true
       },
       {
-        "food_id": "queso_fresco",
+        "food_id": "queso_panela_light",
         "role": "proteina_secundaria",
         "unit": "g",
         "base_amount": 30,
@@ -8423,7 +8392,7 @@
       }
     ],
     "image": "/images/recipes/PLT_CEN_038.jpg",
-    "preparation": "Calentar los frijoles machacados y rellenar las tortillas calientes. Coronar con queso fresco desmoronado, salsa y cilantro."
+    "preparation": "Calentar los frijoles machacados y rellenar las tortillas calientes. Coronar con queso panela desmoronado, salsa y cilantro."
   },
   {
     "dish_id": "PLT_CEN_039",
@@ -8566,7 +8535,7 @@
         "sustituible": true
       },
       {
-        "food_id": "pure_tomate",
+        "food_id": "pure_tomate_sin_sal",
         "role": "condimento_base",
         "unit": "g",
         "base_amount": 60,
@@ -8623,7 +8592,7 @@
         "sustituible": true
       },
       {
-        "food_id": "queso_panela",
+        "food_id": "queso_panela_light",
         "role": "proteina_secundaria",
         "unit": "g",
         "base_amount": 30,
@@ -8719,7 +8688,7 @@
         "sustituible": true
       },
       {
-        "food_id": "leche_descremada",
+        "food_id": "leche_entera",
         "role": "proteina_secundaria",
         "unit": "ml",
         "base_amount": 180,
@@ -8747,7 +8716,7 @@
       }
     ],
     "image": "/images/recipes/PLT_DES_041.jpg",
-    "preparation": "Mezclar la avena cruda con la leche descremada en un frasco y refrigerar toda la noche. Servir por la mañana con el plátano en rodajas y crema de cacahuate encima."
+    "preparation": "Mezclar la avena cruda con la leche entera en un frasco y refrigerar toda la noche. Servir por la mañana con el plátano en rodajas y crema de cacahuate encima."
   },
   {
     "dish_id": "PLT_DES_042",
@@ -8806,12 +8775,12 @@
     "flavor_profile": "dulce",
     "ingredients": [
       {
-        "food_id": "avena_cocida",
+        "food_id": "avena_cruda",
         "role": "carbohidrato",
         "unit": "g",
-        "base_amount": 200,
-        "min_amount": 130,
-        "max_amount": 380,
+        "base_amount": 40,
+        "min_amount": 30,
+        "max_amount": 70,
         "sustituible": true
       },
       {
@@ -8833,7 +8802,7 @@
         "sustituible": true
       },
       {
-        "food_id": "especias_secas",
+        "food_id": "canela",
         "role": "condimento_base",
         "unit": "g",
         "base_amount": 2,
@@ -8929,7 +8898,7 @@
         "sustituible": true
       },
       {
-        "food_id": "queso_panela",
+        "food_id": "queso_panela_light",
         "role": "proteina_secundaria",
         "unit": "g",
         "base_amount": 30,
@@ -8977,7 +8946,7 @@
         "sustituible": false
       },
       {
-        "food_id": "queso_panela",
+        "food_id": "queso_panela_light",
         "role": "proteina_secundaria",
         "unit": "g",
         "base_amount": 40,
@@ -9121,7 +9090,7 @@
         "sustituible": true
       },
       {
-        "food_id": "leche_semidescremada",
+        "food_id": "leche_entera",
         "role": "proteina_secundaria",
         "unit": "ml",
         "base_amount": 200,
@@ -9208,7 +9177,7 @@
         "sustituible": false
       },
       {
-        "food_id": "jamon_pavo",
+        "food_id": "jamon_pavo_light",
         "role": "proteina_secundaria",
         "unit": "g",
         "base_amount": 40,
@@ -9247,12 +9216,12 @@
     "flavor_profile": "dulce",
     "ingredients": [
       {
-        "food_id": "avena_cocida",
+        "food_id": "avena_cruda",
         "role": "carbohidrato",
         "unit": "g",
-        "base_amount": 220,
-        "min_amount": 150,
-        "max_amount": 400,
+        "base_amount": 50,
+        "min_amount": 35,
+        "max_amount": 80,
         "sustituible": true
       },
       {
@@ -9274,7 +9243,7 @@
         "sustituible": true
       },
       {
-        "food_id": "leche_descremada",
+        "food_id": "leche_entera",
         "role": "proteina_secundaria",
         "unit": "ml",
         "base_amount": 100,
@@ -9331,7 +9300,7 @@
         "sustituible": true
       },
       {
-        "food_id": "queso_fresco",
+        "food_id": "queso_panela_light",
         "role": "proteina_secundaria",
         "unit": "g",
         "base_amount": 25,
@@ -9341,7 +9310,7 @@
       }
     ],
     "image": "/images/recipes/PLT_DES_053.jpg",
-    "preparation": "Romper las tostadas en trozos y bañar con la salsa verde caliente hasta suavizar ligeramente. Agregar el pollo deshebrado, crema y queso fresco encima."
+    "preparation": "Romper las tostadas en trozos y bañar con la salsa verde caliente hasta suavizar ligeramente. Agregar el pollo deshebrado, crema y queso panela encima."
   },
   {
     "dish_id": "PLT_DES_054",
@@ -9370,7 +9339,7 @@
         "sustituible": true
       },
       {
-        "food_id": "leche_descremada",
+        "food_id": "leche_entera",
         "role": "proteina_secundaria",
         "unit": "ml",
         "base_amount": 60,
@@ -9566,12 +9535,12 @@
         "sustituible": true
       },
       {
-        "food_id": "chile_verde",
+        "food_id": "chile_polvo",
         "role": "condimento_base",
         "unit": "g",
-        "base_amount": 5,
-        "min_amount": 0,
-        "max_amount": 10,
+        "base_amount": 1,
+        "min_amount": 0.5,
+        "max_amount": 2.5,
         "sustituible": true
       }
     ],
@@ -9580,7 +9549,7 @@
   },
   {
     "dish_id": "PLT_COL_028",
-    "name": "Galletas integrales con queso cottage",
+    "name": "Tostadas horneadas con queso cottage",
     "meal_type": [
       "colacion",
       "merienda"
@@ -9588,12 +9557,12 @@
     "flavor_profile": "salado",
     "ingredients": [
       {
-        "food_id": "galletas_saladas_integrales",
+        "food_id": "tostada_horneada",
         "role": "carbohidrato",
-        "unit": "g",
-        "base_amount": 20,
-        "min_amount": 15,
-        "max_amount": 40,
+        "unit": "pieza",
+        "base_amount": 2,
+        "min_amount": 1,
+        "max_amount": 3,
         "sustituible": true
       },
       {
@@ -9616,7 +9585,7 @@
       }
     ],
     "image": "/images/recipes/PLT_COL_028.jpg",
-    "preparation": "Servir las galletas integrales acompañadas de queso cottage y jitomate en cubos."
+    "preparation": "Servir las tostadas horneadas acompañadas de queso cottage y jitomate en cubos."
   },
   {
     "dish_id": "PLT_COL_029",
@@ -9677,7 +9646,7 @@
         "sustituible": true
       },
       {
-        "food_id": "leche_descremada",
+        "food_id": "leche_entera",
         "role": "proteina_base",
         "unit": "ml",
         "base_amount": 250,
@@ -9748,7 +9717,7 @@
     "flavor_profile": "salado",
     "ingredients": [
       {
-        "food_id": "jamon_pavo",
+        "food_id": "jamon_pavo_light",
         "role": "proteina_base",
         "unit": "g",
         "base_amount": 60,
@@ -9757,7 +9726,7 @@
         "sustituible": false
       },
       {
-        "food_id": "tortilla_trigo_integral",
+        "food_id": "tortilla_harina",
         "role": "carbohidrato",
         "unit": "pieza",
         "base_amount": 1,
@@ -9766,7 +9735,7 @@
         "sustituible": true
       },
       {
-        "food_id": "queso_panela",
+        "food_id": "queso_panela_light",
         "role": "proteina_secundaria",
         "unit": "g",
         "base_amount": 20,
@@ -9886,7 +9855,7 @@
         "sustituible": false
       },
       {
-        "food_id": "pan_blanco",
+        "food_id": "pan_integral",
         "role": "carbohidrato",
         "unit": "pieza",
         "base_amount": 1,
@@ -9935,7 +9904,7 @@
         "sustituible": true
       },
       {
-        "food_id": "queso_panela",
+        "food_id": "queso_panela_light",
         "role": "proteina_base",
         "unit": "g",
         "base_amount": 60,
@@ -10095,7 +10064,7 @@
     "flavor_profile": "dulce",
     "ingredients": [
       {
-        "food_id": "yogur_griego_light",
+        "food_id": "yogur_griego_natural",
         "role": "proteina_base",
         "unit": "g",
         "base_amount": 120,
@@ -10211,7 +10180,7 @@
         "sustituible": true
       },
       {
-        "food_id": "leche_descremada",
+        "food_id": "leche_entera",
         "role": "proteina_base",
         "unit": "ml",
         "base_amount": 250,

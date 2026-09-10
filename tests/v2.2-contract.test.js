@@ -2,7 +2,6 @@ const test = require('node:test');
 const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const path = require('node:path');
-const crypto = require('node:crypto');
 const { NUTRIENTS } = require('../lib/menu-engine/micronutrient-shadow.cjs');
 
 const root = path.resolve(__dirname, '..');
@@ -34,17 +33,19 @@ test('working Foods schema, IDs, missingness, and provenance are deterministic',
   assert.equal(provenanceIds.size, provenance.entries.length);
 });
 
-test('production and working catalogs remain distinct', () => {
-  assert.equal(productionFoods.length, 197);
-  assert.equal(foods.length, 233);
-  const hash = file => crypto.createHash('sha256').update(fs.readFileSync(path.join(root, file))).digest('hex');
-  assert.equal(hash('lib/menu-engine/data/foods.json'), '99b4e0a46777b60d0c8bff58c3480b888f29e69bb256a6a8f546dec0065dc74c');
+test('production catalog is the exact non-archived working projection', () => {
+  assert.equal(productionFoods.length, 193);
+  assert.equal(foods.length, 237);
+  assert.deepEqual(
+    productionFoods,
+    foods.filter(food => food.final_state !== 'ARCHIVED')
+  );
 });
 
-test('current dishes have unique IDs and production-resolvable references', () => {
+test('V2.2 migrated dishes have unique IDs and working-catalog-resolvable references', () => {
   const ids = dishes.map(dish => dish.dish_id);
   assert.equal(new Set(ids).size, ids.length);
-  const foodIds = new Set(productionFoods.map(food => food.id));
+  const foodIds = new Set(foods.map(food => food.id));
   for (const dish of dishes) {
     assert.ok(Array.isArray(dish.ingredients) && dish.ingredients.length > 0, dish.dish_id);
     for (const ingredient of dish.ingredients) {

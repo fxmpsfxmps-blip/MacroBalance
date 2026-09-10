@@ -1,0 +1,65 @@
+{
+  "schema_version": "V2.2",
+  "rotated_out": [
+    {
+      "dish_id": "PLT_COM_036",
+      "name": "Guisado de lentejas con chorizo y arroz",
+      "meal_type": [
+        "comida"
+      ],
+      "flavor_profile": "salado",
+      "ingredients": [
+        {
+          "food_id": "chorizo_cocido",
+          "role": "proteina_base",
+          "unit": "g",
+          "base_amount": 50,
+          "min_amount": 35,
+          "max_amount": 80,
+          "sustituible": false
+        },
+        {
+          "food_id": "lenteja_cocida",
+          "role": "carbohidrato",
+          "unit": "g",
+          "base_amount": 150,
+          "min_amount": 100,
+          "max_amount": 280,
+          "sustituible": true
+        },
+        {
+          "food_id": "arroz_blanco_cocido",
+          "role": "carbohidrato",
+          "unit": "g",
+          "base_amount": 100,
+          "min_amount": 60,
+          "max_amount": 200,
+          "sustituible": true
+        },
+        {
+          "food_id": "zanahoria",
+          "role": "verdura",
+          "unit": "g",
+          "base_amount": 40,
+          "min_amount": 20,
+          "max_amount": 80,
+          "sustituible": true
+        },
+        {
+          "food_id": "cebolla",
+          "role": "verdura",
+          "unit": "g",
+          "base_amount": 25,
+          "min_amount": 15,
+          "max_amount": 45,
+          "sustituible": true
+        }
+      ],
+      "image": "/images/recipes/PLT_COM_036.jpg",
+      "preparation": "Sofreír el chorizo con cebolla y zanahoria picada. Incorporar las lentejas cocidas y dejar sazonar unos minutos. Servir acompañado de arroz blanco.",
+      "rotation_status": "ROTATED_OUT",
+      "rotation_reason": "Chorizo cooked-yield nutrition remains unadjudicated; preserve history outside the active generator catalog.",
+      "rotation_version": "V2.2"
+    }
+  ]
+}

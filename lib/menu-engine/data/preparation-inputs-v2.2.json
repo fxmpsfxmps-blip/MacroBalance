@@ -1,0 +1,214 @@
+{
+  "schema_version": "preparation-inputs-v2.2-0.1.0",
+  "purpose": "Separate non-carousel preparation layer. Nutrition values remain authoritative in foods-v2.2-working.json and may be TRACK, NEGLIGIBLE, NONE, or UNRESOLVED.",
+  "entries": [
+    {
+      "food_id": "sal",
+      "display_name": "Sal de mesa",
+      "family": "preparation_input",
+      "nutrition_semantics": "TRACK",
+      "source_catalog": "foods-v2.2-working.json",
+      "visible": false
+    },
+    {
+      "food_id": "limon",
+      "display_name": "Limón",
+      "family": "preparation_input",
+      "nutrition_semantics": "TRACK",
+      "source_catalog": "foods-v2.2-working.json",
+      "visible": false
+    },
+    {
+      "food_id": "gelatina_sin_sabor",
+      "display_name": "Gelatina sin sabor",
+      "family": "preparation_input",
+      "nutrition_semantics": "TRACK",
+      "source_catalog": "foods-v2.2-working.json",
+      "visible": false
+    },
+    {
+      "food_id": "caldo_desgrasado",
+      "display_name": "Caldo desgrasado (pollo, res o verduras)",
+      "family": "preparation_input",
+      "nutrition_semantics": "TRACK",
+      "source_catalog": "foods-v2.2-working.json",
+      "visible": false
+    },
+    {
+      "food_id": "oregano",
+      "display_name": "Orégano seco",
+      "family": "preparation_input",
+      "nutrition_semantics": "TRACK",
+      "source_catalog": "foods-v2.2-working.json",
+      "visible": false
+    },
+    {
+      "food_id": "hielo",
+      "display_name": "Hielo",
+      "family": "preparation_input",
+      "nutrition_semantics": "NONE",
+      "source_catalog": "foods-v2.2-working.json",
+      "visible": false
+    },
+    {
+      "food_id": "vinagre_blanco",
+      "display_name": "Vinagre blanco destilado",
+      "family": "preparation_input",
+      "nutrition_semantics": "TRACK",
+      "source_catalog": "foods-v2.2-working.json",
+      "visible": false
+    },
+    {
+      "food_id": "vinagre_manzana",
+      "display_name": "Vinagre de manzana",
+      "family": "preparation_input",
+      "nutrition_semantics": "TRACK",
+      "source_catalog": "foods-v2.2-working.json",
+      "visible": false
+    },
+    {
+      "food_id": "pure_tomate_sin_sal",
+      "display_name": "Puré de tomate sin sal añadido",
+      "family": "preparation_input",
+      "nutrition_semantics": "TRACK",
+      "source_catalog": "foods-v2.2-working.json",
+      "visible": false
+    },
+    {
+      "food_id": "pasta_tomate",
+      "display_name": "Pasta de tomate sin sal añadida",
+      "family": "preparation_input",
+      "nutrition_semantics": "TRACK",
+      "source_catalog": "foods-v2.2-working.json",
+      "visible": false
+    },
+    {
+      "food_id": "extracto_vainilla",
+      "display_name": "Extracto de vainilla",
+      "family": "preparation_input",
+      "nutrition_semantics": "TRACK",
+      "source_catalog": "foods-v2.2-working.json",
+      "visible": false
+    },
+    {
+      "food_id": "polvo_hornear",
+      "display_name": "Polvo para hornear de doble acción",
+      "family": "preparation_input",
+      "nutrition_semantics": "TRACK",
+      "source_catalog": "foods-v2.2-working.json",
+      "visible": false
+    },
+    {
+      "food_id": "comino",
+      "display_name": "Comino",
+      "family": "preparation_input",
+      "nutrition_semantics": "TRACK",
+      "source_catalog": "foods-v2.2-working.json",
+      "visible": false
+    },
+    {
+      "food_id": "paprika",
+      "display_name": "Paprika",
+      "family": "preparation_input",
+      "nutrition_semantics": "TRACK",
+      "source_catalog": "foods-v2.2-working.json",
+      "visible": false
+    },
+    {
+      "food_id": "pimienta_negra",
+      "display_name": "Pimienta negra",
+      "family": "preparation_input",
+      "nutrition_semantics": "TRACK",
+      "source_catalog": "foods-v2.2-working.json",
+      "visible": false
+    },
+    {
+      "food_id": "canela",
+      "display_name": "Canela molida",
+      "family": "preparation_input",
+      "nutrition_semantics": "TRACK",
+      "source_catalog": "foods-v2.2-working.json",
+      "visible": false
+    },
+    {
+      "food_id": "ajo_polvo",
+      "display_name": "Ajo en polvo",
+      "family": "preparation_input",
+      "nutrition_semantics": "TRACK",
+      "source_catalog": "foods-v2.2-working.json",
+      "visible": false
+    },
+    {
+      "food_id": "cebolla_polvo",
+      "display_name": "Cebolla en polvo",
+      "family": "preparation_input",
+      "nutrition_semantics": "TRACK",
+      "source_catalog": "foods-v2.2-working.json",
+      "visible": false
+    },
+    {
+      "food_id": "curcuma",
+      "display_name": "Cúrcuma molida",
+      "family": "preparation_input",
+      "nutrition_semantics": "TRACK",
+      "source_catalog": "foods-v2.2-working.json",
+      "visible": false
+    },
+    {
+      "food_id": "romero",
+      "display_name": "Romero seco",
+      "family": "preparation_input",
+      "nutrition_semantics": "TRACK",
+      "source_catalog": "foods-v2.2-working.json",
+      "visible": false
+    },
+    {
+      "food_id": "tomillo",
+      "display_name": "Tomillo seco",
+      "family": "preparation_input",
+      "nutrition_semantics": "TRACK",
+      "source_catalog": "foods-v2.2-working.json",
+      "visible": false
+    },
+    {
+      "food_id": "laurel",
+      "display_name": "Laurel seco",
+      "family": "preparation_input",
+      "nutrition_semantics": "TRACK",
+      "source_catalog": "foods-v2.2-working.json",
+      "visible": false
+    },
+    {
+      "food_id": "perejil",
+      "display_name": "Perejil seco",
+      "family": "preparation_input",
+      "nutrition_semantics": "TRACK",
+      "source_catalog": "foods-v2.2-working.json",
+      "visible": false
+    },
+    {
+      "food_id": "chile_polvo",
+      "display_name": "Chile en polvo",
+      "family": "preparation_input",
+      "nutrition_semantics": "TRACK",
+      "source_catalog": "foods-v2.2-working.json",
+      "visible": false
+    },
+    {
+      "food_id": "pimenton_ahumado",
+      "display_name": "Pimentón ahumado",
+      "family": "preparation_input",
+      "nutrition_semantics": "TRACK",
+      "source_catalog": "foods-v2.2-working.json",
+      "visible": false
+    },
+    {
+      "food_id": "sazonador_liquido",
+      "display_name": "Sazonador líquido",
+      "family": "preparation_input",
+      "nutrition_semantics": "UNRESOLVED",
+      "source_catalog": "foods-v2.2-working.json",
+      "visible": false
+    }
+  ]
+}

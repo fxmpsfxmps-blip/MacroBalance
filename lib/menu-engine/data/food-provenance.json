@@ -1,5 +1,5 @@
 {
-  "schema_version": "food-provenance-0.1.0",
+  "schema_version": "food-provenance-0.2.0",
   "generated_for": "foods-v2.2-working.json",
   "macro_consistency_review": {
     "status": "SOURCE_VALUES_PRESERVED_WITH_FLAGS",
@@ -51,6 +51,20 @@
       "notes": "Exact or form-equivalent natural-food record; only previously null micronutrients were imported. Existing macros were preserved unchanged."
     },
     {
+      "food_id": "aceite_soya",
+      "source_type": "OFFICIAL_OR_GOVERNMENT_AUTHORITY",
+      "source_name": "USDA FoodData Central SR Legacy",
+      "record_id": "FDC 171411",
+      "exact_record": "Oil, soybean, salad or cooking",
+      "match_quality": "EXACT_SKU",
+      "form_state": "per 100 g",
+      "source_url": "https://fdc.nal.usda.gov/fdc-app.html#/food-details/171411",
+      "market": "Generic",
+      "accessed_at": "2026-09-02",
+      "status": "VERIFIED_FOR_IMPLEMENTED_FIELDS",
+      "notes": "USDA FoodData Central SR Legacy: Oil, soybean, salad or cooking. NULL != 0; unreported nutrients remain null."
+    },
+    {
       "food_id": "aceite_vegetal",
       "source_type": "OFFICIAL_COMPOSITION_DATABASE",
       "source_name": "USDA FoodData Central SR Legacy",
@@ -68,17 +82,17 @@
     {
       "food_id": "aceitunas_verdes",
       "source_type": "OFFICIAL_COMPOSITION_DATABASE",
-      "source_name": "USDA FoodData Central SR Legacy",
-      "record_id": "169094",
-      "exact_record": "Olives, ripe, canned (small-extra large)",
-      "match_quality": "EXACT",
+      "source_name": "USDA FoodData Central — SR Legacy",
+      "record_id": "169096",
+      "exact_record": "Olives, pickled, canned or bottled, green",
+      "match_quality": "EXACT_MATCH",
       "batch": "B",
-      "form_state": "procesado / per 100 g edible portion",
-      "source_url": "https://fdc.nal.usda.gov/fdc-app.html#/food/169094/food-details",
-      "market": "US/generic",
-      "accessed_at": "2026-08-30",
-      "status": "VERIFIED",
-      "notes": "Exact or form-equivalent natural-food record; only previously null micronutrients were imported. Existing macros were preserved unchanged."
+      "form_state": "green olives; pickled; canned or bottled",
+      "source_url": "https://fdc.nal.usda.gov/fdc-app.html#/food/169096/food-details",
+      "market": "Generic/owner-adjudicated",
+      "accessed_at": "2026-09-02",
+      "status": "VERIFIED_FOR_IMPLEMENTED_FIELDS",
+      "notes": "USDA FoodData Central — SR Legacy: Olives, pickled, canned or bottled, green (169096). NULL != 0; unreported nutrients remain null."
     },
     {
       "food_id": "agua_coco",
@@ -358,6 +372,34 @@
       "notes": "Exact or form-equivalent natural-food record; only previously null micronutrients were imported. Existing macros were preserved unchanged."
     },
     {
+      "food_id": "cafe_descafeinado",
+      "source_type": "OFFICIAL_COMPOSITION_DATABASE",
+      "source_name": "USDA FoodData Central — SR Legacy",
+      "record_id": "171889",
+      "exact_record": "Beverages, coffee, brewed, prepared with tap water, decaffeinated",
+      "match_quality": "EXACT_MATCH",
+      "form_state": "brewed decaffeinated coffee; tap water",
+      "source_url": "https://fdc.nal.usda.gov/fdc-app.html#/food/171889/food-details",
+      "market": "Generic/owner-adjudicated",
+      "accessed_at": "2026-09-02",
+      "status": "VERIFIED_FOR_IMPLEMENTED_FIELDS",
+      "notes": "USDA FoodData Central — SR Legacy: Beverages, coffee, brewed, prepared with tap water, decaffeinated (171889). NULL != 0; unreported nutrients remain null."
+    },
+    {
+      "food_id": "cafe_preparado",
+      "source_type": "OFFICIAL_COMPOSITION_DATABASE",
+      "source_name": "USDA FoodData Central — SR Legacy",
+      "record_id": "171890",
+      "exact_record": "Beverages, coffee, brewed, prepared with tap water",
+      "match_quality": "EXACT_MATCH",
+      "form_state": "brewed coffee; prepared with tap water",
+      "source_url": "https://fdc.nal.usda.gov/fdc-app.html#/food/171890/food-details",
+      "market": "Generic/owner-adjudicated",
+      "accessed_at": "2026-09-02",
+      "status": "VERIFIED_FOR_IMPLEMENTED_FIELDS",
+      "notes": "USDA FoodData Central — SR Legacy: Beverages, coffee, brewed, prepared with tap water (171890). NULL != 0; unreported nutrients remain null."
+    },
+    {
       "food_id": "calabacita",
       "source_type": "OFFICIAL_COMPOSITION_DATABASE",
       "source_name": "USDA FoodData Central SR Legacy",
@@ -416,17 +458,17 @@
     {
       "food_id": "carne_molida_res_magra",
       "source_type": "OFFICIAL_COMPOSITION_DATABASE",
-      "source_name": "USDA FoodData Central SR Legacy",
+      "source_name": "USDA FoodData Central — SR Legacy",
       "record_id": "171792",
       "exact_record": "Beef, ground, 95% lean meat / 5% fat, patty, cooked, pan-broiled",
-      "match_quality": "STRONG_MATCH",
+      "match_quality": "EXACT_MATCH",
       "batch": "D",
-      "form_state": "cocido / per 100 g edible portion",
+      "form_state": "95% lean/5% fat; cooked; pan-broiled patty",
       "source_url": "https://fdc.nal.usda.gov/fdc-app.html#/food/171792/food-details",
-      "market": "US/generic",
-      "accessed_at": "2026-08-30",
-      "status": "VERIFIED",
-      "notes": "Exact or form-equivalent natural-food record; only previously null micronutrients were imported. Existing macros were preserved unchanged."
+      "market": "Generic/owner-adjudicated",
+      "accessed_at": "2026-09-02",
+      "status": "VERIFIED_FOR_IMPLEMENTED_FIELDS",
+      "notes": "USDA FoodData Central — SR Legacy: Beef, ground, 95% lean meat / 5% fat, patty, cooked, pan-broiled (171792). NULL != 0; unreported nutrients remain null."
     },
     {
       "food_id": "carne_molida_res_regular",
@@ -563,6 +605,34 @@
       "status": "VERIFIED"
     },
     {
+      "food_id": "chorizo_cocido",
+      "source_type": "OFFICIAL_COMPOSITION_DATABASE",
+      "source_name": "Owner-adjudicated authority",
+      "record_id": null,
+      "exact_record": "Chorizo cocido",
+      "match_quality": "OWNER_ADJUDICATED",
+      "form_state": "cocido",
+      "source_url": null,
+      "market": "Generic/owner-adjudicated",
+      "accessed_at": "2026-09-02",
+      "status": "PENDING_COOKED_YIELD",
+      "notes": "San Rafael/Sigma raw SKU identity only; cooked nutrition intentionally null. NULL != 0; unreported nutrients remain null."
+    },
+    {
+      "food_id": "chuleta_cerdo",
+      "source_type": "OFFICIAL_OR_GOVERNMENT_AUTHORITY",
+      "source_name": "USDA FoodData Central SR Legacy",
+      "record_id": "FDC 167841; edible lean and fat; no bone",
+      "exact_record": "Pork, fresh, loin, top loin (chops), boneless, separable lean and fat, cooked, broiled",
+      "match_quality": "EXACT_SKU",
+      "form_state": "per 100 g",
+      "source_url": "https://fdc.nal.usda.gov/fdc-app.html#/food-details/167841",
+      "market": "Generic",
+      "accessed_at": "2026-09-02",
+      "status": "VERIFIED_FOR_IMPLEMENTED_FIELDS",
+      "notes": "USDA FoodData Central SR Legacy: Pork, fresh, loin, top loin (chops), boneless, separable lean and fat, cooked, broiled. NULL != 0; unreported nutrients remain null."
+    },
+    {
       "food_id": "cilantro",
       "source_type": "OFFICIAL_COMPOSITION_DATABASE",
       "source_name": "USDA FoodData Central SR Legacy",
@@ -652,6 +722,20 @@
       "market": "US/generic",
       "accessed_at": "2026-08-30",
       "status": "VERIFIED"
+    },
+    {
+      "food_id": "crema_acida",
+      "source_type": "OFFICIAL_COMPOSITION_DATABASE",
+      "source_name": "USDA FoodData Central — Foundation Foods",
+      "record_id": "2346387",
+      "exact_record": "Cream, sour, full fat",
+      "match_quality": "EXACT_MATCH",
+      "form_state": "sour cream; full fat",
+      "source_url": "https://fdc.nal.usda.gov/fdc-app.html#/food/2346387/food-details",
+      "market": "Generic/owner-adjudicated",
+      "accessed_at": "2026-09-02",
+      "status": "VERIFIED_FOR_IMPLEMENTED_FIELDS",
+      "notes": "USDA FoodData Central — Foundation Foods: Cream, sour, full fat (2346387). NULL != 0; unreported nutrients remain null."
     },
     {
       "food_id": "crema_cacahuate",
@@ -886,6 +970,20 @@
       "notes": "Exact or form-equivalent natural-food record; only previously null micronutrients were imported. Existing macros were preserved unchanged."
     },
     {
+      "food_id": "gelatina_sin_sabor",
+      "source_type": "OFFICIAL_COMPOSITION_DATABASE",
+      "source_name": "USDA FoodData Central — SR Legacy",
+      "record_id": "169599",
+      "exact_record": "Gelatins, dry powder, unsweetened",
+      "match_quality": "EXACT_MATCH",
+      "form_state": "unsweetened dry gelatin powder",
+      "source_url": "https://fdc.nal.usda.gov/fdc-app.html#/food/169599/food-details",
+      "market": "Generic/owner-adjudicated",
+      "accessed_at": "2026-09-02",
+      "status": "VERIFIED_FOR_IMPLEMENTED_FIELDS",
+      "notes": "USDA FoodData Central — SR Legacy: Gelatins, dry powder, unsweetened (169599). NULL != 0; unreported nutrients remain null."
+    },
+    {
       "food_id": "guayaba",
       "source_type": "OFFICIAL_COMPOSITION_DATABASE",
       "source_name": "USDA FoodData Central SR Legacy",
@@ -963,17 +1061,17 @@
     {
       "food_id": "huevo_entero",
       "source_type": "OFFICIAL_COMPOSITION_DATABASE",
-      "source_name": "USDA FoodData Central SR Legacy",
+      "source_name": "USDA FoodData Central — SR Legacy",
       "record_id": "173424",
       "exact_record": "Egg, whole, cooked, hard-boiled",
-      "match_quality": "STRONG_MATCH",
+      "match_quality": "EXACT_MATCH",
       "batch": "D",
-      "form_state": "cocido / per 100 g edible portion",
+      "form_state": "whole egg; cooked; hard-boiled",
       "source_url": "https://fdc.nal.usda.gov/fdc-app.html#/food/173424/food-details",
-      "market": "US/generic",
-      "accessed_at": "2026-08-30",
-      "status": "VERIFIED",
-      "notes": "Exact or form-equivalent natural-food record; only previously null micronutrients were imported. Existing macros were preserved unchanged."
+      "market": "Generic/owner-adjudicated",
+      "accessed_at": "2026-09-02",
+      "status": "VERIFIED_FOR_IMPLEMENTED_FIELDS",
+      "notes": "USDA FoodData Central — SR Legacy: Egg, whole, cooked, hard-boiled (173424). NULL != 0; unreported nutrients remain null."
     },
     {
       "food_id": "jalapeno",
@@ -989,6 +1087,20 @@
       "accessed_at": "2026-08-30",
       "status": "VERIFIED",
       "notes": "Exact or form-equivalent natural-food record; only previously null micronutrients were imported. Existing macros were preserved unchanged."
+    },
+    {
+      "food_id": "jamon_pavo_light",
+      "source_type": "OFFICIAL_OR_GOVERNMENT_AUTHORITY",
+      "source_name": "PROFECO Estudio de Calidad de Jamón, julio 2025",
+      "record_id": "Revista del Consumidor 581, julio 2025, p. 28",
+      "exact_record": "ZWAN PREMIUM Jamón de pavo Virginia, México, 400 g",
+      "match_quality": "EXACT_SKU",
+      "form_state": "per 100 g",
+      "source_url": "https://revistadelconsumidor.profeco.gob.mx/media/revistas/sumario/RC581_023-038.pdf",
+      "market": "México",
+      "accessed_at": "2026-09-02",
+      "status": "VERIFIED_FOR_IMPLEMENTED_FIELDS",
+      "notes": "PROFECO 2025 exact-product tested values per 100 g: 106 kcal, 11.5 g protein, 7 g carbohydrate, 3.5 g fat and 883 mg sodium. The prior 2020 BienEstar 250 g panel is superseded, not mixed. NULL != 0; all other unreported nutrients remain null."
     },
     {
       "food_id": "jicama",
@@ -1036,6 +1148,34 @@
       "notes": "Exact or form-equivalent natural-food record; only previously null micronutrients were imported. Existing macros were preserved unchanged."
     },
     {
+      "food_id": "kefir",
+      "source_type": "OFFICIAL_COMPOSITION_DATABASE",
+      "source_name": "USDA FoodData Central — SR Legacy",
+      "record_id": "170904",
+      "exact_record": "Kefir, lowfat, plain, LIFEWAY",
+      "match_quality": "GOOD_MATCH",
+      "form_state": "plain low-fat kefir",
+      "source_url": "https://fdc.nal.usda.gov/fdc-app.html#/food/170904/food-details",
+      "market": "Generic/owner-adjudicated",
+      "accessed_at": "2026-09-02",
+      "status": "VERIFIED_FOR_IMPLEMENTED_FIELDS",
+      "notes": "USDA FoodData Central — SR Legacy: Kefir, lowfat, plain, LIFEWAY (170904). NULL != 0; unreported nutrients remain null."
+    },
+    {
+      "food_id": "ketchup",
+      "source_type": "OFFICIAL_COMPOSITION_DATABASE",
+      "source_name": "USDA FoodData Central — SR Legacy",
+      "record_id": "168556",
+      "exact_record": "Catsup",
+      "match_quality": "GOOD_MATCH",
+      "form_state": "catsup",
+      "source_url": "https://fdc.nal.usda.gov/fdc-app.html#/food/168556/food-details",
+      "market": "Generic/owner-adjudicated",
+      "accessed_at": "2026-09-02",
+      "status": "VERIFIED_FOR_IMPLEMENTED_FIELDS",
+      "notes": "USDA FoodData Central — SR Legacy: Catsup (168556). NULL != 0; unreported nutrients remain null."
+    },
+    {
       "food_id": "kiwi",
       "source_type": "OFFICIAL_COMPOSITION_DATABASE",
       "source_name": "USDA FoodData Central SR Legacy",
@@ -1062,6 +1202,34 @@
       "status": "VERIFIED"
     },
     {
+      "food_id": "leche_alta_proteina",
+      "source_type": "OFFICIAL_OR_GOVERNMENT_AUTHORITY",
+      "source_name": "PROFECO Estudio de Calidad de Leches, septiembre 2025",
+      "record_id": "Sin lactosa; parcialmente descremada; ultrafiltrada; UHT; A y D; reducida en grasa",
+      "exact_record": "LALA 100 +Proteína",
+      "match_quality": "EXACT_SKU",
+      "form_state": "per 100 ml",
+      "source_url": "https://revistadelconsumidor.profeco.gob.mx/media/revistas/sumario/sumario_estudio_de_calidad_2025_9_JbCeOUJQ.pdf",
+      "market": "México",
+      "accessed_at": "2026-09-02",
+      "status": "VERIFIED_FOR_IMPLEMENTED_FIELDS",
+      "notes": "PROFECO 2025 exact LALA 100 +Proteína product panel. NULL != 0; unreported nutrients remain null."
+    },
+    {
+      "food_id": "leche_deslactosada",
+      "source_type": "OFFICIAL_OR_GOVERNMENT_AUTHORITY",
+      "source_name": "PROFECO Estudio de Calidad de Leches, septiembre 2025",
+      "record_id": "Parcialmente descremada; UHT; adicionada con vitaminas A y D",
+      "exact_record": "LALA Deslactosada",
+      "match_quality": "EXACT_SKU",
+      "form_state": "per 100 ml",
+      "source_url": "https://revistadelconsumidor.profeco.gob.mx/media/revistas/sumario/sumario_estudio_de_calidad_2025_9_JbCeOUJQ.pdf",
+      "market": "México",
+      "accessed_at": "2026-09-02",
+      "status": "VERIFIED_FOR_IMPLEMENTED_FIELDS",
+      "notes": "PROFECO 2025 exact LALA Deslactosada product panel. NULL != 0; unreported nutrients remain null."
+    },
+    {
       "food_id": "leche_deslactosada_entera",
       "source_type": "UNRESOLVED",
       "source_name": null,
@@ -1072,6 +1240,34 @@
       "accessed_at": "2026-08-30",
       "status": "REVIEW_REQUIRED",
       "notes": "No exact authoritative record/product identity was adjudicated; composition remains null."
+    },
+    {
+      "food_id": "leche_entera",
+      "source_type": "OFFICIAL_COMPOSITION_DATABASE",
+      "source_name": "USDA FoodData Central — SR Legacy",
+      "record_id": "172217",
+      "exact_record": "Milk, whole, 3.25% milkfat, without added vitamin A and vitamin D",
+      "match_quality": "EXACT_MATCH",
+      "form_state": "fluid; whole; 3.25% fat; not fortified with A/D",
+      "source_url": "https://fdc.nal.usda.gov/fdc-app.html#/food/172217/food-details",
+      "market": "Generic/owner-adjudicated",
+      "accessed_at": "2026-09-02",
+      "status": "VERIFIED_FOR_IMPLEMENTED_FIELDS",
+      "notes": "USDA FoodData Central — SR Legacy: Milk, whole, 3.25% milkfat, without added vitamin A and vitamin D (172217). NULL != 0; unreported nutrients remain null."
+    },
+    {
+      "food_id": "leche_evaporada",
+      "source_type": "OFFICIAL_COMPOSITION_DATABASE",
+      "source_name": "USDA FoodData Central — SR Legacy",
+      "record_id": "171276",
+      "exact_record": "Milk, canned, evaporated, with added vitamin D and without added vitamin A",
+      "match_quality": "GOOD_MATCH",
+      "form_state": "canned evaporated milk; added vitamin D; no added vitamin A",
+      "source_url": "https://fdc.nal.usda.gov/fdc-app.html#/food/171276/food-details",
+      "market": "Generic/owner-adjudicated",
+      "accessed_at": "2026-09-02",
+      "status": "VERIFIED_FOR_IMPLEMENTED_FIELDS",
+      "notes": "USDA FoodData Central — SR Legacy: Milk, canned, evaporated, with added vitamin D and without added vitamin A (171276). NULL != 0; unreported nutrients remain null."
     },
     {
       "food_id": "lechuga",
@@ -1164,6 +1360,20 @@
       "notes": "Exact or form-equivalent natural-food record; only previously null micronutrients were imported. Existing macros were preserved unchanged."
     },
     {
+      "food_id": "mantequilla",
+      "source_type": "OFFICIAL_COMPOSITION_DATABASE",
+      "source_name": "USDA FoodData Central — SR Legacy",
+      "record_id": "173410",
+      "exact_record": "Butter, salted",
+      "match_quality": "EXACT_MATCH",
+      "form_state": "salted butter",
+      "source_url": "https://fdc.nal.usda.gov/fdc-app.html#/food/173410/food-details",
+      "market": "Generic/owner-adjudicated",
+      "accessed_at": "2026-09-02",
+      "status": "VERIFIED_FOR_IMPLEMENTED_FIELDS",
+      "notes": "USDA FoodData Central — SR Legacy: Butter, salted (173410). NULL != 0; unreported nutrients remain null."
+    },
+    {
       "food_id": "manzana",
       "source_type": "OFFICIAL_COMPOSITION_DATABASE",
       "source_name": "USDA FoodData Central SR Legacy",
@@ -1219,6 +1429,20 @@
       "accessed_at": "2026-08-30",
       "status": "VERIFIED",
       "notes": "Exact or form-equivalent natural-food record; only previously null micronutrients were imported. Existing macros were preserved unchanged."
+    },
+    {
+      "food_id": "mostaza",
+      "source_type": "OFFICIAL_COMPOSITION_DATABASE",
+      "source_name": "USDA FoodData Central — Foundation Foods",
+      "record_id": "326698",
+      "exact_record": "Mustard, prepared, yellow",
+      "match_quality": "EXACT_MATCH",
+      "form_state": "prepared yellow mustard",
+      "source_url": "https://fdc.nal.usda.gov/fdc-app.html#/food/326698/food-details",
+      "market": "Generic/owner-adjudicated",
+      "accessed_at": "2026-09-02",
+      "status": "VERIFIED_FOR_IMPLEMENTED_FIELDS",
+      "notes": "USDA FoodData Central — Foundation Foods: Mustard, prepared, yellow (326698). NULL != 0; unreported nutrients remain null."
     },
     {
       "food_id": "naranja",
@@ -1410,17 +1634,17 @@
     {
       "food_id": "pavo_molido",
       "source_type": "OFFICIAL_COMPOSITION_DATABASE",
-      "source_name": "USDA FoodData Central SR Legacy",
-      "record_id": "171506",
-      "exact_record": "Turkey, Ground, cooked",
-      "match_quality": "STRONG_MATCH",
+      "source_name": "USDA FoodData Central — SR Legacy",
+      "record_id": "172851",
+      "exact_record": "Turkey, ground, 93% lean, 7% fat, pan-broiled crumbles",
+      "match_quality": "GOOD_MATCH",
       "batch": "D",
-      "form_state": "cocido / per 100 g edible portion",
-      "source_url": "https://fdc.nal.usda.gov/fdc-app.html#/food/171506/food-details",
-      "market": "US/generic",
-      "accessed_at": "2026-08-30",
-      "status": "VERIFIED",
-      "notes": "Exact or form-equivalent natural-food record; only previously null micronutrients were imported. Existing macros were preserved unchanged."
+      "form_state": "93% lean/7% fat; cooked pan-broiled crumbles",
+      "source_url": "https://fdc.nal.usda.gov/fdc-app.html#/food/172851/food-details",
+      "market": "Generic/owner-adjudicated",
+      "accessed_at": "2026-09-02",
+      "status": "VERIFIED_FOR_IMPLEMENTED_FIELDS",
+      "notes": "USDA FoodData Central — SR Legacy: Turkey, ground, 93% lean, 7% fat, pan-broiled crumbles (172851). NULL != 0; unreported nutrients remain null."
     },
     {
       "food_id": "pavo_pechuga_cocida",
@@ -1451,6 +1675,20 @@
       "accessed_at": "2026-08-30",
       "status": "VERIFIED",
       "notes": "Exact or form-equivalent natural-food record; only previously null micronutrients were imported. Existing macros were preserved unchanged."
+    },
+    {
+      "food_id": "pepperoni",
+      "source_type": "OFFICIAL_OR_GOVERNMENT_AUTHORITY",
+      "source_name": "USDA FoodData Central SR Legacy",
+      "record_id": "FDC 174575",
+      "exact_record": "Pepperoni, beef and pork, sliced",
+      "match_quality": "EXACT_SKU",
+      "form_state": "per 100 g",
+      "source_url": "https://fdc.nal.usda.gov/fdc-app.html#/food-details/174575",
+      "market": "Generic",
+      "accessed_at": "2026-09-02",
+      "status": "VERIFIED_FOR_IMPLEMENTED_FIELDS",
+      "notes": "USDA FoodData Central SR Legacy: Pepperoni, beef and pork, sliced. NULL != 0; unreported nutrients remain null."
     },
     {
       "food_id": "pera",
@@ -1616,15 +1854,17 @@
     },
     {
       "food_id": "proteina_whey_polvo",
-      "source_type": "MANUFACTURER_LABEL",
-      "source_name": "Optimum Nutrition",
-      "record_id": "Gold Standard 100% Whey — Double Rich Chocolate — EU/UK 31 g serving",
-      "exact_record": "Ready-to-mix whey protein powder, Double Rich Chocolate",
-      "source_url": "https://www.optimumnutrition.com/en-gb/products/gold-standard-100-whey-protein-powder-eu",
-      "market": "UK/EU representative variant",
-      "accessed_at": "2026-08-30",
-      "status": "VERIFIED",
-      "notes": "Official per-100-g energy/macros/fiber used. Sodium 152 mg/100 g is derived from the official 0.38 g salt/100 g using the label convention salt = sodium × 2.5. Manufacturer notes values vary by flavor; calcium and point-valued potassium are not declared on this label and remain null."
+      "source_type": "EXACT_PRODUCT_LABEL",
+      "source_name": "iHerb México exact product label transcription",
+      "record_id": "Vanilla Ice Cream",
+      "exact_record": "Gold Standard 100% Whey",
+      "source_url": "https://mx.iherb.com/pr/optimum-nutrition-gold-standard-100-whey-vanilla-ice-cream-5-lb-2-26-kg/27514",
+      "market": "México/importado",
+      "accessed_at": "2026-09-02",
+      "status": "VERIFIED_FOR_IMPLEMENTED_FIELDS",
+      "notes": "ON Gold Standard 100% Whey Vanilla Ice Cream 5-lb exact 31-g label. NULL != 0; unreported nutrients remain null.",
+      "match_quality": "EXACT_SKU",
+      "form_state": "per 100 g"
     },
     {
       "food_id": "pulpo_cocido",
@@ -1653,6 +1893,34 @@
       "status": "VERIFIED"
     },
     {
+      "food_id": "queso_cottage",
+      "source_type": "OFFICIAL_COMPOSITION_DATABASE",
+      "source_name": "USDA FoodData Central — SR Legacy",
+      "record_id": "172179",
+      "exact_record": "Cheese, cottage, creamed, large or small curd",
+      "match_quality": "EXACT_MATCH",
+      "form_state": "creamed cottage cheese; large or small curd",
+      "source_url": "https://fdc.nal.usda.gov/fdc-app.html#/food/172179/food-details",
+      "market": "Generic/owner-adjudicated",
+      "accessed_at": "2026-09-02",
+      "status": "VERIFIED_FOR_IMPLEMENTED_FIELDS",
+      "notes": "USDA FoodData Central — SR Legacy: Cheese, cottage, creamed, large or small curd (172179). NULL != 0; unreported nutrients remain null."
+    },
+    {
+      "food_id": "queso_feta",
+      "source_type": "OFFICIAL_COMPOSITION_DATABASE",
+      "source_name": "USDA FoodData Central — SR Legacy",
+      "record_id": "173420",
+      "exact_record": "Cheese, feta",
+      "match_quality": "EXACT_MATCH",
+      "form_state": "feta cheese",
+      "source_url": "https://fdc.nal.usda.gov/fdc-app.html#/food/173420/food-details",
+      "market": "Generic/owner-adjudicated",
+      "accessed_at": "2026-09-02",
+      "status": "VERIFIED_FOR_IMPLEMENTED_FIELDS",
+      "notes": "USDA FoodData Central — SR Legacy: Cheese, feta (173420). NULL != 0; unreported nutrients remain null."
+    },
+    {
       "food_id": "queso_manchego_mexicano",
       "source_type": "UNRESOLVED",
       "source_name": null,
@@ -1663,6 +1931,62 @@
       "accessed_at": "2026-08-30",
       "status": "REVIEW_REQUIRED",
       "notes": "No exact authoritative record/product identity was adjudicated; composition remains null."
+    },
+    {
+      "food_id": "queso_mozzarella",
+      "source_type": "OFFICIAL_COMPOSITION_DATABASE",
+      "source_name": "USDA FoodData Central — SR Legacy",
+      "record_id": "167735",
+      "exact_record": "Cheese, mozzarella, low sodium",
+      "match_quality": "GOOD_MATCH",
+      "form_state": "mozzarella; low sodium",
+      "source_url": "https://fdc.nal.usda.gov/fdc-app.html#/food/167735/food-details",
+      "market": "Generic/owner-adjudicated",
+      "accessed_at": "2026-09-02",
+      "status": "VERIFIED_FOR_IMPLEMENTED_FIELDS",
+      "notes": "USDA FoodData Central — SR Legacy: Cheese, mozzarella, low sodium (167735). NULL != 0; unreported nutrients remain null."
+    },
+    {
+      "food_id": "queso_oaxaca",
+      "source_type": "OFFICIAL_COMPOSITION_DATABASE",
+      "source_name": "USDA FoodData Central — Foundation Foods",
+      "record_id": "2647441",
+      "exact_record": "Cheese, oaxaca, solid",
+      "match_quality": "EXACT_MATCH",
+      "form_state": "Oaxaca cheese; solid",
+      "source_url": "https://fdc.nal.usda.gov/fdc-app.html#/food/2647441/food-details",
+      "market": "Generic/owner-adjudicated",
+      "accessed_at": "2026-09-02",
+      "status": "VERIFIED_FOR_IMPLEMENTED_FIELDS",
+      "notes": "USDA FoodData Central — Foundation Foods: Cheese, oaxaca, solid (2647441). NULL != 0; unreported nutrients remain null."
+    },
+    {
+      "food_id": "queso_panela_light",
+      "source_type": "EXACT_PRODUCT_LABEL",
+      "source_name": "HEB México current product page",
+      "record_id": "Bloque",
+      "exact_record": "Queso Panela Reducido en Grasa",
+      "match_quality": "EXACT_SKU",
+      "form_state": "per 100 g",
+      "source_url": "https://www.heb.com.mx/zwan-queso-panela-reducido-en-grasa-400-gr-677538/p",
+      "market": "México",
+      "accessed_at": "2026-09-02",
+      "status": "VERIFIED_FOR_IMPLEMENTED_FIELDS",
+      "notes": "Zwan Panela Reducido en Grasa partial current panel; sodium unresolved. NULL != 0; unreported nutrients remain null."
+    },
+    {
+      "food_id": "queso_parmesano",
+      "source_type": "OFFICIAL_COMPOSITION_DATABASE",
+      "source_name": "USDA FoodData Central — SR Legacy",
+      "record_id": "170848",
+      "exact_record": "Cheese, parmesan, hard",
+      "match_quality": "EXACT_MATCH",
+      "form_state": "hard Parmesan cheese",
+      "source_url": "https://fdc.nal.usda.gov/fdc-app.html#/food/170848/food-details",
+      "market": "Generic/owner-adjudicated",
+      "accessed_at": "2026-09-02",
+      "status": "VERIFIED_FOR_IMPLEMENTED_FIELDS",
+      "notes": "USDA FoodData Central — SR Legacy: Cheese, parmesan, hard (170848). NULL != 0; unreported nutrients remain null."
     },
     {
       "food_id": "quinoa_cocida",
@@ -1721,6 +2045,20 @@
       "notes": "Exact or form-equivalent natural-food record; only previously null micronutrients were imported. Existing macros were preserved unchanged."
     },
     {
+      "food_id": "salmon_ahumado",
+      "source_type": "OFFICIAL_COMPOSITION_DATABASE",
+      "source_name": "USDA FoodData Central — SR Legacy",
+      "record_id": "173687",
+      "exact_record": "Fish, salmon, chinook, smoked",
+      "match_quality": "GOOD_MATCH",
+      "form_state": "Chinook salmon; smoked",
+      "source_url": "https://fdc.nal.usda.gov/fdc-app.html#/food/173687/food-details",
+      "market": "Generic/owner-adjudicated",
+      "accessed_at": "2026-09-02",
+      "status": "VERIFIED_FOR_IMPLEMENTED_FIELDS",
+      "notes": "USDA FoodData Central — SR Legacy: Fish, salmon, chinook, smoked (173687). NULL != 0; unreported nutrients remain null."
+    },
+    {
       "food_id": "salmon_cocido",
       "source_type": "OFFICIAL_COMPOSITION_DATABASE",
       "source_name": "USDA FoodData Central SR Legacy",
@@ -1734,6 +2072,20 @@
       "accessed_at": "2026-08-30",
       "status": "VERIFIED",
       "notes": "Exact or form-equivalent natural-food record; only previously null micronutrients were imported. Existing macros were preserved unchanged."
+    },
+    {
+      "food_id": "salsa_soya_baja_sodio",
+      "source_type": "OFFICIAL_COMPOSITION_DATABASE",
+      "source_name": "USDA FoodData Central — SR Legacy",
+      "record_id": "172473",
+      "exact_record": "Soy sauce made from soy and wheat (shoyu), low sodium",
+      "match_quality": "EXACT_MATCH",
+      "form_state": "shoyu soy sauce; low sodium",
+      "source_url": "https://fdc.nal.usda.gov/fdc-app.html#/food/172473/food-details",
+      "market": "Generic/owner-adjudicated",
+      "accessed_at": "2026-09-02",
+      "status": "VERIFIED_FOR_IMPLEMENTED_FIELDS",
+      "notes": "USDA FoodData Central — SR Legacy: Soy sauce made from soy and wheat (shoyu), low sodium (172473). NULL != 0; unreported nutrients remain null."
     },
     {
       "food_id": "sandia",
@@ -1877,6 +2229,20 @@
       "notes": "No exact authoritative record/product identity was adjudicated; composition remains null."
     },
     {
+      "food_id": "te_preparado",
+      "source_type": "OFFICIAL_OR_GOVERNMENT_AUTHORITY",
+      "source_name": "USDA FoodData Central SR Legacy",
+      "record_id": "FDC 173227; unsweetened",
+      "exact_record": "Beverages, tea, black, brewed, prepared with tap water",
+      "match_quality": "EXACT_SKU",
+      "form_state": "per 100 ml",
+      "source_url": "https://fdc.nal.usda.gov/fdc-app.html#/food-details/173227",
+      "market": "Generic",
+      "accessed_at": "2026-09-02",
+      "status": "VERIFIED_FOR_IMPLEMENTED_FIELDS",
+      "notes": "USDA FoodData Central SR Legacy: Beverages, tea, black, brewed, prepared with tap water. NULL != 0; unreported nutrients remain null."
+    },
+    {
       "food_id": "tilapia_cocida",
       "source_type": "OFFICIAL_COMPOSITION_DATABASE",
       "source_name": "USDA FoodData Central SR Legacy",
@@ -1903,19 +2269,33 @@
       "status": "VERIFIED"
     },
     {
-      "food_id": "tofu_firme",
+      "food_id": "tocino_cocido",
       "source_type": "OFFICIAL_COMPOSITION_DATABASE",
+      "source_name": "USDA FoodData Central — SR Legacy",
+      "record_id": "167712",
+      "exact_record": "Pork, cured, bacon, cooked, broiled, pan-fried or roasted, reduced sodium",
+      "match_quality": "GOOD_MATCH",
+      "form_state": "cooked bacon; reduced sodium",
+      "source_url": "https://fdc.nal.usda.gov/fdc-app.html#/food/167712/food-details",
+      "market": "Generic/owner-adjudicated",
+      "accessed_at": "2026-09-02",
+      "status": "VERIFIED_FOR_IMPLEMENTED_FIELDS",
+      "notes": "USDA FoodData Central — SR Legacy: Pork, cured, bacon, cooked, broiled, pan-fried or roasted, reduced sodium (167712). NULL != 0; unreported nutrients remain null."
+    },
+    {
+      "food_id": "tofu_firme",
+      "source_type": "OFFICIAL_OR_GOVERNMENT_AUTHORITY",
       "source_name": "USDA FoodData Central SR Legacy",
-      "record_id": "172448",
+      "record_id": "FDC 172448",
       "exact_record": "Tofu, firm, prepared with calcium sulfate and magnesium chloride (nigari)",
-      "match_quality": "EXACT",
+      "match_quality": "EXACT_SKU",
       "batch": "D",
-      "form_state": "listo para consumir / per 100 g edible portion",
-      "source_url": "https://fdc.nal.usda.gov/fdc-app.html#/food/172448/food-details",
-      "market": "US/generic",
-      "accessed_at": "2026-08-30",
-      "status": "VERIFIED",
-      "notes": "Exact or form-equivalent natural-food record; only previously null micronutrients were imported. Existing macros were preserved unchanged."
+      "form_state": "per 100 g",
+      "source_url": "https://fdc.nal.usda.gov/fdc-app.html#/food-details/172448",
+      "market": "Generic",
+      "accessed_at": "2026-09-02",
+      "status": "VERIFIED_FOR_IMPLEMENTED_FIELDS",
+      "notes": "USDA FDC 172448 with explicit calcium-sulfate + magnesium-chloride formulation. NULL != 0; unreported nutrients remain null."
     },
     {
       "food_id": "tomillo",
@@ -2000,6 +2380,20 @@
       "notes": "Exact or form-equivalent natural-food record; only previously null micronutrients were imported. Existing macros were preserved unchanged."
     },
     {
+      "food_id": "vinagre_balsamico",
+      "source_type": "OFFICIAL_COMPOSITION_DATABASE",
+      "source_name": "USDA FoodData Central — SR Legacy",
+      "record_id": "172241",
+      "exact_record": "Vinegar, balsamic",
+      "match_quality": "EXACT_MATCH",
+      "form_state": "balsamic vinegar",
+      "source_url": "https://fdc.nal.usda.gov/fdc-app.html#/food/172241/food-details",
+      "market": "Generic/owner-adjudicated",
+      "accessed_at": "2026-09-02",
+      "status": "VERIFIED_FOR_IMPLEMENTED_FIELDS",
+      "notes": "USDA FoodData Central — SR Legacy: Vinegar, balsamic (172241). NULL != 0; unreported nutrients remain null."
+    },
+    {
       "food_id": "vinagre_blanco",
       "source_type": "OFFICIAL_COMPOSITION_DATABASE",
       "source_name": "USDA FoodData Central",
@@ -2020,6 +2414,34 @@
       "market": "US/generic",
       "accessed_at": "2026-08-30",
       "status": "VERIFIED"
+    },
+    {
+      "food_id": "yogur_griego_natural",
+      "source_type": "OFFICIAL_COMPOSITION_DATABASE",
+      "source_name": "USDA FoodData Central — SR Legacy",
+      "record_id": "170894",
+      "exact_record": "Yogurt, Greek, plain, nonfat (Includes foods for USDA's Food Distribution Program)",
+      "match_quality": "EXACT_MATCH",
+      "form_state": "plain nonfat Greek yogurt",
+      "source_url": "https://fdc.nal.usda.gov/fdc-app.html#/food/170894/food-details",
+      "market": "Generic/owner-adjudicated",
+      "accessed_at": "2026-09-02",
+      "status": "VERIFIED_FOR_IMPLEMENTED_FIELDS",
+      "notes": "USDA FoodData Central — SR Legacy: Yogurt, Greek, plain, nonfat (Includes foods for USDA's Food Distribution Program) (170894). NULL != 0; unreported nutrients remain null."
+    },
+    {
+      "food_id": "yogur_natural",
+      "source_type": "OFFICIAL_COMPOSITION_DATABASE",
+      "source_name": "USDA FoodData Central — SR Legacy",
+      "record_id": "171284",
+      "exact_record": "Yogurt, plain, whole milk",
+      "match_quality": "EXACT_MATCH",
+      "form_state": "plain whole-milk yogurt",
+      "source_url": "https://fdc.nal.usda.gov/fdc-app.html#/food/171284/food-details",
+      "market": "Generic/owner-adjudicated",
+      "accessed_at": "2026-09-02",
+      "status": "VERIFIED_FOR_IMPLEMENTED_FIELDS",
+      "notes": "USDA FoodData Central — SR Legacy: Yogurt, plain, whole milk (171284). NULL != 0; unreported nutrients remain null."
     },
     {
       "food_id": "zanahoria",

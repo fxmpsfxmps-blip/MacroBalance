@@ -48,6 +48,9 @@ const FOODS_OCULTOS_EN_CARRUSEL =
 
 function foodVisibleEnSelector(food){
   return !!food?.id &&
+    food.final_state === 'VISIBLE_ACTIVE' &&
+    food.visible === true &&
+    food.preparation_input !== true &&
     !FOODS_OCULTOS_EN_CARRUSEL.has(
       food.id
     );
@@ -102,6 +105,16 @@ async function cargarAlimentos(){
       alimentosPorId[a.id] =
         a
   );
+
+  seleccionActual =
+    new Set(
+      Array.from(seleccionActual).filter(
+        id =>
+          foodVisibleEnSelector(
+            alimentosPorId[id]
+          )
+      )
+    );
 
   renderFoodGallery(
     alimentos.filter(

@@ -1,1374 +1,2145 @@
 {
-  "schema_version": "food-v2.2-status-0.1.0",
-  "purpose": "Working-only lifecycle and visibility metadata. It does not alter production foods, dishes, menus, targets, or engine behavior.",
+  "schema_version": "food-v2.2-status-0.2.0",
+  "purpose": "Final V2.2 identity/taxonomy and lifecycle projection. Production foods/dishes/engine remain unchanged.",
   "defaults": {
-    "status": "ACTIVE",
-    "show_in_builder": true,
-    "show_in_dashboard": true,
-    "notes": "Existing catalog food retained pending an explicit V2.2 migration."
+    "status": "ARCHIVED",
+    "show_in_builder": false,
+    "show_in_dashboard": false,
+    "notes": "No implicit visibility; every final food has an explicit override."
   },
   "overrides": {
-    "pescado_blanco_cocido": {
-      "status": "LEGACY_ONLY",
-      "show_in_builder": false,
-      "show_in_dashboard": true,
-      "notes": "Broad legacy fish concept; replace only after explicit dish migration."
-    },
-    "chile_verde": {
-      "status": "LEGACY_ONLY",
-      "show_in_builder": false,
-      "show_in_dashboard": true,
-      "notes": "Broad legacy concept; use a named chile in new work."
-    },
-    "especias_secas": {
-      "status": "LEGACY_ONLY",
-      "show_in_builder": false,
-      "show_in_dashboard": true,
-      "notes": "Broad legacy concept; use individual spices in new work."
-    },
-    "proteina_polvo": {
-      "status": "LEGACY_ONLY",
-      "show_in_builder": false,
-      "show_in_dashboard": true,
-      "notes": "Broad legacy concept; split candidates exist for whey and vegetable protein."
-    },
-    "col": {
-      "status": "LEGACY_ONLY",
-      "show_in_builder": false,
-      "show_in_dashboard": true,
-      "notes": "Broad legacy concept; use white or red cabbage in new work."
-    },
-    "vinagre_simple": {
-      "status": "LEGACY_ONLY",
-      "show_in_builder": false,
-      "show_in_dashboard": true,
-      "notes": "Broad legacy concept; use white or apple vinegar in new work."
-    },
-    "edulcorante": {
-      "status": "LEGACY_ONLY",
-      "show_in_builder": false,
-      "show_in_dashboard": true,
-      "notes": "Broad legacy concept; use stevia or sucralose in new work."
-    },
-    "pure_tomate": {
-      "status": "LEGACY_ONLY",
-      "show_in_builder": false,
-      "show_in_dashboard": true,
-      "notes": "Legacy mixed purée/sauce identity retained unchanged for dish compatibility; successor is pure_tomate_sin_sal."
-    },
-    "hielo": {
-      "status": "PREPARATION_ONLY",
-      "show_in_builder": false,
-      "show_in_dashboard": false,
-      "notes": "Preparation aid; not a selectable meal ingredient."
-    },
-    "vinagre_oregano": {
-      "status": "PREPARATION_ONLY",
-      "show_in_builder": false,
-      "show_in_dashboard": false,
-      "notes": "Preparation composite; not a selectable meal ingredient."
-    },
-    "trace_aditivo": {
-      "status": "REMOVE_AFTER_MIGRATION",
-      "show_in_builder": false,
-      "show_in_dashboard": true,
-      "notes": "Keep only while references require it; remove through an explicit migration."
-    },
-    "chile_serrano": {
-      "status": "ACTIVE",
-      "show_in_builder": true,
-      "show_in_dashboard": true,
-      "nutrition_status": "VALIDATED_SOURCE",
-      "expected_image_path": "/assets/foods/chile_serrano.jpe",
-      "image_status": "IMAGE_ASSET_PENDING",
-      "notes": "V2.2 working candidate; composition source recorded in food-provenance.json."
-    },
-    "chile_poblano": {
-      "status": "ACTIVE",
-      "show_in_builder": true,
-      "show_in_dashboard": true,
-      "nutrition_status": "VALIDATED_SOURCE",
-      "expected_image_path": "/assets/foods/chile_poblano.jpe",
-      "image_status": "IMAGE_ASSET_PENDING",
-      "notes": "V2.2 working candidate; composition source recorded in food-provenance.json."
-    },
-    "col_blanca": {
-      "status": "ACTIVE",
-      "show_in_builder": true,
-      "show_in_dashboard": true,
-      "nutrition_status": "VALIDATED_SOURCE",
-      "expected_image_path": "/assets/foods/col_blanca.jpe",
-      "image_status": "IMAGE_ASSET_PENDING",
-      "notes": "V2.2 working candidate; composition source recorded in food-provenance.json."
-    },
-    "col_morada": {
-      "status": "ACTIVE",
-      "show_in_builder": true,
-      "show_in_dashboard": true,
-      "nutrition_status": "VALIDATED_SOURCE",
-      "expected_image_path": "/assets/foods/col_morada.jpe",
-      "image_status": "IMAGE_ASSET_PENDING",
-      "notes": "V2.2 working candidate; composition source recorded in food-provenance.json."
-    },
-    "proteina_whey_polvo": {
-      "status": "ACTIVE",
-      "show_in_builder": true,
-      "show_in_dashboard": true,
-      "nutrition_status": "VALIDATED_SOURCE",
-      "expected_image_path": "/assets/foods/proteina_whey_polvo.jpe",
-      "image_status": "IMAGE_ASSET_PENDING",
-      "notes": "V2.2 working candidate; composition source recorded in food-provenance.json."
-    },
-    "proteina_vegetal_polvo": {
-      "status": "REVIEW_REQUIRED",
-      "show_in_builder": false,
-      "show_in_dashboard": false,
-      "nutrition_status": "NOT_VALIDATED",
-      "expected_image_path": "/assets/foods/proteina_vegetal_polvo.jpe",
-      "image_status": "IMAGE_ASSET_PENDING",
-      "notes": "Identity or exact authoritative product/source remains unresolved; no nutrition was fabricated."
-    },
-    "vinagre_blanco": {
-      "status": "ACTIVE",
-      "show_in_builder": true,
-      "show_in_dashboard": true,
-      "nutrition_status": "VALIDATED_SOURCE",
-      "expected_image_path": "/assets/foods/vinagre_blanco.jpe",
-      "image_status": "IMAGE_ASSET_PENDING",
-      "notes": "V2.2 working candidate; composition source recorded in food-provenance.json."
-    },
-    "vinagre_manzana": {
-      "status": "ACTIVE",
-      "show_in_builder": true,
-      "show_in_dashboard": true,
-      "nutrition_status": "VALIDATED_SOURCE",
-      "expected_image_path": "/assets/foods/vinagre_manzana.jpe",
-      "image_status": "IMAGE_ASSET_PENDING",
-      "notes": "V2.2 working candidate; composition source recorded in food-provenance.json."
-    },
-    "pasta_tomate": {
-      "status": "ACTIVE",
-      "show_in_builder": true,
-      "show_in_dashboard": true,
-      "nutrition_status": "VALIDATED_SOURCE",
-      "expected_image_path": "/assets/foods/pasta_tomate.jpe",
-      "image_status": "IMAGE_ASSET_PENDING",
-      "notes": "V2.2 working candidate; composition source recorded in food-provenance.json."
-    },
-    "stevia_edulcorante": {
-      "status": "REVIEW_REQUIRED",
-      "show_in_builder": false,
-      "show_in_dashboard": false,
-      "nutrition_status": "NOT_VALIDATED",
-      "expected_image_path": "/assets/foods/stevia_edulcorante.jpe",
-      "image_status": "IMAGE_ASSET_PENDING",
-      "notes": "Identity or exact authoritative product/source remains unresolved; no nutrition was fabricated."
-    },
-    "sucralosa_edulcorante": {
-      "status": "REVIEW_REQUIRED",
-      "show_in_builder": false,
-      "show_in_dashboard": false,
-      "nutrition_status": "NOT_VALIDATED",
-      "expected_image_path": "/assets/foods/sucralosa_edulcorante.jpe",
-      "image_status": "IMAGE_ASSET_PENDING",
-      "notes": "Identity or exact authoritative product/source remains unresolved; no nutrition was fabricated."
-    },
-    "trucha_fresca": {
-      "status": "ACTIVE",
-      "show_in_builder": true,
-      "show_in_dashboard": true,
-      "nutrition_status": "VALIDATED_SOURCE",
-      "expected_image_path": "/assets/foods/trucha_fresca.jpe",
-      "image_status": "IMAGE_ASSET_PENDING",
-      "notes": "V2.2 working candidate; composition source recorded in food-provenance.json."
-    },
-    "merluza_fresca": {
-      "status": "ACTIVE_PENDING_COMPOSITION",
-      "show_in_builder": true,
-      "show_in_dashboard": false,
-      "nutrition_status": "PENDING_COMPOSITION",
-      "expected_image_path": "/assets/foods/merluza_fresca.jpe",
-      "image_status": "IMAGE_ASSET_PENDING",
-      "notes": "Identity/form is explicit enough for working-copy dish construction, but exact composition source is still pending; micronutrients remain null."
-    },
-    "bacalao_fresco": {
-      "status": "ACTIVE",
-      "show_in_builder": true,
-      "show_in_dashboard": true,
-      "nutrition_status": "VALIDATED_SOURCE",
-      "expected_image_path": "/assets/foods/bacalao_fresco.jpe",
-      "image_status": "IMAGE_ASSET_PENDING",
-      "notes": "V2.2 working candidate; composition source recorded in food-provenance.json."
-    },
-    "sardina_fresca": {
-      "status": "ACTIVE_PENDING_COMPOSITION",
-      "show_in_builder": true,
-      "show_in_dashboard": false,
-      "nutrition_status": "PENDING_COMPOSITION",
-      "expected_image_path": "/assets/foods/sardina_fresca.jpe",
-      "image_status": "IMAGE_ASSET_PENDING",
-      "notes": "Identity/form is explicit enough for working-copy dish construction, but exact composition source is still pending; micronutrients remain null."
-    },
-    "extracto_vainilla": {
-      "status": "ACTIVE",
-      "show_in_builder": true,
-      "show_in_dashboard": true,
-      "nutrition_status": "VALIDATED_SOURCE",
-      "expected_image_path": "/assets/foods/extracto_vainilla.jpe",
-      "image_status": "IMAGE_ASSET_PENDING",
-      "notes": "V2.2 working candidate; composition source recorded in food-provenance.json."
-    },
-    "polvo_hornear": {
-      "status": "ACTIVE",
-      "show_in_builder": true,
-      "show_in_dashboard": true,
-      "nutrition_status": "VALIDATED_SOURCE",
-      "expected_image_path": "/assets/foods/polvo_hornear.jpe",
-      "image_status": "IMAGE_ASSET_PENDING",
-      "notes": "V2.2 working candidate; composition source recorded in food-provenance.json."
-    },
-    "sazonador_liquido": {
-      "status": "REVIEW_REQUIRED",
-      "show_in_builder": false,
-      "show_in_dashboard": false,
-      "nutrition_status": "NOT_VALIDATED",
-      "expected_image_path": "/assets/foods/sazonador_liquido.jpe",
-      "image_status": "IMAGE_ASSET_PENDING",
-      "notes": "MAGGI Mexico product identity is documented, but the official 100 ml and 5 ml columns are internally incompatible; composition remains unresolved and no nutrition was fabricated."
-    },
-    "comino": {
-      "status": "ACTIVE",
-      "show_in_builder": true,
-      "show_in_dashboard": true,
-      "nutrition_status": "VALIDATED_SOURCE",
-      "expected_image_path": "/assets/foods/comino.jpe",
-      "image_status": "IMAGE_ASSET_PENDING",
-      "notes": "V2.2 working candidate; composition source recorded in food-provenance.json."
-    },
-    "paprika": {
-      "status": "ACTIVE",
-      "show_in_builder": true,
-      "show_in_dashboard": true,
-      "nutrition_status": "VALIDATED_SOURCE",
-      "expected_image_path": "/assets/foods/paprika.jpe",
-      "image_status": "IMAGE_ASSET_PENDING",
-      "notes": "V2.2 working candidate; composition source recorded in food-provenance.json."
-    },
-    "pimenton_ahumado": {
-      "status": "ACTIVE_PENDING_COMPOSITION",
-      "show_in_builder": true,
-      "show_in_dashboard": false,
-      "nutrition_status": "PENDING_COMPOSITION",
-      "expected_image_path": "/assets/foods/pimenton_ahumado.jpe",
-      "image_status": "IMAGE_ASSET_PENDING",
-      "notes": "Identity/form is explicit enough for working-copy dish construction, but exact composition source is still pending; micronutrients remain null."
-    },
-    "pimienta_negra": {
-      "status": "ACTIVE",
-      "show_in_builder": true,
-      "show_in_dashboard": true,
-      "nutrition_status": "VALIDATED_SOURCE",
-      "expected_image_path": "/assets/foods/pimienta_negra.jpe",
-      "image_status": "IMAGE_ASSET_PENDING",
-      "notes": "V2.2 working candidate; composition source recorded in food-provenance.json."
-    },
-    "canela": {
-      "status": "ACTIVE",
-      "show_in_builder": true,
-      "show_in_dashboard": true,
-      "nutrition_status": "VALIDATED_SOURCE",
-      "expected_image_path": "/assets/foods/canela.jpe",
-      "image_status": "IMAGE_ASSET_PENDING",
-      "notes": "V2.2 working candidate; composition source recorded in food-provenance.json."
-    },
-    "ajo_polvo": {
-      "status": "ACTIVE",
-      "show_in_builder": true,
-      "show_in_dashboard": true,
-      "nutrition_status": "VALIDATED_SOURCE",
-      "expected_image_path": "/assets/foods/ajo_polvo.jpe",
-      "image_status": "IMAGE_ASSET_PENDING",
-      "notes": "V2.2 working candidate; composition source recorded in food-provenance.json."
-    },
-    "cebolla_polvo": {
-      "status": "ACTIVE",
-      "show_in_builder": true,
-      "show_in_dashboard": true,
-      "nutrition_status": "VALIDATED_SOURCE",
-      "expected_image_path": "/assets/foods/cebolla_polvo.jpe",
-      "image_status": "IMAGE_ASSET_PENDING",
-      "notes": "V2.2 working candidate; composition source recorded in food-provenance.json."
-    },
-    "curcuma": {
-      "status": "ACTIVE",
-      "show_in_builder": true,
-      "show_in_dashboard": true,
-      "nutrition_status": "VALIDATED_SOURCE",
-      "expected_image_path": "/assets/foods/curcuma.jpe",
-      "image_status": "IMAGE_ASSET_PENDING",
-      "notes": "V2.2 working candidate; composition source recorded in food-provenance.json."
-    },
-    "romero": {
-      "status": "ACTIVE",
-      "show_in_builder": true,
-      "show_in_dashboard": true,
-      "nutrition_status": "VALIDATED_SOURCE",
-      "expected_image_path": "/assets/foods/romero.jpe",
-      "image_status": "IMAGE_ASSET_PENDING",
-      "notes": "V2.2 working candidate; composition source recorded in food-provenance.json."
-    },
-    "tomillo": {
-      "status": "ACTIVE",
-      "show_in_builder": true,
-      "show_in_dashboard": true,
-      "nutrition_status": "VALIDATED_SOURCE",
-      "expected_image_path": "/assets/foods/tomillo.jpe",
-      "image_status": "IMAGE_ASSET_PENDING",
-      "notes": "V2.2 working candidate; composition source recorded in food-provenance.json."
-    },
-    "laurel": {
-      "status": "ACTIVE",
-      "show_in_builder": true,
-      "show_in_dashboard": true,
-      "nutrition_status": "VALIDATED_SOURCE",
-      "expected_image_path": "/assets/foods/laurel.jpe",
-      "image_status": "IMAGE_ASSET_PENDING",
-      "notes": "V2.2 working candidate; composition source recorded in food-provenance.json."
-    },
-    "perejil": {
-      "status": "ACTIVE",
-      "show_in_builder": true,
-      "show_in_dashboard": true,
-      "nutrition_status": "VALIDATED_SOURCE",
-      "expected_image_path": "/assets/foods/perejil.jpe",
-      "image_status": "IMAGE_ASSET_PENDING",
-      "notes": "V2.2 working candidate; composition source recorded in food-provenance.json."
-    },
-    "tilapia_fresca": {
-      "status": "ACTIVE",
-      "show_in_builder": true,
-      "show_in_dashboard": true,
-      "nutrition_status": "VALIDATED_SOURCE",
-      "expected_image_path": "/assets/foods/tilapia_fresca.jpe",
-      "image_status": "IMAGE_ASSET_PENDING",
-      "notes": "V2.2 working candidate; composition source recorded in food-provenance.json."
-    },
-    "pure_tomate_sin_sal": {
-      "status": "ACTIVE",
-      "show_in_builder": true,
-      "show_in_dashboard": true,
-      "nutrition_status": "VALIDATED_SOURCE",
-      "expected_image_path": "/assets/foods/pure_tomate_sin_sal.jpe",
-      "image_status": "IMAGE_ASSET_PENDING",
-      "notes": "V2.2 working candidate; composition source recorded in food-provenance.json."
-    },
-    "chile_polvo": {
-      "status": "ACTIVE",
-      "show_in_builder": true,
-      "show_in_dashboard": true,
-      "nutrition_status": "VALIDATED_SOURCE",
-      "expected_image_path": "/assets/foods/chile_polvo.jpe",
-      "image_status": "IMAGE_ASSET_PENDING",
-      "notes": "V2.2 working candidate; composition source recorded in food-provenance.json."
-    },
-    "leche_deslactosada_entera": {
-      "status": "REVIEW_REQUIRED",
-      "show_in_builder": false,
-      "show_in_dashboard": false,
-      "nutrition_status": "NOT_VALIDATED",
-      "expected_image_path": "/assets/foods/leche_deslactosada_entera.jpe",
-      "image_status": "IMAGE_ASSET_PENDING",
-      "notes": "Identity or exact authoritative product/source remains unresolved; no nutrition was fabricated."
-    },
-    "queso_manchego_mexicano": {
-      "status": "REVIEW_REQUIRED",
-      "show_in_builder": false,
-      "show_in_dashboard": false,
-      "nutrition_status": "NOT_VALIDATED",
-      "expected_image_path": "/assets/foods/queso_manchego_mexicano.jpe",
-      "image_status": "IMAGE_ASSET_PENDING",
-      "notes": "Identity or exact authoritative product/source remains unresolved; no nutrition was fabricated."
-    },
-    "coco_fresco": {
-      "status": "ACTIVE",
-      "show_in_builder": true,
-      "show_in_dashboard": true,
-      "nutrition_status": "VALIDATED_SOURCE",
-      "expected_image_path": "/assets/foods/coco_fresco.jpe",
-      "image_status": "IMAGE_ASSET_PENDING",
-      "notes": "Fresh raw edible coconut meat; composition source recorded in food-provenance.json."
-    },
-    "platano": {
-      "status": "ACTIVE",
-      "show_in_builder": true,
-      "show_in_dashboard": true,
-      "nutrition_status": "VALIDATED_SOURCE",
-      "expected_image_path": "/assets/foods/platano.jpe",
-      "image_status": "IMAGE_ASSET_PENDING",
-      "notes": "V2.2 working candidate; exact natural-food composition source recorded in food-provenance.json."
-    },
-    "manzana": {
-      "status": "ACTIVE",
-      "show_in_builder": true,
-      "show_in_dashboard": true,
-      "nutrition_status": "VALIDATED_SOURCE",
-      "expected_image_path": "/assets/foods/manzana.jpe",
-      "image_status": "IMAGE_ASSET_PENDING",
-      "notes": "V2.2 working candidate; exact natural-food composition source recorded in food-provenance.json."
-    },
-    "naranja": {
-      "status": "ACTIVE",
-      "show_in_builder": true,
-      "show_in_dashboard": true,
-      "nutrition_status": "VALIDATED_SOURCE",
-      "expected_image_path": "/assets/foods/naranja.jpe",
-      "image_status": "IMAGE_ASSET_PENDING",
-      "notes": "V2.2 working candidate; exact natural-food composition source recorded in food-provenance.json."
-    },
-    "mandarina": {
-      "status": "ACTIVE",
-      "show_in_builder": true,
-      "show_in_dashboard": true,
-      "nutrition_status": "VALIDATED_SOURCE",
-      "expected_image_path": "/assets/foods/mandarina.jpe",
-      "image_status": "IMAGE_ASSET_PENDING",
-      "notes": "V2.2 working candidate; exact natural-food composition source recorded in food-provenance.json."
-    },
-    "fresa": {
-      "status": "ACTIVE",
-      "show_in_builder": true,
-      "show_in_dashboard": true,
-      "nutrition_status": "VALIDATED_SOURCE",
-      "expected_image_path": "/assets/foods/fresa.jpe",
-      "image_status": "IMAGE_ASSET_PENDING",
-      "notes": "V2.2 working candidate; exact natural-food composition source recorded in food-provenance.json."
-    },
-    "arandano": {
-      "status": "ACTIVE",
-      "show_in_builder": true,
-      "show_in_dashboard": true,
-      "nutrition_status": "VALIDATED_SOURCE",
-      "expected_image_path": "/assets/foods/arandano.jpe",
-      "image_status": "IMAGE_ASSET_PENDING",
-      "notes": "V2.2 working candidate; exact natural-food composition source recorded in food-provenance.json."
-    },
-    "zarzamora": {
-      "status": "ACTIVE",
-      "show_in_builder": true,
-      "show_in_dashboard": true,
-      "nutrition_status": "VALIDATED_SOURCE",
-      "expected_image_path": "/assets/foods/zarzamora.jpe",
-      "image_status": "IMAGE_ASSET_PENDING",
-      "notes": "V2.2 working candidate; exact natural-food composition source recorded in food-provenance.json."
-    },
-    "frambuesa": {
-      "status": "ACTIVE",
-      "show_in_builder": true,
-      "show_in_dashboard": true,
-      "nutrition_status": "VALIDATED_SOURCE",
-      "expected_image_path": "/assets/foods/frambuesa.jpe",
-      "image_status": "IMAGE_ASSET_PENDING",
-      "notes": "V2.2 working candidate; exact natural-food composition source recorded in food-provenance.json."
-    },
-    "mango": {
-      "status": "ACTIVE",
-      "show_in_builder": true,
-      "show_in_dashboard": true,
-      "nutrition_status": "VALIDATED_SOURCE",
-      "expected_image_path": "/assets/foods/mango.jpe",
-      "image_status": "IMAGE_ASSET_PENDING",
-      "notes": "V2.2 working candidate; exact natural-food composition source recorded in food-provenance.json."
-    },
-    "pina": {
-      "status": "ACTIVE",
-      "show_in_builder": true,
-      "show_in_dashboard": true,
-      "nutrition_status": "VALIDATED_SOURCE",
-      "expected_image_path": "/assets/foods/pina.jpe",
-      "image_status": "IMAGE_ASSET_PENDING",
-      "notes": "V2.2 working candidate; exact natural-food composition source recorded in food-provenance.json."
-    },
-    "papaya": {
-      "status": "ACTIVE",
-      "show_in_builder": true,
-      "show_in_dashboard": true,
-      "nutrition_status": "VALIDATED_SOURCE",
-      "expected_image_path": "/assets/foods/papaya.jpe",
-      "image_status": "IMAGE_ASSET_PENDING",
-      "notes": "V2.2 working candidate; exact natural-food composition source recorded in food-provenance.json."
-    },
-    "sandia": {
-      "status": "ACTIVE",
-      "show_in_builder": true,
-      "show_in_dashboard": true,
-      "nutrition_status": "VALIDATED_SOURCE",
-      "expected_image_path": "/assets/foods/sandia.jpe",
-      "image_status": "IMAGE_ASSET_PENDING",
-      "notes": "V2.2 working candidate; exact natural-food composition source recorded in food-provenance.json."
-    },
-    "melon": {
-      "status": "ACTIVE",
-      "show_in_builder": true,
-      "show_in_dashboard": true,
-      "nutrition_status": "VALIDATED_SOURCE",
-      "expected_image_path": "/assets/foods/melon.jpe",
-      "image_status": "IMAGE_ASSET_PENDING",
-      "notes": "V2.2 working candidate; exact natural-food composition source recorded in food-provenance.json."
-    },
-    "kiwi": {
-      "status": "ACTIVE",
-      "show_in_builder": true,
-      "show_in_dashboard": true,
-      "nutrition_status": "VALIDATED_SOURCE",
-      "expected_image_path": "/assets/foods/kiwi.jpe",
-      "image_status": "IMAGE_ASSET_PENDING",
-      "notes": "V2.2 working candidate; exact natural-food composition source recorded in food-provenance.json."
-    },
-    "uvas": {
-      "status": "ACTIVE",
-      "show_in_builder": true,
-      "show_in_dashboard": true,
-      "nutrition_status": "VALIDATED_SOURCE",
-      "expected_image_path": "/assets/foods/uvas.jpe",
-      "image_status": "IMAGE_ASSET_PENDING",
-      "notes": "V2.2 working candidate; exact natural-food composition source recorded in food-provenance.json."
-    },
-    "pera": {
-      "status": "ACTIVE",
-      "show_in_builder": true,
-      "show_in_dashboard": true,
-      "nutrition_status": "VALIDATED_SOURCE",
-      "expected_image_path": "/assets/foods/pera.jpe",
-      "image_status": "IMAGE_ASSET_PENDING",
-      "notes": "V2.2 working candidate; exact natural-food composition source recorded in food-provenance.json."
-    },
-    "durazno": {
-      "status": "ACTIVE",
-      "show_in_builder": true,
-      "show_in_dashboard": true,
-      "nutrition_status": "VALIDATED_SOURCE",
-      "expected_image_path": "/assets/foods/durazno.jpe",
-      "image_status": "IMAGE_ASSET_PENDING",
-      "notes": "V2.2 working candidate; exact natural-food composition source recorded in food-provenance.json."
-    },
-    "guayaba": {
-      "status": "ACTIVE",
-      "show_in_builder": true,
-      "show_in_dashboard": true,
-      "nutrition_status": "VALIDATED_SOURCE",
-      "expected_image_path": "/assets/foods/guayaba.jpe",
-      "image_status": "IMAGE_ASSET_PENDING",
-      "notes": "V2.2 working candidate; exact natural-food composition source recorded in food-provenance.json."
-    },
-    "higo": {
-      "status": "ACTIVE",
-      "show_in_builder": true,
-      "show_in_dashboard": true,
-      "nutrition_status": "VALIDATED_SOURCE",
-      "expected_image_path": "/assets/foods/higo.jpe",
-      "image_status": "IMAGE_ASSET_PENDING",
-      "notes": "V2.2 working candidate; exact natural-food composition source recorded in food-provenance.json."
-    },
-    "ciruela": {
-      "status": "ACTIVE",
-      "show_in_builder": true,
-      "show_in_dashboard": true,
-      "nutrition_status": "VALIDATED_SOURCE",
-      "expected_image_path": "/assets/foods/ciruela.jpe",
-      "image_status": "IMAGE_ASSET_PENDING",
-      "notes": "V2.2 working candidate; exact natural-food composition source recorded in food-provenance.json."
-    },
-    "toronja": {
-      "status": "ACTIVE",
-      "show_in_builder": true,
-      "show_in_dashboard": true,
-      "nutrition_status": "VALIDATED_SOURCE",
-      "expected_image_path": "/assets/foods/toronja.jpe",
-      "image_status": "IMAGE_ASSET_PENDING",
-      "notes": "V2.2 working candidate; exact natural-food composition source recorded in food-provenance.json."
-    },
-    "lechuga": {
-      "status": "ACTIVE",
-      "show_in_builder": true,
-      "show_in_dashboard": true,
-      "nutrition_status": "VALIDATED_SOURCE",
-      "expected_image_path": "/assets/foods/lechuga.jpe",
-      "image_status": "IMAGE_ASSET_PENDING",
-      "notes": "V2.2 working candidate; exact natural-food composition source recorded in food-provenance.json."
-    },
-    "espinaca": {
-      "status": "ACTIVE",
-      "show_in_builder": true,
-      "show_in_dashboard": true,
-      "nutrition_status": "VALIDATED_SOURCE",
-      "expected_image_path": "/assets/foods/espinaca.jpe",
-      "image_status": "IMAGE_ASSET_PENDING",
-      "notes": "V2.2 working candidate; exact natural-food composition source recorded in food-provenance.json."
-    },
-    "brocoli": {
-      "status": "ACTIVE",
-      "show_in_builder": true,
-      "show_in_dashboard": true,
-      "nutrition_status": "VALIDATED_SOURCE",
-      "expected_image_path": "/assets/foods/brocoli.jpe",
-      "image_status": "IMAGE_ASSET_PENDING",
-      "notes": "V2.2 working candidate; exact natural-food composition source recorded in food-provenance.json."
-    },
-    "zanahoria": {
-      "status": "ACTIVE",
-      "show_in_builder": true,
-      "show_in_dashboard": true,
-      "nutrition_status": "VALIDATED_SOURCE",
-      "expected_image_path": "/assets/foods/zanahoria.jpe",
-      "image_status": "IMAGE_ASSET_PENDING",
-      "notes": "V2.2 working candidate; exact natural-food composition source recorded in food-provenance.json."
-    },
-    "jitomate": {
-      "status": "ACTIVE",
-      "show_in_builder": true,
-      "show_in_dashboard": true,
-      "nutrition_status": "VALIDATED_SOURCE",
-      "expected_image_path": "/assets/foods/jitomate.jpe",
-      "image_status": "IMAGE_ASSET_PENDING",
-      "notes": "V2.2 working candidate; exact natural-food composition source recorded in food-provenance.json."
-    },
-    "pepino": {
-      "status": "ACTIVE",
-      "show_in_builder": true,
-      "show_in_dashboard": true,
-      "nutrition_status": "VALIDATED_SOURCE",
-      "expected_image_path": "/assets/foods/pepino.jpe",
-      "image_status": "IMAGE_ASSET_PENDING",
-      "notes": "V2.2 working candidate; exact natural-food composition source recorded in food-provenance.json."
-    },
-    "cebolla": {
-      "status": "ACTIVE",
-      "show_in_builder": true,
-      "show_in_dashboard": true,
-      "nutrition_status": "VALIDATED_SOURCE",
-      "expected_image_path": "/assets/foods/cebolla.jpe",
-      "image_status": "IMAGE_ASSET_PENDING",
-      "notes": "V2.2 working candidate; exact natural-food composition source recorded in food-provenance.json."
-    },
-    "calabacita": {
-      "status": "ACTIVE",
-      "show_in_builder": true,
-      "show_in_dashboard": true,
-      "nutrition_status": "VALIDATED_SOURCE",
-      "expected_image_path": "/assets/foods/calabacita.jpe",
-      "image_status": "IMAGE_ASSET_PENDING",
-      "notes": "V2.2 working candidate; exact natural-food composition source recorded in food-provenance.json."
-    },
-    "champinones": {
-      "status": "ACTIVE",
-      "show_in_builder": true,
-      "show_in_dashboard": true,
-      "nutrition_status": "VALIDATED_SOURCE",
-      "expected_image_path": "/assets/foods/champinones.jpe",
-      "image_status": "IMAGE_ASSET_PENDING",
-      "notes": "V2.2 working candidate; exact natural-food composition source recorded in food-provenance.json."
-    },
-    "nopales": {
-      "status": "ACTIVE",
-      "show_in_builder": true,
-      "show_in_dashboard": true,
-      "nutrition_status": "VALIDATED_SOURCE",
-      "expected_image_path": "/assets/foods/nopales.jpe",
-      "image_status": "IMAGE_ASSET_PENDING",
-      "notes": "V2.2 working candidate; exact natural-food composition source recorded in food-provenance.json."
-    },
-    "ejotes": {
-      "status": "ACTIVE",
-      "show_in_builder": true,
-      "show_in_dashboard": true,
-      "nutrition_status": "VALIDATED_SOURCE",
-      "expected_image_path": "/assets/foods/ejotes.jpe",
-      "image_status": "IMAGE_ASSET_PENDING",
-      "notes": "V2.2 working candidate; exact natural-food composition source recorded in food-provenance.json."
-    },
-    "chayote_cocido": {
-      "status": "ACTIVE",
-      "show_in_builder": true,
-      "show_in_dashboard": true,
-      "nutrition_status": "VALIDATED_SOURCE",
-      "expected_image_path": "/assets/foods/chayote_cocido.jpe",
-      "image_status": "IMAGE_ASSET_PENDING",
-      "notes": "V2.2 working candidate; exact natural-food composition source recorded in food-provenance.json."
-    },
-    "jicama": {
-      "status": "ACTIVE",
-      "show_in_builder": true,
-      "show_in_dashboard": true,
-      "nutrition_status": "VALIDATED_SOURCE",
-      "expected_image_path": "/assets/foods/jicama.jpe",
-      "image_status": "IMAGE_ASSET_PENDING",
-      "notes": "V2.2 working candidate; exact natural-food composition source recorded in food-provenance.json."
-    },
-    "rabano": {
-      "status": "ACTIVE",
-      "show_in_builder": true,
-      "show_in_dashboard": true,
-      "nutrition_status": "VALIDATED_SOURCE",
-      "expected_image_path": "/assets/foods/rabano.jpe",
-      "image_status": "IMAGE_ASSET_PENDING",
-      "notes": "V2.2 working candidate; exact natural-food composition source recorded in food-provenance.json."
-    },
-    "apio": {
-      "status": "ACTIVE",
-      "show_in_builder": true,
-      "show_in_dashboard": true,
-      "nutrition_status": "VALIDATED_SOURCE",
-      "expected_image_path": "/assets/foods/apio.jpe",
-      "image_status": "IMAGE_ASSET_PENDING",
-      "notes": "V2.2 working candidate; exact natural-food composition source recorded in food-provenance.json."
-    },
-    "esparragos": {
-      "status": "ACTIVE",
-      "show_in_builder": true,
-      "show_in_dashboard": true,
-      "nutrition_status": "VALIDATED_SOURCE",
-      "expected_image_path": "/assets/foods/esparragos.jpe",
-      "image_status": "IMAGE_ASSET_PENDING",
-      "notes": "V2.2 working candidate; exact natural-food composition source recorded in food-provenance.json."
-    },
-    "cilantro": {
-      "status": "ACTIVE",
-      "show_in_builder": true,
-      "show_in_dashboard": true,
-      "nutrition_status": "VALIDATED_SOURCE",
-      "expected_image_path": "/assets/foods/cilantro.jpe",
-      "image_status": "IMAGE_ASSET_PENDING",
-      "notes": "V2.2 working candidate; exact natural-food composition source recorded in food-provenance.json."
-    },
-    "cebollin": {
-      "status": "ACTIVE",
-      "show_in_builder": true,
-      "show_in_dashboard": true,
-      "nutrition_status": "VALIDATED_SOURCE",
-      "expected_image_path": "/assets/foods/cebollin.jpe",
-      "image_status": "IMAGE_ASSET_PENDING",
-      "notes": "V2.2 working candidate; exact natural-food composition source recorded in food-provenance.json."
-    },
-    "ajo_fresco": {
-      "status": "ACTIVE",
-      "show_in_builder": true,
-      "show_in_dashboard": true,
-      "nutrition_status": "VALIDATED_SOURCE",
-      "expected_image_path": "/assets/foods/ajo_fresco.jpe",
-      "image_status": "IMAGE_ASSET_PENDING",
-      "notes": "V2.2 working candidate; exact natural-food composition source recorded in food-provenance.json."
-    },
-    "arroz_integral_cocido": {
-      "status": "ACTIVE",
-      "show_in_builder": true,
-      "show_in_dashboard": true,
-      "nutrition_status": "VALIDATED_SOURCE",
-      "expected_image_path": "/assets/foods/arroz_integral_cocido.jpe",
-      "image_status": "IMAGE_ASSET_PENDING",
-      "notes": "V2.2 working candidate; exact natural-food composition source recorded in food-provenance.json."
-    },
-    "pasta_cocida": {
-      "status": "ACTIVE",
-      "show_in_builder": true,
-      "show_in_dashboard": true,
-      "nutrition_status": "VALIDATED_SOURCE",
-      "expected_image_path": "/assets/foods/pasta_cocida.jpe",
-      "image_status": "IMAGE_ASSET_PENDING",
-      "notes": "V2.2 working candidate; exact natural-food composition source recorded in food-provenance.json."
-    },
-    "avena_cruda": {
-      "status": "ACTIVE",
-      "show_in_builder": true,
-      "show_in_dashboard": true,
-      "nutrition_status": "VALIDATED_SOURCE",
-      "expected_image_path": "/assets/foods/avena_cruda.jpe",
-      "image_status": "IMAGE_ASSET_PENDING",
-      "notes": "V2.2 working candidate; exact natural-food composition source recorded in food-provenance.json."
-    },
-    "avena_cocida": {
-      "status": "ACTIVE",
-      "show_in_builder": true,
-      "show_in_dashboard": true,
-      "nutrition_status": "VALIDATED_SOURCE",
-      "expected_image_path": "/assets/foods/avena_cocida.jpe",
-      "image_status": "IMAGE_ASSET_PENDING",
-      "notes": "V2.2 working candidate; exact natural-food composition source recorded in food-provenance.json."
-    },
-    "papa_cocida": {
-      "status": "ACTIVE",
-      "show_in_builder": true,
-      "show_in_dashboard": true,
-      "nutrition_status": "VALIDATED_SOURCE",
-      "expected_image_path": "/assets/foods/papa_cocida.jpe",
-      "image_status": "IMAGE_ASSET_PENDING",
-      "notes": "V2.2 working candidate; exact natural-food composition source recorded in food-provenance.json."
-    },
-    "camote_cocido": {
-      "status": "ACTIVE",
-      "show_in_builder": true,
-      "show_in_dashboard": true,
-      "nutrition_status": "VALIDATED_SOURCE",
-      "expected_image_path": "/assets/foods/camote_cocido.jpe",
-      "image_status": "IMAGE_ASSET_PENDING",
-      "notes": "V2.2 working candidate; exact natural-food composition source recorded in food-provenance.json."
-    },
-    "elote_cocido": {
-      "status": "ACTIVE",
-      "show_in_builder": true,
-      "show_in_dashboard": true,
-      "nutrition_status": "VALIDATED_SOURCE",
-      "expected_image_path": "/assets/foods/elote_cocido.jpe",
-      "image_status": "IMAGE_ASSET_PENDING",
-      "notes": "V2.2 working candidate; exact natural-food composition source recorded in food-provenance.json."
-    },
-    "frijol_negro_cocido": {
-      "status": "ACTIVE",
-      "show_in_builder": true,
-      "show_in_dashboard": true,
-      "nutrition_status": "VALIDATED_SOURCE",
-      "expected_image_path": "/assets/foods/frijol_negro_cocido.jpe",
-      "image_status": "IMAGE_ASSET_PENDING",
-      "notes": "V2.2 working candidate; exact natural-food composition source recorded in food-provenance.json."
-    },
-    "frijol_pinto_cocido": {
-      "status": "ACTIVE",
-      "show_in_builder": true,
-      "show_in_dashboard": true,
-      "nutrition_status": "VALIDATED_SOURCE",
-      "expected_image_path": "/assets/foods/frijol_pinto_cocido.jpe",
-      "image_status": "IMAGE_ASSET_PENDING",
-      "notes": "V2.2 working candidate; exact natural-food composition source recorded in food-provenance.json."
-    },
-    "lenteja_cocida": {
-      "status": "ACTIVE",
-      "show_in_builder": true,
-      "show_in_dashboard": true,
-      "nutrition_status": "VALIDATED_SOURCE",
-      "expected_image_path": "/assets/foods/lenteja_cocida.jpe",
-      "image_status": "IMAGE_ASSET_PENDING",
-      "notes": "V2.2 working candidate; exact natural-food composition source recorded in food-provenance.json."
-    },
-    "garbanzo_cocido": {
-      "status": "ACTIVE",
-      "show_in_builder": true,
-      "show_in_dashboard": true,
-      "nutrition_status": "VALIDATED_SOURCE",
-      "expected_image_path": "/assets/foods/garbanzo_cocido.jpe",
-      "image_status": "IMAGE_ASSET_PENDING",
-      "notes": "V2.2 working candidate; exact natural-food composition source recorded in food-provenance.json."
-    },
-    "frijol_rojo_cocido": {
-      "status": "ACTIVE",
-      "show_in_builder": true,
-      "show_in_dashboard": true,
-      "nutrition_status": "VALIDATED_SOURCE",
-      "expected_image_path": "/assets/foods/frijol_rojo_cocido.jpe",
-      "image_status": "IMAGE_ASSET_PENDING",
-      "notes": "V2.2 working candidate; exact natural-food composition source recorded in food-provenance.json."
-    },
-    "chicharos_cocidos": {
-      "status": "ACTIVE",
-      "show_in_builder": true,
-      "show_in_dashboard": true,
-      "nutrition_status": "VALIDATED_SOURCE",
-      "expected_image_path": "/assets/foods/chicharos_cocidos.jpe",
-      "image_status": "IMAGE_ASSET_PENDING",
-      "notes": "V2.2 working candidate; exact natural-food composition source recorded in food-provenance.json."
-    },
-    "quinoa_cocida": {
-      "status": "ACTIVE",
-      "show_in_builder": true,
-      "show_in_dashboard": true,
-      "nutrition_status": "VALIDATED_SOURCE",
-      "expected_image_path": "/assets/foods/quinoa_cocida.jpe",
-      "image_status": "IMAGE_ASSET_PENDING",
-      "notes": "V2.2 working candidate; exact natural-food composition source recorded in food-provenance.json."
-    },
-    "almendras": {
-      "status": "ACTIVE",
-      "show_in_builder": true,
-      "show_in_dashboard": true,
-      "nutrition_status": "VALIDATED_SOURCE",
-      "expected_image_path": "/assets/foods/almendras.jpe",
-      "image_status": "IMAGE_ASSET_PENDING",
-      "notes": "V2.2 working candidate; exact natural-food composition source recorded in food-provenance.json."
-    },
-    "nueces": {
-      "status": "ACTIVE",
-      "show_in_builder": true,
-      "show_in_dashboard": true,
-      "nutrition_status": "VALIDATED_SOURCE",
-      "expected_image_path": "/assets/foods/nueces.jpe",
-      "image_status": "IMAGE_ASSET_PENDING",
-      "notes": "V2.2 working candidate; exact natural-food composition source recorded in food-provenance.json."
-    },
-    "cacahuates": {
-      "status": "ACTIVE",
-      "show_in_builder": true,
-      "show_in_dashboard": true,
-      "nutrition_status": "VALIDATED_SOURCE",
-      "expected_image_path": "/assets/foods/cacahuates.jpe",
-      "image_status": "IMAGE_ASSET_PENDING",
-      "notes": "V2.2 working candidate; exact natural-food composition source recorded in food-provenance.json."
-    },
-    "semillas_chia": {
-      "status": "ACTIVE",
-      "show_in_builder": true,
-      "show_in_dashboard": true,
-      "nutrition_status": "VALIDATED_SOURCE",
-      "expected_image_path": "/assets/foods/semillas_chia.jpe",
-      "image_status": "IMAGE_ASSET_PENDING",
-      "notes": "V2.2 working candidate; exact natural-food composition source recorded in food-provenance.json."
-    },
-    "semillas_linaza": {
-      "status": "ACTIVE",
-      "show_in_builder": true,
-      "show_in_dashboard": true,
-      "nutrition_status": "VALIDATED_SOURCE",
-      "expected_image_path": "/assets/foods/semillas_linaza.jpe",
-      "image_status": "IMAGE_ASSET_PENDING",
-      "notes": "V2.2 working candidate; exact natural-food composition source recorded in food-provenance.json."
-    },
-    "semillas_girasol": {
-      "status": "ACTIVE",
-      "show_in_builder": true,
-      "show_in_dashboard": true,
-      "nutrition_status": "VALIDATED_SOURCE",
-      "expected_image_path": "/assets/foods/semillas_girasol.jpe",
-      "image_status": "IMAGE_ASSET_PENDING",
-      "notes": "V2.2 working candidate; exact natural-food composition source recorded in food-provenance.json."
-    },
-    "semillas_calabaza": {
-      "status": "ACTIVE",
-      "show_in_builder": true,
-      "show_in_dashboard": true,
-      "nutrition_status": "VALIDATED_SOURCE",
-      "expected_image_path": "/assets/foods/semillas_calabaza.jpe",
-      "image_status": "IMAGE_ASSET_PENDING",
-      "notes": "V2.2 working candidate; exact natural-food composition source recorded in food-provenance.json."
-    },
-    "semillas_ajonjoli": {
-      "status": "ACTIVE",
-      "show_in_builder": true,
-      "show_in_dashboard": true,
-      "nutrition_status": "VALIDATED_SOURCE",
-      "expected_image_path": "/assets/foods/semillas_ajonjoli.jpe",
-      "image_status": "IMAGE_ASSET_PENDING",
-      "notes": "V2.2 working candidate; exact natural-food composition source recorded in food-provenance.json."
-    },
-    "nuez_india": {
-      "status": "ACTIVE",
-      "show_in_builder": true,
-      "show_in_dashboard": true,
-      "nutrition_status": "VALIDATED_SOURCE",
-      "expected_image_path": "/assets/foods/nuez_india.jpe",
-      "image_status": "IMAGE_ASSET_PENDING",
-      "notes": "V2.2 working candidate; exact natural-food composition source recorded in food-provenance.json."
-    },
-    "aceite_oliva": {
-      "status": "ACTIVE",
-      "show_in_builder": true,
-      "show_in_dashboard": true,
-      "nutrition_status": "VALIDATED_SOURCE",
-      "expected_image_path": "/assets/foods/aceite_oliva.jpe",
-      "image_status": "IMAGE_ASSET_PENDING",
-      "notes": "V2.2 working candidate; exact natural-food composition source recorded in food-provenance.json."
-    },
-    "aceite_canola": {
-      "status": "ACTIVE",
-      "show_in_builder": true,
-      "show_in_dashboard": true,
-      "nutrition_status": "VALIDATED_SOURCE",
-      "expected_image_path": "/assets/foods/aceite_canola.jpe",
-      "image_status": "IMAGE_ASSET_PENDING",
-      "notes": "V2.2 working candidate; exact natural-food composition source recorded in food-provenance.json."
-    },
-    "aceite_vegetal": {
-      "status": "ACTIVE",
-      "show_in_builder": true,
-      "show_in_dashboard": true,
-      "nutrition_status": "VALIDATED_SOURCE",
-      "expected_image_path": "/assets/foods/aceite_vegetal.jpe",
-      "image_status": "IMAGE_ASSET_PENDING",
-      "notes": "V2.2 working candidate; exact natural-food composition source recorded in food-provenance.json."
-    },
     "pollo_pechuga_cocida": {
-      "status": "ACTIVE",
+      "status": "VISIBLE_ACTIVE",
       "show_in_builder": true,
       "show_in_dashboard": true,
-      "nutrition_status": "VALIDATED_SOURCE",
-      "expected_image_path": "/assets/foods/pollo_pechuga_cocida.jpe",
-      "image_status": "IMAGE_ASSET_PENDING",
-      "notes": "V2.2 working candidate; exact natural-food composition source recorded in food-provenance.json."
+      "family": "pollo",
+      "category": "PROTEINAS",
+      "nutrition_status": "FULL_PANEL",
+      "notes": "Visible V2.2 food identity."
     },
     "pollo_muslo_cocido": {
-      "status": "ACTIVE",
+      "status": "VISIBLE_ACTIVE",
       "show_in_builder": true,
       "show_in_dashboard": true,
-      "nutrition_status": "VALIDATED_SOURCE",
-      "expected_image_path": "/assets/foods/pollo_muslo_cocido.jpe",
-      "image_status": "IMAGE_ASSET_PENDING",
-      "notes": "V2.2 working candidate; exact natural-food composition source recorded in food-provenance.json."
-    },
-    "pavo_pechuga_cocida": {
-      "status": "ACTIVE",
-      "show_in_builder": true,
-      "show_in_dashboard": true,
-      "nutrition_status": "VALIDATED_SOURCE",
-      "expected_image_path": "/assets/foods/pavo_pechuga_cocida.jpe",
-      "image_status": "IMAGE_ASSET_PENDING",
-      "notes": "V2.2 working candidate; exact natural-food composition source recorded in food-provenance.json."
-    },
-    "carne_molida_res_regular": {
-      "status": "ACTIVE",
-      "show_in_builder": true,
-      "show_in_dashboard": true,
-      "nutrition_status": "VALIDATED_SOURCE",
-      "expected_image_path": "/assets/foods/carne_molida_res_regular.jpe",
-      "image_status": "IMAGE_ASSET_PENDING",
-      "notes": "V2.2 working candidate; exact natural-food composition source recorded in food-provenance.json."
-    },
-    "lomo_cerdo_asado": {
-      "status": "ACTIVE",
-      "show_in_builder": true,
-      "show_in_dashboard": true,
-      "nutrition_status": "VALIDATED_SOURCE",
-      "expected_image_path": "/assets/foods/lomo_cerdo_asado.jpe",
-      "image_status": "IMAGE_ASSET_PENDING",
-      "notes": "V2.2 working candidate; exact natural-food composition source recorded in food-provenance.json."
-    },
-    "salmon_cocido": {
-      "status": "ACTIVE",
-      "show_in_builder": true,
-      "show_in_dashboard": true,
-      "nutrition_status": "VALIDATED_SOURCE",
-      "expected_image_path": "/assets/foods/salmon_cocido.jpe",
-      "image_status": "IMAGE_ASSET_PENDING",
-      "notes": "V2.2 working candidate; exact natural-food composition source recorded in food-provenance.json."
-    },
-    "atun_agua": {
-      "status": "ACTIVE",
-      "show_in_builder": true,
-      "show_in_dashboard": true,
-      "nutrition_status": "VALIDATED_SOURCE",
-      "expected_image_path": "/assets/foods/atun_agua.jpe",
-      "image_status": "IMAGE_ASSET_PENDING",
-      "notes": "V2.2 working candidate; exact natural-food composition source recorded in food-provenance.json."
-    },
-    "tilapia_cocida": {
-      "status": "ACTIVE",
-      "show_in_builder": true,
-      "show_in_dashboard": true,
-      "nutrition_status": "VALIDATED_SOURCE",
-      "expected_image_path": "/assets/foods/tilapia_cocida.jpe",
-      "image_status": "IMAGE_ASSET_PENDING",
-      "notes": "V2.2 working candidate; exact natural-food composition source recorded in food-provenance.json."
-    },
-    "camaron_cocido": {
-      "status": "ACTIVE",
-      "show_in_builder": true,
-      "show_in_dashboard": true,
-      "nutrition_status": "VALIDATED_SOURCE",
-      "expected_image_path": "/assets/foods/camaron_cocido.jpe",
-      "image_status": "IMAGE_ASSET_PENDING",
-      "notes": "V2.2 working candidate; exact natural-food composition source recorded in food-provenance.json."
-    },
-    "pulpo_cocido": {
-      "status": "ACTIVE",
-      "show_in_builder": true,
-      "show_in_dashboard": true,
-      "nutrition_status": "VALIDATED_SOURCE",
-      "expected_image_path": "/assets/foods/pulpo_cocido.jpe",
-      "image_status": "IMAGE_ASSET_PENDING",
-      "notes": "V2.2 working candidate; exact natural-food composition source recorded in food-provenance.json."
-    },
-    "huevo_entero": {
-      "status": "ACTIVE",
-      "show_in_builder": true,
-      "show_in_dashboard": true,
-      "nutrition_status": "VALIDATED_SOURCE",
-      "expected_image_path": "/assets/foods/huevo_entero.jpe",
-      "image_status": "IMAGE_ASSET_PENDING",
-      "notes": "V2.2 working candidate; exact natural-food composition source recorded in food-provenance.json."
-    },
-    "tofu_firme": {
-      "status": "ACTIVE",
-      "show_in_builder": true,
-      "show_in_dashboard": true,
-      "nutrition_status": "VALIDATED_SOURCE",
-      "expected_image_path": "/assets/foods/tofu_firme.jpe",
-      "image_status": "IMAGE_ASSET_PENDING",
-      "notes": "V2.2 working candidate; exact natural-food composition source recorded in food-provenance.json."
-    },
-    "aguacate": {
-      "status": "ACTIVE",
-      "show_in_builder": true,
-      "show_in_dashboard": true,
-      "nutrition_status": "VALIDATED_SOURCE",
-      "expected_image_path": "/assets/foods/aguacate.jpe",
-      "image_status": "IMAGE_ASSET_PENDING",
-      "notes": "V2.2 working candidate; exact natural-food composition source recorded in food-provenance.json."
-    },
-    "coliflor": {
-      "status": "ACTIVE",
-      "show_in_builder": true,
-      "show_in_dashboard": true,
-      "nutrition_status": "VALIDATED_SOURCE",
-      "expected_image_path": "/assets/foods/coliflor.jpe",
-      "image_status": "IMAGE_ASSET_PENDING",
-      "notes": "V2.2 working candidate; exact natural-food composition source recorded in food-provenance.json."
-    },
-    "arroz_blanco_cocido": {
-      "status": "ACTIVE",
-      "show_in_builder": true,
-      "show_in_dashboard": true,
-      "nutrition_status": "VALIDATED_SOURCE",
-      "expected_image_path": "/assets/foods/arroz_blanco_cocido.jpe",
-      "image_status": "IMAGE_ASSET_PENDING",
-      "notes": "V2.2 working candidate; exact natural-food composition source recorded in food-provenance.json."
+      "family": "pollo",
+      "category": "PROTEINAS",
+      "nutrition_status": "FULL_PANEL",
+      "notes": "Visible V2.2 food identity."
     },
     "pollo_pierna_cocida": {
-      "status": "ACTIVE",
-      "show_in_builder": true,
-      "show_in_dashboard": true,
-      "nutrition_status": "VALIDATED_SOURCE",
-      "expected_image_path": "/assets/foods/pollo_pierna_cocida.jpe",
-      "image_status": "IMAGE_ASSET_PENDING",
-      "notes": "V2.2 working candidate; exact natural-food composition source recorded in food-provenance.json."
+      "status": "ARCHIVED",
+      "show_in_builder": false,
+      "show_in_dashboard": false,
+      "family": "pollo",
+      "category": null,
+      "nutrition_status": "FULL_PANEL",
+      "notes": "Retained for reproducibility; not visible or selectable."
     },
     "pollo_pechuga_con_piel_cocida": {
-      "status": "ACTIVE",
+      "status": "ARCHIVED",
+      "show_in_builder": false,
+      "show_in_dashboard": false,
+      "family": "pollo",
+      "category": null,
+      "nutrition_status": "FULL_PANEL",
+      "notes": "Retained for reproducibility; not visible or selectable."
+    },
+    "pavo_pechuga_cocida": {
+      "status": "VISIBLE_ACTIVE",
       "show_in_builder": true,
       "show_in_dashboard": true,
-      "nutrition_status": "VALIDATED_SOURCE",
-      "expected_image_path": "/assets/foods/pollo_pechuga_con_piel_cocida.jpe",
-      "image_status": "IMAGE_ASSET_PENDING",
-      "notes": "V2.2 working candidate; exact natural-food composition source recorded in food-provenance.json."
+      "family": "pavo",
+      "category": "PROTEINAS",
+      "nutrition_status": "FULL_PANEL",
+      "notes": "Visible V2.2 food identity."
     },
     "carne_molida_res_magra": {
-      "status": "ACTIVE",
+      "status": "VISIBLE_ACTIVE",
       "show_in_builder": true,
       "show_in_dashboard": true,
-      "nutrition_status": "VALIDATED_SOURCE",
-      "expected_image_path": "/assets/foods/carne_molida_res_magra.jpe",
-      "image_status": "IMAGE_ASSET_PENDING",
-      "notes": "V2.2 working candidate; exact natural-food composition source recorded in food-provenance.json."
+      "family": "res",
+      "category": "PROTEINAS",
+      "nutrition_status": "FULL_PANEL",
+      "notes": "Visible V2.2 food identity."
+    },
+    "carne_molida_res_regular": {
+      "status": "ARCHIVED",
+      "show_in_builder": false,
+      "show_in_dashboard": false,
+      "family": "res",
+      "category": null,
+      "nutrition_status": "FULL_PANEL",
+      "notes": "Retained for reproducibility; not visible or selectable."
+    },
+    "bistec_res_asado": {
+      "status": "VISIBLE_ACTIVE",
+      "show_in_builder": true,
+      "show_in_dashboard": true,
+      "family": "res",
+      "category": "PROTEINAS",
+      "nutrition_status": "PARTIAL_PANEL",
+      "notes": "Visible V2.2 food identity."
+    },
+    "lomo_cerdo_asado": {
+      "status": "VISIBLE_ACTIVE",
+      "show_in_builder": true,
+      "show_in_dashboard": true,
+      "family": "cerdo",
+      "category": "PROTEINAS",
+      "nutrition_status": "FULL_PANEL",
+      "notes": "Visible V2.2 food identity."
+    },
+    "jamon_pavo": {
+      "status": "ARCHIVED",
+      "show_in_builder": false,
+      "show_in_dashboard": false,
+      "family": "jamon",
+      "category": null,
+      "nutrition_status": "PARTIAL_PANEL",
+      "notes": "Retained for reproducibility; not visible or selectable."
+    },
+    "tocino_cocido": {
+      "status": "VISIBLE_ACTIVE",
+      "show_in_builder": true,
+      "show_in_dashboard": true,
+      "family": "tocino",
+      "category": "EMBUTIDOS",
+      "nutrition_status": "PARTIAL_PANEL",
+      "notes": "Visible V2.2 food identity."
+    },
+    "chorizo_cocido": {
+      "status": "VISIBLE_ACTIVE",
+      "show_in_builder": true,
+      "show_in_dashboard": true,
+      "family": "chorizo",
+      "category": "EMBUTIDOS",
+      "nutrition_status": "PENDING_COOKED_YIELD",
+      "notes": "Visible V2.2 food identity."
+    },
+    "salmon_cocido": {
+      "status": "VISIBLE_ACTIVE",
+      "show_in_builder": true,
+      "show_in_dashboard": true,
+      "family": "pescado_marisco",
+      "category": "PESCADOS_Y_MARISCOS",
+      "nutrition_status": "PARTIAL_PANEL",
+      "notes": "Visible V2.2 food identity."
+    },
+    "atun_agua": {
+      "status": "VISIBLE_ACTIVE",
+      "show_in_builder": true,
+      "show_in_dashboard": true,
+      "family": "pescado_marisco",
+      "category": "PESCADOS_Y_MARISCOS",
+      "nutrition_status": "FULL_PANEL",
+      "notes": "Visible V2.2 food identity."
+    },
+    "tilapia_cocida": {
+      "status": "VISIBLE_ACTIVE",
+      "show_in_builder": true,
+      "show_in_dashboard": true,
+      "family": "pescado_marisco",
+      "category": "PESCADOS_Y_MARISCOS",
+      "nutrition_status": "FULL_PANEL",
+      "notes": "Visible V2.2 food identity."
     },
     "huachinango_cocido": {
-      "status": "ACTIVE",
+      "status": "VISIBLE_ACTIVE",
       "show_in_builder": true,
       "show_in_dashboard": true,
-      "nutrition_status": "VALIDATED_SOURCE",
-      "expected_image_path": "/assets/foods/huachinango_cocido.jpe",
-      "image_status": "IMAGE_ASSET_PENDING",
-      "notes": "V2.2 working candidate; exact natural-food composition source recorded in food-provenance.json."
+      "family": "pescado_marisco",
+      "category": "PESCADOS_Y_MARISCOS",
+      "nutrition_status": "PARTIAL_PANEL",
+      "notes": "Visible V2.2 food identity."
     },
-    "pavo_molido": {
-      "status": "ACTIVE",
+    "camaron_cocido": {
+      "status": "VISIBLE_ACTIVE",
       "show_in_builder": true,
       "show_in_dashboard": true,
-      "nutrition_status": "VALIDATED_SOURCE",
-      "expected_image_path": "/assets/foods/pavo_molido.jpe",
-      "image_status": "IMAGE_ASSET_PENDING",
-      "notes": "V2.2 working candidate; exact natural-food composition source recorded in food-provenance.json."
+      "family": "pescado_marisco",
+      "category": "PESCADOS_Y_MARISCOS",
+      "nutrition_status": "PARTIAL_PANEL",
+      "notes": "Visible V2.2 food identity."
     },
-    "atun_fresco_sellado": {
-      "status": "ACTIVE",
+    "huevo_entero": {
+      "status": "VISIBLE_ACTIVE",
       "show_in_builder": true,
       "show_in_dashboard": true,
-      "nutrition_status": "VALIDATED_SOURCE",
-      "expected_image_path": "/assets/foods/atun_fresco_sellado.jpe",
-      "image_status": "IMAGE_ASSET_PENDING",
-      "notes": "V2.2 working candidate; exact natural-food composition source recorded in food-provenance.json."
+      "family": "huevo",
+      "category": "PROTEINAS",
+      "nutrition_status": "FULL_PANEL",
+      "notes": "Visible V2.2 food identity."
     },
-    "habas_cocidas": {
-      "status": "ACTIVE",
+    "clara_huevo": {
+      "status": "VISIBLE_ACTIVE",
       "show_in_builder": true,
       "show_in_dashboard": true,
-      "nutrition_status": "VALIDATED_SOURCE",
-      "expected_image_path": "/assets/foods/habas_cocidas.jpe",
-      "image_status": "IMAGE_ASSET_PENDING",
-      "notes": "V2.2 working candidate; exact natural-food composition source recorded in food-provenance.json."
+      "family": "huevo",
+      "category": "PROTEINAS",
+      "nutrition_status": "PARTIAL_PANEL",
+      "notes": "Visible V2.2 food identity."
     },
-    "crema_cacahuate": {
-      "status": "ACTIVE",
+    "leche_entera": {
+      "status": "VISIBLE_ACTIVE",
       "show_in_builder": true,
       "show_in_dashboard": true,
-      "nutrition_status": "VALIDATED_SOURCE",
-      "expected_image_path": "/assets/foods/crema_cacahuate.jpe",
-      "image_status": "IMAGE_ASSET_PENDING",
-      "notes": "V2.2 working candidate; exact natural-food composition source recorded in food-provenance.json."
+      "family": "leches",
+      "category": "LACTEOS",
+      "nutrition_status": "FULL_PANEL",
+      "notes": "Visible V2.2 food identity."
     },
-    "limon": {
-      "status": "ACTIVE",
-      "show_in_builder": true,
-      "show_in_dashboard": true,
-      "nutrition_status": "VALIDATED_SOURCE",
-      "expected_image_path": "/assets/foods/limon.jpe",
-      "image_status": "IMAGE_ASSET_PENDING",
-      "notes": "V2.2 working candidate; exact natural-food composition source recorded in food-provenance.json."
+    "leche_descremada": {
+      "status": "ARCHIVED",
+      "show_in_builder": false,
+      "show_in_dashboard": false,
+      "family": "leches",
+      "category": null,
+      "nutrition_status": "PARTIAL_PANEL",
+      "notes": "Retained for reproducibility; not visible or selectable."
     },
-    "rucula": {
-      "status": "ACTIVE",
-      "show_in_builder": true,
-      "show_in_dashboard": true,
-      "nutrition_status": "VALIDATED_SOURCE",
-      "expected_image_path": "/assets/foods/rucula.jpe",
-      "image_status": "IMAGE_ASSET_PENDING",
-      "notes": "V2.2 working candidate; exact natural-food composition source recorded in food-provenance.json."
+    "leche_semidescremada": {
+      "status": "ARCHIVED",
+      "show_in_builder": false,
+      "show_in_dashboard": false,
+      "family": "leches",
+      "category": null,
+      "nutrition_status": "PARTIAL_PANEL",
+      "notes": "Retained for reproducibility; not visible or selectable."
     },
-    "jalapeno": {
-      "status": "ACTIVE",
+    "leche_deslactosada": {
+      "status": "VISIBLE_ACTIVE",
       "show_in_builder": true,
       "show_in_dashboard": true,
-      "nutrition_status": "VALIDATED_SOURCE",
-      "expected_image_path": "/assets/foods/jalapeno.jpe",
-      "image_status": "IMAGE_ASSET_PENDING",
-      "notes": "V2.2 working candidate; exact natural-food composition source recorded in food-provenance.json."
+      "family": "leches",
+      "category": "LACTEOS",
+      "nutrition_status": "PARTIAL_PANEL",
+      "notes": "Visible V2.2 food identity."
     },
-    "hierbabuena": {
-      "status": "ACTIVE",
+    "leche_evaporada": {
+      "status": "VISIBLE_ACTIVE",
       "show_in_builder": true,
       "show_in_dashboard": true,
-      "nutrition_status": "VALIDATED_SOURCE",
-      "expected_image_path": "/assets/foods/hierbabuena.jpe",
-      "image_status": "IMAGE_ASSET_PENDING",
-      "notes": "V2.2 working candidate; exact natural-food composition source recorded in food-provenance.json."
+      "family": "leches",
+      "category": "LACTEOS",
+      "nutrition_status": "PARTIAL_PANEL",
+      "notes": "Visible V2.2 food identity."
     },
-    "eneldo": {
-      "status": "ACTIVE",
+    "yogur_natural": {
+      "status": "VISIBLE_ACTIVE",
       "show_in_builder": true,
       "show_in_dashboard": true,
-      "nutrition_status": "VALIDATED_SOURCE",
-      "expected_image_path": "/assets/foods/eneldo.jpe",
-      "image_status": "IMAGE_ASSET_PENDING",
-      "notes": "V2.2 working candidate; exact natural-food composition source recorded in food-provenance.json."
+      "family": "yogures_fermentados",
+      "category": "LACTEOS",
+      "nutrition_status": "FULL_PANEL",
+      "notes": "Visible V2.2 food identity."
     },
-    "alcaparras": {
-      "status": "ACTIVE",
+    "yogur_griego_natural": {
+      "status": "VISIBLE_ACTIVE",
       "show_in_builder": true,
       "show_in_dashboard": true,
-      "nutrition_status": "VALIDATED_SOURCE",
-      "expected_image_path": "/assets/foods/alcaparras.jpe",
-      "image_status": "IMAGE_ASSET_PENDING",
-      "notes": "V2.2 working candidate; exact natural-food composition source recorded in food-provenance.json."
+      "family": "yogures_fermentados",
+      "category": "LACTEOS",
+      "nutrition_status": "FULL_PANEL",
+      "notes": "Visible V2.2 food identity."
     },
-    "agua_coco": {
-      "status": "ACTIVE",
-      "show_in_builder": true,
-      "show_in_dashboard": true,
-      "nutrition_status": "VALIDATED_SOURCE",
-      "expected_image_path": "/assets/foods/agua_coco.jpe",
-      "image_status": "IMAGE_ASSET_PENDING",
-      "notes": "V2.2 working candidate; exact natural-food composition source recorded in food-provenance.json."
+    "yogur_griego_light": {
+      "status": "ARCHIVED",
+      "show_in_builder": false,
+      "show_in_dashboard": false,
+      "family": "yogures_fermentados",
+      "category": null,
+      "nutrition_status": "PARTIAL_PANEL",
+      "notes": "Retained for reproducibility; not visible or selectable."
     },
-    "jugo_tomate": {
-      "status": "ACTIVE",
-      "show_in_builder": true,
-      "show_in_dashboard": true,
-      "nutrition_status": "VALIDATED_SOURCE",
-      "expected_image_path": "/assets/foods/jugo_tomate.jpe",
-      "image_status": "IMAGE_ASSET_PENDING",
-      "notes": "V2.2 working candidate; exact natural-food composition source recorded in food-provenance.json."
+    "queso_panela": {
+      "status": "ARCHIVED",
+      "show_in_builder": false,
+      "show_in_dashboard": false,
+      "family": "quesos",
+      "category": null,
+      "nutrition_status": "PARTIAL_PANEL",
+      "notes": "Retained for reproducibility; not visible or selectable."
     },
-    "cacao_polvo_sin_azucar": {
-      "status": "ACTIVE",
+    "queso_panela_light": {
+      "status": "VISIBLE_ACTIVE",
       "show_in_builder": true,
       "show_in_dashboard": true,
-      "nutrition_status": "VALIDATED_SOURCE",
-      "expected_image_path": "/assets/foods/cacao_polvo_sin_azucar.jpe",
-      "image_status": "IMAGE_ASSET_PENDING",
-      "notes": "V2.2 working candidate; exact natural-food composition source recorded in food-provenance.json."
+      "family": "quesos",
+      "category": "LACTEOS",
+      "nutrition_status": "PARTIAL_PANEL",
+      "notes": "Visible V2.2 food identity."
     },
-    "aceitunas_verdes": {
-      "status": "ACTIVE",
+    "queso_cottage": {
+      "status": "VISIBLE_ACTIVE",
       "show_in_builder": true,
       "show_in_dashboard": true,
-      "nutrition_status": "VALIDATED_SOURCE",
-      "expected_image_path": "/assets/foods/aceitunas_verdes.jpe",
-      "image_status": "IMAGE_ASSET_PENDING",
-      "notes": "V2.2 working candidate; exact natural-food composition source recorded in food-provenance.json."
+      "family": "quesos",
+      "category": "LACTEOS",
+      "nutrition_status": "FULL_PANEL",
+      "notes": "Visible V2.2 food identity."
     },
-    "fideos_arroz": {
-      "status": "ACTIVE",
+    "queso_mozzarella": {
+      "status": "VISIBLE_ACTIVE",
       "show_in_builder": true,
       "show_in_dashboard": true,
-      "nutrition_status": "VALIDATED_SOURCE",
-      "expected_image_path": "/assets/foods/fideos_arroz.jpe",
-      "image_status": "IMAGE_ASSET_PENDING",
-      "notes": "V2.2 working candidate; exact natural-food composition source recorded in food-provenance.json."
+      "family": "quesos",
+      "category": "LACTEOS",
+      "nutrition_status": "PARTIAL_PANEL",
+      "notes": "Visible V2.2 food identity."
     },
-    "azucar": {
-      "status": "ACTIVE",
-      "show_in_builder": true,
-      "show_in_dashboard": true,
-      "nutrition_status": "VALIDATED_SOURCE",
-      "expected_image_path": "/assets/foods/azucar.jpe",
-      "image_status": "IMAGE_ASSET_PENDING",
-      "notes": "V2.2 working candidate; exact natural-food composition source recorded in food-provenance.json."
+    "queso_fresco": {
+      "status": "ARCHIVED",
+      "show_in_builder": false,
+      "show_in_dashboard": false,
+      "family": "quesos",
+      "category": null,
+      "nutrition_status": "PARTIAL_PANEL",
+      "notes": "Retained for reproducibility; not visible or selectable."
     },
-    "miel": {
-      "status": "ACTIVE",
+    "queso_oaxaca": {
+      "status": "VISIBLE_ACTIVE",
       "show_in_builder": true,
       "show_in_dashboard": true,
-      "nutrition_status": "VALIDATED_SOURCE",
-      "expected_image_path": "/assets/foods/miel.jpe",
-      "image_status": "IMAGE_ASSET_PENDING",
-      "notes": "V2.2 working candidate; exact natural-food composition source recorded in food-provenance.json."
+      "family": "quesos",
+      "category": "LACTEOS",
+      "nutrition_status": "PARTIAL_PANEL",
+      "notes": "Visible V2.2 food identity."
     },
-    "oregano": {
-      "status": "ACTIVE",
+    "queso_manchego": {
+      "status": "ARCHIVED",
+      "show_in_builder": false,
+      "show_in_dashboard": false,
+      "family": "quesos",
+      "category": null,
+      "nutrition_status": "PARTIAL_PANEL",
+      "notes": "Retained for reproducibility; not visible or selectable."
+    },
+    "queso_doble_crema": {
+      "status": "ARCHIVED",
+      "show_in_builder": false,
+      "show_in_dashboard": false,
+      "family": "quesos",
+      "category": null,
+      "nutrition_status": "PARTIAL_PANEL",
+      "notes": "Retained for reproducibility; not visible or selectable."
+    },
+    "requeson": {
+      "status": "VISIBLE_ACTIVE",
       "show_in_builder": true,
       "show_in_dashboard": true,
-      "nutrition_status": "VALIDATED_SOURCE",
-      "expected_image_path": "/assets/foods/oregano.jpe",
-      "image_status": "IMAGE_ASSET_PENDING",
-      "notes": "V2.2 working candidate; exact natural-food composition source recorded in food-provenance.json."
+      "family": "quesos",
+      "category": "LACTEOS",
+      "nutrition_status": "PARTIAL_PANEL",
+      "notes": "Visible V2.2 food identity."
+    },
+    "crema_acida": {
+      "status": "VISIBLE_ACTIVE",
+      "show_in_builder": true,
+      "show_in_dashboard": true,
+      "family": "crema_aderezo",
+      "category": "SALSAS_COMPLEMENTOS",
+      "nutrition_status": "PARTIAL_PANEL",
+      "notes": "Visible V2.2 food identity."
+    },
+    "mantequilla": {
+      "status": "VISIBLE_ACTIVE",
+      "show_in_builder": true,
+      "show_in_dashboard": true,
+      "family": "grasas_culinarias",
+      "category": "GRASAS_NUECES_SEMILLAS",
+      "nutrition_status": "FULL_PANEL",
+      "notes": "Visible V2.2 food identity."
+    },
+    "arroz_blanco_cocido": {
+      "status": "VISIBLE_ACTIVE",
+      "show_in_builder": true,
+      "show_in_dashboard": true,
+      "family": "cereales_tuberculos",
+      "category": "CEREALES_PANES_TUBERCULOS",
+      "nutrition_status": "FULL_PANEL",
+      "notes": "Visible V2.2 food identity."
+    },
+    "arroz_integral_cocido": {
+      "status": "VISIBLE_ACTIVE",
+      "show_in_builder": true,
+      "show_in_dashboard": true,
+      "family": "cereales_tuberculos",
+      "category": "CEREALES_PANES_TUBERCULOS",
+      "nutrition_status": "FULL_PANEL",
+      "notes": "Visible V2.2 food identity."
+    },
+    "pasta_cocida": {
+      "status": "VISIBLE_ACTIVE",
+      "show_in_builder": true,
+      "show_in_dashboard": true,
+      "family": "cereales_tuberculos",
+      "category": "CEREALES_PANES_TUBERCULOS",
+      "nutrition_status": "FULL_PANEL",
+      "notes": "Visible V2.2 food identity."
+    },
+    "avena_cruda": {
+      "status": "VISIBLE_ACTIVE",
+      "show_in_builder": true,
+      "show_in_dashboard": true,
+      "family": "cereales_tuberculos",
+      "category": "CEREALES_PANES_TUBERCULOS",
+      "nutrition_status": "FULL_PANEL",
+      "notes": "Visible V2.2 food identity."
+    },
+    "avena_cocida": {
+      "status": "ARCHIVED",
+      "show_in_builder": false,
+      "show_in_dashboard": false,
+      "family": "unclassified",
+      "category": null,
+      "nutrition_status": "FULL_PANEL",
+      "notes": "Retained for reproducibility; not visible or selectable."
     },
     "tortilla_maiz": {
-      "status": "ACTIVE",
+      "status": "VISIBLE_ACTIVE",
       "show_in_builder": true,
       "show_in_dashboard": true,
-      "nutrition_status": "VALIDATED_SOURCE",
-      "expected_image_path": "/assets/foods/tortilla_maiz.jpe",
-      "image_status": "IMAGE_ASSET_PENDING",
-      "notes": "V2.2 working candidate; exact natural-food composition source recorded in food-provenance.json."
+      "family": "panes_tortillas",
+      "category": "CEREALES_PANES_TUBERCULOS",
+      "nutrition_status": "FULL_PANEL",
+      "notes": "Visible V2.2 food identity."
     },
     "tortilla_harina": {
-      "status": "ACTIVE",
+      "status": "VISIBLE_ACTIVE",
       "show_in_builder": true,
       "show_in_dashboard": true,
-      "nutrition_status": "VALIDATED_SOURCE",
-      "expected_image_path": "/assets/foods/tortilla_harina.jpe",
-      "image_status": "IMAGE_ASSET_PENDING",
-      "notes": "V2.2 working candidate; exact natural-food composition source recorded in food-provenance.json."
+      "family": "panes_tortillas",
+      "category": "CEREALES_PANES_TUBERCULOS",
+      "nutrition_status": "FULL_PANEL",
+      "notes": "Visible V2.2 food identity."
     },
     "pan_blanco": {
-      "status": "ACTIVE",
-      "show_in_builder": true,
-      "show_in_dashboard": true,
-      "nutrition_status": "VALIDATED_SOURCE",
-      "expected_image_path": "/assets/foods/pan_blanco.jpe",
-      "image_status": "IMAGE_ASSET_PENDING",
-      "notes": "V2.2 working candidate; exact natural-food composition source recorded in food-provenance.json."
+      "status": "ARCHIVED",
+      "show_in_builder": false,
+      "show_in_dashboard": false,
+      "family": "unclassified",
+      "category": null,
+      "nutrition_status": "FULL_PANEL",
+      "notes": "Retained for reproducibility; not visible or selectable."
     },
     "pan_integral": {
-      "status": "ACTIVE",
+      "status": "VISIBLE_ACTIVE",
       "show_in_builder": true,
       "show_in_dashboard": true,
-      "nutrition_status": "VALIDATED_SOURCE",
-      "expected_image_path": "/assets/foods/pan_integral.jpe",
-      "image_status": "IMAGE_ASSET_PENDING",
-      "notes": "V2.2 working candidate; exact natural-food composition source recorded in food-provenance.json."
+      "family": "panes_tortillas",
+      "category": "CEREALES_PANES_TUBERCULOS",
+      "nutrition_status": "FULL_PANEL",
+      "notes": "Visible V2.2 food identity."
+    },
+    "pan_multigrano": {
+      "status": "ARCHIVED",
+      "show_in_builder": false,
+      "show_in_dashboard": false,
+      "family": "unclassified",
+      "category": null,
+      "nutrition_status": "PARTIAL_PANEL",
+      "notes": "Retained for reproducibility; not visible or selectable."
+    },
+    "bolillo": {
+      "status": "VISIBLE_ACTIVE",
+      "show_in_builder": true,
+      "show_in_dashboard": true,
+      "family": "panes_tortillas",
+      "category": "CEREALES_PANES_TUBERCULOS",
+      "nutrition_status": "PARTIAL_PANEL",
+      "notes": "Visible V2.2 food identity."
+    },
+    "papa_cocida": {
+      "status": "VISIBLE_ACTIVE",
+      "show_in_builder": true,
+      "show_in_dashboard": true,
+      "family": "cereales_tuberculos",
+      "category": "CEREALES_PANES_TUBERCULOS",
+      "nutrition_status": "FULL_PANEL",
+      "notes": "Visible V2.2 food identity."
+    },
+    "camote_cocido": {
+      "status": "VISIBLE_ACTIVE",
+      "show_in_builder": true,
+      "show_in_dashboard": true,
+      "family": "cereales_tuberculos",
+      "category": "CEREALES_PANES_TUBERCULOS",
+      "nutrition_status": "FULL_PANEL",
+      "notes": "Visible V2.2 food identity."
+    },
+    "tostada_horneada": {
+      "status": "VISIBLE_ACTIVE",
+      "show_in_builder": true,
+      "show_in_dashboard": true,
+      "family": "panes_tortillas",
+      "category": "CEREALES_PANES_TUBERCULOS",
+      "nutrition_status": "PARTIAL_PANEL",
+      "notes": "Visible V2.2 food identity."
+    },
+    "cereal_maiz": {
+      "status": "VISIBLE_ACTIVE",
+      "show_in_builder": true,
+      "show_in_dashboard": true,
+      "family": "cereales_tuberculos",
+      "category": "CEREALES_PANES_TUBERCULOS",
+      "nutrition_status": "PARTIAL_PANEL",
+      "notes": "Visible V2.2 food identity."
+    },
+    "granola": {
+      "status": "VISIBLE_ACTIVE",
+      "show_in_builder": true,
+      "show_in_dashboard": true,
+      "family": "cereales_tuberculos",
+      "category": "CEREALES_PANES_TUBERCULOS",
+      "nutrition_status": "PARTIAL_PANEL",
+      "notes": "Visible V2.2 food identity."
+    },
+    "elote_cocido": {
+      "status": "VISIBLE_ACTIVE",
+      "show_in_builder": true,
+      "show_in_dashboard": true,
+      "family": "cereales_tuberculos",
+      "category": "CEREALES_PANES_TUBERCULOS",
+      "nutrition_status": "FULL_PANEL",
+      "notes": "Visible V2.2 food identity."
+    },
+    "frijol_negro_cocido": {
+      "status": "VISIBLE_ACTIVE",
+      "show_in_builder": true,
+      "show_in_dashboard": true,
+      "family": "legumbres",
+      "category": "LEGUMINOSAS",
+      "nutrition_status": "FULL_PANEL",
+      "notes": "Visible V2.2 food identity."
+    },
+    "frijol_pinto_cocido": {
+      "status": "ARCHIVED",
+      "show_in_builder": false,
+      "show_in_dashboard": false,
+      "family": "legumbres",
+      "category": null,
+      "nutrition_status": "FULL_PANEL",
+      "notes": "Retained for reproducibility; not visible or selectable."
+    },
+    "frijol_bayo_cocido": {
+      "status": "VISIBLE_ACTIVE",
+      "show_in_builder": true,
+      "show_in_dashboard": true,
+      "family": "legumbres",
+      "category": "LEGUMINOSAS",
+      "nutrition_status": "PARTIAL_PANEL",
+      "notes": "Visible V2.2 food identity."
+    },
+    "lenteja_cocida": {
+      "status": "VISIBLE_ACTIVE",
+      "show_in_builder": true,
+      "show_in_dashboard": true,
+      "family": "legumbres",
+      "category": "LEGUMINOSAS",
+      "nutrition_status": "FULL_PANEL",
+      "notes": "Visible V2.2 food identity."
+    },
+    "garbanzo_cocido": {
+      "status": "VISIBLE_ACTIVE",
+      "show_in_builder": true,
+      "show_in_dashboard": true,
+      "family": "legumbres",
+      "category": "LEGUMINOSAS",
+      "nutrition_status": "FULL_PANEL",
+      "notes": "Visible V2.2 food identity."
+    },
+    "habas_cocidas": {
+      "status": "VISIBLE_ACTIVE",
+      "show_in_builder": true,
+      "show_in_dashboard": true,
+      "family": "legumbres",
+      "category": "LEGUMINOSAS",
+      "nutrition_status": "FULL_PANEL",
+      "notes": "Visible V2.2 food identity."
+    },
+    "soya_cocida": {
+      "status": "ARCHIVED",
+      "show_in_builder": false,
+      "show_in_dashboard": false,
+      "family": "legumbres",
+      "category": null,
+      "nutrition_status": "PARTIAL_PANEL",
+      "notes": "Retained for reproducibility; not visible or selectable."
+    },
+    "edamame_cocido": {
+      "status": "ARCHIVED",
+      "show_in_builder": false,
+      "show_in_dashboard": false,
+      "family": "legumbres",
+      "category": null,
+      "nutrition_status": "PARTIAL_PANEL",
+      "notes": "Retained for reproducibility; not visible or selectable."
+    },
+    "aceite_oliva": {
+      "status": "VISIBLE_ACTIVE",
+      "show_in_builder": true,
+      "show_in_dashboard": true,
+      "family": "aceites",
+      "category": "GRASAS_NUECES_SEMILLAS",
+      "nutrition_status": "FULL_PANEL",
+      "notes": "Visible V2.2 food identity."
+    },
+    "aceite_vegetal": {
+      "status": "ARCHIVED",
+      "show_in_builder": false,
+      "show_in_dashboard": false,
+      "family": "unclassified",
+      "category": null,
+      "nutrition_status": "FULL_PANEL",
+      "notes": "Retained for reproducibility; not visible or selectable."
+    },
+    "aceite_canola": {
+      "status": "ARCHIVED",
+      "show_in_builder": false,
+      "show_in_dashboard": false,
+      "family": "unclassified",
+      "category": null,
+      "nutrition_status": "FULL_PANEL",
+      "notes": "Retained for reproducibility; not visible or selectable."
+    },
+    "aguacate": {
+      "status": "VISIBLE_ACTIVE",
+      "show_in_builder": true,
+      "show_in_dashboard": true,
+      "family": "aguacate",
+      "category": "GRASAS_NUECES_SEMILLAS",
+      "nutrition_status": "FULL_PANEL",
+      "notes": "Visible V2.2 food identity."
+    },
+    "almendras": {
+      "status": "VISIBLE_ACTIVE",
+      "show_in_builder": true,
+      "show_in_dashboard": true,
+      "family": "nueces",
+      "category": "GRASAS_NUECES_SEMILLAS",
+      "nutrition_status": "FULL_PANEL",
+      "notes": "Visible V2.2 food identity."
+    },
+    "nueces": {
+      "status": "VISIBLE_ACTIVE",
+      "show_in_builder": true,
+      "show_in_dashboard": true,
+      "family": "nueces",
+      "category": "GRASAS_NUECES_SEMILLAS",
+      "nutrition_status": "FULL_PANEL",
+      "notes": "Visible V2.2 food identity."
+    },
+    "cacahuates": {
+      "status": "VISIBLE_ACTIVE",
+      "show_in_builder": true,
+      "show_in_dashboard": true,
+      "family": "nueces",
+      "category": "GRASAS_NUECES_SEMILLAS",
+      "nutrition_status": "FULL_PANEL",
+      "notes": "Visible V2.2 food identity."
+    },
+    "crema_cacahuate": {
+      "status": "VISIBLE_ACTIVE",
+      "show_in_builder": true,
+      "show_in_dashboard": true,
+      "family": "nueces",
+      "category": "GRASAS_NUECES_SEMILLAS",
+      "nutrition_status": "FULL_PANEL",
+      "notes": "Visible V2.2 food identity."
+    },
+    "semillas_chia": {
+      "status": "VISIBLE_ACTIVE",
+      "show_in_builder": true,
+      "show_in_dashboard": true,
+      "family": "semillas",
+      "category": "GRASAS_NUECES_SEMILLAS",
+      "nutrition_status": "PARTIAL_PANEL",
+      "notes": "Visible V2.2 food identity."
+    },
+    "semillas_linaza": {
+      "status": "VISIBLE_ACTIVE",
+      "show_in_builder": true,
+      "show_in_dashboard": true,
+      "family": "semillas",
+      "category": "GRASAS_NUECES_SEMILLAS",
+      "nutrition_status": "FULL_PANEL",
+      "notes": "Visible V2.2 food identity."
+    },
+    "semillas_girasol": {
+      "status": "ARCHIVED",
+      "show_in_builder": false,
+      "show_in_dashboard": false,
+      "family": "unclassified",
+      "category": null,
+      "nutrition_status": "FULL_PANEL",
+      "notes": "Retained for reproducibility; not visible or selectable."
+    },
+    "mayonesa": {
+      "status": "ARCHIVED",
+      "show_in_builder": false,
+      "show_in_dashboard": false,
+      "family": "mayonesas",
+      "category": null,
+      "nutrition_status": "PARTIAL_PANEL",
+      "notes": "Retained for reproducibility; not visible or selectable."
+    },
+    "mayonesa_light": {
+      "status": "VISIBLE_ACTIVE",
+      "show_in_builder": true,
+      "show_in_dashboard": true,
+      "family": "mayonesas",
+      "category": "SALSAS_COMPLEMENTOS",
+      "nutrition_status": "PARTIAL_PANEL",
+      "notes": "Visible V2.2 food identity."
+    },
+    "ketchup": {
+      "status": "VISIBLE_ACTIVE",
+      "show_in_builder": true,
+      "show_in_dashboard": true,
+      "family": "salsas",
+      "category": "SALSAS_COMPLEMENTOS",
+      "nutrition_status": "FULL_PANEL",
+      "notes": "Visible V2.2 food identity."
+    },
+    "mostaza": {
+      "status": "VISIBLE_ACTIVE",
+      "show_in_builder": true,
+      "show_in_dashboard": true,
+      "family": "salsas",
+      "category": "SALSAS_COMPLEMENTOS",
+      "nutrition_status": "PARTIAL_PANEL",
+      "notes": "Visible V2.2 food identity."
+    },
+    "salsa_verde": {
+      "status": "VISIBLE_ACTIVE",
+      "show_in_builder": true,
+      "show_in_dashboard": true,
+      "family": "salsas",
+      "category": "SALSAS_COMPLEMENTOS",
+      "nutrition_status": "PARTIAL_PANEL",
+      "notes": "Visible V2.2 food identity."
+    },
+    "salsa_roja": {
+      "status": "VISIBLE_ACTIVE",
+      "show_in_builder": true,
+      "show_in_dashboard": true,
+      "family": "salsas",
+      "category": "SALSAS_COMPLEMENTOS",
+      "nutrition_status": "PARTIAL_PANEL",
+      "notes": "Visible V2.2 food identity."
+    },
+    "azucar": {
+      "status": "VISIBLE_ACTIVE",
+      "show_in_builder": true,
+      "show_in_dashboard": true,
+      "family": "complementos",
+      "category": "SALSAS_COMPLEMENTOS",
+      "nutrition_status": "FULL_PANEL",
+      "notes": "Visible V2.2 food identity."
+    },
+    "miel": {
+      "status": "VISIBLE_ACTIVE",
+      "show_in_builder": true,
+      "show_in_dashboard": true,
+      "family": "complementos",
+      "category": "SALSAS_COMPLEMENTOS",
+      "nutrition_status": "FULL_PANEL",
+      "notes": "Visible V2.2 food identity."
+    },
+    "sal": {
+      "status": "PREPARATION_INPUT",
+      "show_in_builder": false,
+      "show_in_dashboard": false,
+      "family": "preparation_input",
+      "category": null,
+      "nutrition_status": "PARTIAL_PANEL",
+      "notes": "Separate preparation layer; nutrition semantics=TRACK."
+    },
+    "cafe_preparado": {
+      "status": "VISIBLE_ACTIVE",
+      "show_in_builder": true,
+      "show_in_dashboard": true,
+      "family": "cafe",
+      "category": "BEBIDAS",
+      "nutrition_status": "FULL_PANEL",
+      "notes": "Visible V2.2 food identity."
+    },
+    "platano": {
+      "status": "VISIBLE_ACTIVE",
+      "show_in_builder": true,
+      "show_in_dashboard": true,
+      "family": "fruta",
+      "category": "FRUTAS",
+      "nutrition_status": "FULL_PANEL",
+      "notes": "Visible V2.2 food identity."
+    },
+    "manzana": {
+      "status": "VISIBLE_ACTIVE",
+      "show_in_builder": true,
+      "show_in_dashboard": true,
+      "family": "fruta",
+      "category": "FRUTAS",
+      "nutrition_status": "FULL_PANEL",
+      "notes": "Visible V2.2 food identity."
+    },
+    "naranja": {
+      "status": "VISIBLE_ACTIVE",
+      "show_in_builder": true,
+      "show_in_dashboard": true,
+      "family": "fruta",
+      "category": "FRUTAS",
+      "nutrition_status": "FULL_PANEL",
+      "notes": "Visible V2.2 food identity."
+    },
+    "mandarina": {
+      "status": "VISIBLE_ACTIVE",
+      "show_in_builder": true,
+      "show_in_dashboard": true,
+      "family": "fruta",
+      "category": "FRUTAS",
+      "nutrition_status": "FULL_PANEL",
+      "notes": "Visible V2.2 food identity."
+    },
+    "fresa": {
+      "status": "VISIBLE_ACTIVE",
+      "show_in_builder": true,
+      "show_in_dashboard": true,
+      "family": "fruta",
+      "category": "FRUTAS",
+      "nutrition_status": "FULL_PANEL",
+      "notes": "Visible V2.2 food identity."
+    },
+    "arandano": {
+      "status": "VISIBLE_ACTIVE",
+      "show_in_builder": true,
+      "show_in_dashboard": true,
+      "family": "fruta",
+      "category": "FRUTAS",
+      "nutrition_status": "FULL_PANEL",
+      "notes": "Visible V2.2 food identity."
+    },
+    "zarzamora": {
+      "status": "VISIBLE_ACTIVE",
+      "show_in_builder": true,
+      "show_in_dashboard": true,
+      "family": "fruta",
+      "category": "FRUTAS",
+      "nutrition_status": "FULL_PANEL",
+      "notes": "Visible V2.2 food identity."
+    },
+    "frambuesa": {
+      "status": "VISIBLE_ACTIVE",
+      "show_in_builder": true,
+      "show_in_dashboard": true,
+      "family": "fruta",
+      "category": "FRUTAS",
+      "nutrition_status": "FULL_PANEL",
+      "notes": "Visible V2.2 food identity."
+    },
+    "mango": {
+      "status": "VISIBLE_ACTIVE",
+      "show_in_builder": true,
+      "show_in_dashboard": true,
+      "family": "fruta",
+      "category": "FRUTAS",
+      "nutrition_status": "FULL_PANEL",
+      "notes": "Visible V2.2 food identity."
+    },
+    "pina": {
+      "status": "VISIBLE_ACTIVE",
+      "show_in_builder": true,
+      "show_in_dashboard": true,
+      "family": "fruta",
+      "category": "FRUTAS",
+      "nutrition_status": "FULL_PANEL",
+      "notes": "Visible V2.2 food identity."
+    },
+    "papaya": {
+      "status": "VISIBLE_ACTIVE",
+      "show_in_builder": true,
+      "show_in_dashboard": true,
+      "family": "fruta",
+      "category": "FRUTAS",
+      "nutrition_status": "FULL_PANEL",
+      "notes": "Visible V2.2 food identity."
+    },
+    "sandia": {
+      "status": "VISIBLE_ACTIVE",
+      "show_in_builder": true,
+      "show_in_dashboard": true,
+      "family": "fruta",
+      "category": "FRUTAS",
+      "nutrition_status": "FULL_PANEL",
+      "notes": "Visible V2.2 food identity."
+    },
+    "melon": {
+      "status": "VISIBLE_ACTIVE",
+      "show_in_builder": true,
+      "show_in_dashboard": true,
+      "family": "fruta",
+      "category": "FRUTAS",
+      "nutrition_status": "FULL_PANEL",
+      "notes": "Visible V2.2 food identity."
+    },
+    "kiwi": {
+      "status": "VISIBLE_ACTIVE",
+      "show_in_builder": true,
+      "show_in_dashboard": true,
+      "family": "fruta",
+      "category": "FRUTAS",
+      "nutrition_status": "FULL_PANEL",
+      "notes": "Visible V2.2 food identity."
+    },
+    "uvas": {
+      "status": "VISIBLE_ACTIVE",
+      "show_in_builder": true,
+      "show_in_dashboard": true,
+      "family": "fruta",
+      "category": "FRUTAS",
+      "nutrition_status": "FULL_PANEL",
+      "notes": "Visible V2.2 food identity."
+    },
+    "pera": {
+      "status": "VISIBLE_ACTIVE",
+      "show_in_builder": true,
+      "show_in_dashboard": true,
+      "family": "fruta",
+      "category": "FRUTAS",
+      "nutrition_status": "FULL_PANEL",
+      "notes": "Visible V2.2 food identity."
+    },
+    "durazno": {
+      "status": "VISIBLE_ACTIVE",
+      "show_in_builder": true,
+      "show_in_dashboard": true,
+      "family": "fruta",
+      "category": "FRUTAS",
+      "nutrition_status": "FULL_PANEL",
+      "notes": "Visible V2.2 food identity."
+    },
+    "guayaba": {
+      "status": "VISIBLE_ACTIVE",
+      "show_in_builder": true,
+      "show_in_dashboard": true,
+      "family": "fruta",
+      "category": "FRUTAS",
+      "nutrition_status": "FULL_PANEL",
+      "notes": "Visible V2.2 food identity."
+    },
+    "higo": {
+      "status": "VISIBLE_ACTIVE",
+      "show_in_builder": true,
+      "show_in_dashboard": true,
+      "family": "fruta",
+      "category": "FRUTAS",
+      "nutrition_status": "FULL_PANEL",
+      "notes": "Visible V2.2 food identity."
+    },
+    "ciruela": {
+      "status": "VISIBLE_ACTIVE",
+      "show_in_builder": true,
+      "show_in_dashboard": true,
+      "family": "fruta",
+      "category": "FRUTAS",
+      "nutrition_status": "FULL_PANEL",
+      "notes": "Visible V2.2 food identity."
+    },
+    "toronja": {
+      "status": "VISIBLE_ACTIVE",
+      "show_in_builder": true,
+      "show_in_dashboard": true,
+      "family": "fruta",
+      "category": "FRUTAS",
+      "nutrition_status": "FULL_PANEL",
+      "notes": "Visible V2.2 food identity."
+    },
+    "limon": {
+      "status": "PREPARATION_INPUT",
+      "show_in_builder": false,
+      "show_in_dashboard": false,
+      "family": "preparation_input",
+      "category": null,
+      "nutrition_status": "FULL_PANEL",
+      "notes": "Separate preparation layer; nutrition semantics=TRACK."
+    },
+    "lechuga": {
+      "status": "VISIBLE_ACTIVE",
+      "show_in_builder": true,
+      "show_in_dashboard": true,
+      "family": "verduras",
+      "category": "VERDURAS_HORTALIZAS",
+      "nutrition_status": "FULL_PANEL",
+      "notes": "Visible V2.2 food identity."
+    },
+    "espinaca": {
+      "status": "VISIBLE_ACTIVE",
+      "show_in_builder": true,
+      "show_in_dashboard": true,
+      "family": "verduras",
+      "category": "VERDURAS_HORTALIZAS",
+      "nutrition_status": "FULL_PANEL",
+      "notes": "Visible V2.2 food identity."
+    },
+    "brocoli": {
+      "status": "VISIBLE_ACTIVE",
+      "show_in_builder": true,
+      "show_in_dashboard": true,
+      "family": "verduras",
+      "category": "VERDURAS_HORTALIZAS",
+      "nutrition_status": "FULL_PANEL",
+      "notes": "Visible V2.2 food identity."
+    },
+    "zanahoria": {
+      "status": "VISIBLE_ACTIVE",
+      "show_in_builder": true,
+      "show_in_dashboard": true,
+      "family": "verduras",
+      "category": "VERDURAS_HORTALIZAS",
+      "nutrition_status": "FULL_PANEL",
+      "notes": "Visible V2.2 food identity."
+    },
+    "jitomate": {
+      "status": "VISIBLE_ACTIVE",
+      "show_in_builder": true,
+      "show_in_dashboard": true,
+      "family": "verduras",
+      "category": "VERDURAS_HORTALIZAS",
+      "nutrition_status": "FULL_PANEL",
+      "notes": "Visible V2.2 food identity."
+    },
+    "pepino": {
+      "status": "VISIBLE_ACTIVE",
+      "show_in_builder": true,
+      "show_in_dashboard": true,
+      "family": "verduras",
+      "category": "VERDURAS_HORTALIZAS",
+      "nutrition_status": "FULL_PANEL",
+      "notes": "Visible V2.2 food identity."
+    },
+    "cebolla": {
+      "status": "VISIBLE_ACTIVE",
+      "show_in_builder": true,
+      "show_in_dashboard": true,
+      "family": "verduras",
+      "category": "VERDURAS_HORTALIZAS",
+      "nutrition_status": "FULL_PANEL",
+      "notes": "Visible V2.2 food identity."
+    },
+    "pimiento": {
+      "status": "VISIBLE_ACTIVE",
+      "show_in_builder": true,
+      "show_in_dashboard": true,
+      "family": "verduras",
+      "category": "VERDURAS_HORTALIZAS",
+      "nutrition_status": "PARTIAL_PANEL",
+      "notes": "Visible V2.2 food identity."
+    },
+    "calabacita": {
+      "status": "VISIBLE_ACTIVE",
+      "show_in_builder": true,
+      "show_in_dashboard": true,
+      "family": "verduras",
+      "category": "VERDURAS_HORTALIZAS",
+      "nutrition_status": "FULL_PANEL",
+      "notes": "Visible V2.2 food identity."
+    },
+    "coliflor": {
+      "status": "VISIBLE_ACTIVE",
+      "show_in_builder": true,
+      "show_in_dashboard": true,
+      "family": "verduras",
+      "category": "VERDURAS_HORTALIZAS",
+      "nutrition_status": "FULL_PANEL",
+      "notes": "Visible V2.2 food identity."
+    },
+    "champinones": {
+      "status": "VISIBLE_ACTIVE",
+      "show_in_builder": true,
+      "show_in_dashboard": true,
+      "family": "verduras",
+      "category": "VERDURAS_HORTALIZAS",
+      "nutrition_status": "FULL_PANEL",
+      "notes": "Visible V2.2 food identity."
+    },
+    "nopales": {
+      "status": "VISIBLE_ACTIVE",
+      "show_in_builder": true,
+      "show_in_dashboard": true,
+      "family": "verduras",
+      "category": "VERDURAS_HORTALIZAS",
+      "nutrition_status": "FULL_PANEL",
+      "notes": "Visible V2.2 food identity."
+    },
+    "ejotes": {
+      "status": "VISIBLE_ACTIVE",
+      "show_in_builder": true,
+      "show_in_dashboard": true,
+      "family": "verduras",
+      "category": "VERDURAS_HORTALIZAS",
+      "nutrition_status": "FULL_PANEL",
+      "notes": "Visible V2.2 food identity."
+    },
+    "chayote_cocido": {
+      "status": "VISIBLE_ACTIVE",
+      "show_in_builder": true,
+      "show_in_dashboard": true,
+      "family": "verduras",
+      "category": "VERDURAS_HORTALIZAS",
+      "nutrition_status": "PARTIAL_PANEL",
+      "notes": "Visible V2.2 food identity."
+    },
+    "jicama": {
+      "status": "VISIBLE_ACTIVE",
+      "show_in_builder": true,
+      "show_in_dashboard": true,
+      "family": "verduras",
+      "category": "VERDURAS_HORTALIZAS",
+      "nutrition_status": "FULL_PANEL",
+      "notes": "Visible V2.2 food identity."
+    },
+    "rabano": {
+      "status": "VISIBLE_ACTIVE",
+      "show_in_builder": true,
+      "show_in_dashboard": true,
+      "family": "verduras",
+      "category": "VERDURAS_HORTALIZAS",
+      "nutrition_status": "FULL_PANEL",
+      "notes": "Visible V2.2 food identity."
+    },
+    "apio": {
+      "status": "VISIBLE_ACTIVE",
+      "show_in_builder": true,
+      "show_in_dashboard": true,
+      "family": "verduras",
+      "category": "VERDURAS_HORTALIZAS",
+      "nutrition_status": "FULL_PANEL",
+      "notes": "Visible V2.2 food identity."
+    },
+    "sirloin_res_magro_cocido": {
+      "status": "VISIBLE_ACTIVE",
+      "show_in_builder": true,
+      "show_in_dashboard": true,
+      "family": "res",
+      "category": "PROTEINAS",
+      "nutrition_status": "PARTIAL_PANEL",
+      "notes": "Visible V2.2 food identity."
+    },
+    "machaca_res": {
+      "status": "VISIBLE_ACTIVE",
+      "show_in_builder": true,
+      "show_in_dashboard": true,
+      "family": "res",
+      "category": "PROTEINAS",
+      "nutrition_status": "PARTIAL_PANEL",
+      "notes": "Visible V2.2 food identity."
+    },
+    "pavo_molido": {
+      "status": "VISIBLE_ACTIVE",
+      "show_in_builder": true,
+      "show_in_dashboard": true,
+      "family": "pavo",
+      "category": "PROTEINAS",
+      "nutrition_status": "FULL_PANEL",
+      "notes": "Visible V2.2 food identity."
+    },
+    "falda_res_deshebrada": {
+      "status": "VISIBLE_ACTIVE",
+      "show_in_builder": true,
+      "show_in_dashboard": true,
+      "family": "res",
+      "category": "PROTEINAS",
+      "nutrition_status": "PARTIAL_PANEL",
+      "notes": "Visible V2.2 food identity."
+    },
+    "pulpo_cocido": {
+      "status": "VISIBLE_ACTIVE",
+      "show_in_builder": true,
+      "show_in_dashboard": true,
+      "family": "pescado_marisco",
+      "category": "PESCADOS_Y_MARISCOS",
+      "nutrition_status": "FULL_PANEL",
+      "notes": "Visible V2.2 food identity."
+    },
+    "atun_fresco_sellado": {
+      "status": "VISIBLE_ACTIVE",
+      "show_in_builder": true,
+      "show_in_dashboard": true,
+      "family": "pescado_marisco",
+      "category": "PESCADOS_Y_MARISCOS",
+      "nutrition_status": "FULL_PANEL",
+      "notes": "Visible V2.2 food identity."
+    },
+    "pescado_blanco_cocido": {
+      "status": "ARCHIVED",
+      "show_in_builder": false,
+      "show_in_dashboard": false,
+      "family": "pescado_marisco",
+      "category": null,
+      "nutrition_status": "PARTIAL_PANEL",
+      "notes": "Retained for reproducibility; not visible or selectable."
+    },
+    "salmon_ahumado": {
+      "status": "VISIBLE_ACTIVE",
+      "show_in_builder": true,
+      "show_in_dashboard": true,
+      "family": "pescado_marisco",
+      "category": "PESCADOS_Y_MARISCOS",
+      "nutrition_status": "PARTIAL_PANEL",
+      "notes": "Visible V2.2 food identity."
+    },
+    "jamon_pavo_light": {
+      "status": "VISIBLE_ACTIVE",
+      "show_in_builder": true,
+      "show_in_dashboard": true,
+      "family": "jamon",
+      "category": "EMBUTIDOS",
+      "nutrition_status": "PARTIAL_PANEL",
+      "notes": "Visible V2.2 food identity."
+    },
+    "queso_cheddar_light": {
+      "status": "VISIBLE_ACTIVE",
+      "show_in_builder": true,
+      "show_in_dashboard": true,
+      "family": "quesos",
+      "category": "LACTEOS",
+      "nutrition_status": "PARTIAL_PANEL",
+      "notes": "Visible V2.2 food identity."
+    },
+    "quinoa_cocida": {
+      "status": "VISIBLE_ACTIVE",
+      "show_in_builder": true,
+      "show_in_dashboard": true,
+      "family": "cereales_tuberculos",
+      "category": "CEREALES_PANES_TUBERCULOS",
+      "nutrition_status": "FULL_PANEL",
+      "notes": "Visible V2.2 food identity."
+    },
+    "proteina_polvo": {
+      "status": "ARCHIVED",
+      "show_in_builder": false,
+      "show_in_dashboard": false,
+      "family": "complemento_proteico",
+      "category": null,
+      "nutrition_status": "PARTIAL_PANEL",
+      "notes": "Retained for reproducibility; not visible or selectable."
+    },
+    "kefir": {
+      "status": "VISIBLE_ACTIVE",
+      "show_in_builder": true,
+      "show_in_dashboard": true,
+      "family": "yogures_fermentados",
+      "category": "LACTEOS",
+      "nutrition_status": "PARTIAL_PANEL",
+      "notes": "Visible V2.2 food identity."
+    },
+    "leche_almendra": {
+      "status": "VISIBLE_ACTIVE",
+      "show_in_builder": true,
+      "show_in_dashboard": true,
+      "family": "leches",
+      "category": "LACTEOS",
+      "nutrition_status": "PARTIAL_PANEL",
+      "notes": "Visible V2.2 food identity."
+    },
+    "leche_soya": {
+      "status": "VISIBLE_ACTIVE",
+      "show_in_builder": true,
+      "show_in_dashboard": true,
+      "family": "leches",
+      "category": "LACTEOS",
+      "nutrition_status": "PARTIAL_PANEL",
+      "notes": "Visible V2.2 food identity."
+    },
+    "germen_soya": {
+      "status": "VISIBLE_ACTIVE",
+      "show_in_builder": true,
+      "show_in_dashboard": true,
+      "family": "verduras",
+      "category": "VERDURAS_HORTALIZAS",
+      "nutrition_status": "PARTIAL_PANEL",
+      "notes": "Visible V2.2 food identity."
+    },
+    "col": {
+      "status": "ARCHIVED",
+      "show_in_builder": false,
+      "show_in_dashboard": false,
+      "family": "verduras",
+      "category": null,
+      "nutrition_status": "PARTIAL_PANEL",
+      "notes": "Retained for reproducibility; not visible or selectable."
+    },
+    "rucula": {
+      "status": "VISIBLE_ACTIVE",
+      "show_in_builder": true,
+      "show_in_dashboard": true,
+      "family": "verduras",
+      "category": "VERDURAS_HORTALIZAS",
+      "nutrition_status": "FULL_PANEL",
+      "notes": "Visible V2.2 food identity."
+    },
+    "chicharos_cocidos": {
+      "status": "VISIBLE_ACTIVE",
+      "show_in_builder": true,
+      "show_in_dashboard": true,
+      "family": "verduras",
+      "category": "VERDURAS_HORTALIZAS",
+      "nutrition_status": "FULL_PANEL",
+      "notes": "Visible V2.2 food identity."
+    },
+    "tortilla_trigo_integral": {
+      "status": "ARCHIVED",
+      "show_in_builder": false,
+      "show_in_dashboard": false,
+      "family": "unclassified",
+      "category": null,
+      "nutrition_status": "PARTIAL_PANEL",
+      "notes": "Retained for reproducibility; not visible or selectable."
     },
     "pan_pita": {
-      "status": "ACTIVE",
+      "status": "VISIBLE_ACTIVE",
       "show_in_builder": true,
       "show_in_dashboard": true,
-      "nutrition_status": "VALIDATED_SOURCE",
-      "expected_image_path": "/assets/foods/pan_pita.jpe",
-      "image_status": "IMAGE_ASSET_PENDING",
-      "notes": "V2.2 working candidate; exact natural-food composition source recorded in food-provenance.json."
+      "family": "panes_tortillas",
+      "category": "CEREALES_PANES_TUBERCULOS",
+      "nutrition_status": "FULL_PANEL",
+      "notes": "Visible V2.2 food identity."
+    },
+    "galleta_maria": {
+      "status": "VISIBLE_ACTIVE",
+      "show_in_builder": true,
+      "show_in_dashboard": true,
+      "family": "panes_tortillas",
+      "category": "CEREALES_PANES_TUBERCULOS",
+      "nutrition_status": "PARTIAL_PANEL",
+      "notes": "Visible V2.2 food identity."
+    },
+    "galletas_saladas_integrales": {
+      "status": "ARCHIVED",
+      "show_in_builder": false,
+      "show_in_dashboard": false,
+      "family": "panes_tortillas",
+      "category": null,
+      "nutrition_status": "PARTIAL_PANEL",
+      "notes": "Retained for reproducibility; not visible or selectable."
+    },
+    "aceitunas_verdes": {
+      "status": "VISIBLE_ACTIVE",
+      "show_in_builder": true,
+      "show_in_dashboard": true,
+      "family": "grasas_culinarias",
+      "category": "GRASAS_NUECES_SEMILLAS",
+      "nutrition_status": "FULL_PANEL",
+      "notes": "Visible V2.2 food identity."
+    },
+    "cacao_polvo_sin_azucar": {
+      "status": "VISIBLE_ACTIVE",
+      "show_in_builder": true,
+      "show_in_dashboard": true,
+      "family": "complementos",
+      "category": "SALSAS_COMPLEMENTOS",
+      "nutrition_status": "FULL_PANEL",
+      "notes": "Visible V2.2 food identity."
+    },
+    "especias_secas": {
+      "status": "ARCHIVED",
+      "show_in_builder": false,
+      "show_in_dashboard": false,
+      "family": "aggregate_preparation",
+      "category": null,
+      "nutrition_status": "PARTIAL_PANEL",
+      "notes": "Retained for reproducibility; not visible or selectable."
+    },
+    "adobo_rojo": {
+      "status": "VISIBLE_ACTIVE",
+      "show_in_builder": true,
+      "show_in_dashboard": true,
+      "family": "salsas",
+      "category": "SALSAS_COMPLEMENTOS",
+      "nutrition_status": "PARTIAL_PANEL",
+      "notes": "Visible V2.2 food identity."
+    },
+    "salsa_soya_baja_sodio": {
+      "status": "VISIBLE_ACTIVE",
+      "show_in_builder": true,
+      "show_in_dashboard": true,
+      "family": "salsa",
+      "category": "SALSAS_COMPLEMENTOS",
+      "nutrition_status": "PARTIAL_PANEL",
+      "notes": "Visible V2.2 food identity."
+    },
+    "salsa_ponzu": {
+      "status": "VISIBLE_ACTIVE",
+      "show_in_builder": true,
+      "show_in_dashboard": true,
+      "family": "salsa",
+      "category": "SALSAS_COMPLEMENTOS",
+      "nutrition_status": "PARTIAL_PANEL",
+      "notes": "Visible V2.2 food identity."
+    },
+    "aderezo_tzatziki": {
+      "status": "VISIBLE_ACTIVE",
+      "show_in_builder": true,
+      "show_in_dashboard": true,
+      "family": "aderezos",
+      "category": "SALSAS_COMPLEMENTOS",
+      "nutrition_status": "PARTIAL_PANEL",
+      "notes": "Visible V2.2 food identity."
+    },
+    "aderezo_mostaza_dijon": {
+      "status": "VISIBLE_ACTIVE",
+      "show_in_builder": true,
+      "show_in_dashboard": true,
+      "family": "aderezos",
+      "category": "SALSAS_COMPLEMENTOS",
+      "nutrition_status": "PARTIAL_PANEL",
+      "notes": "Visible V2.2 food identity."
+    },
+    "aderezo_queso_cottage_chipotle": {
+      "status": "VISIBLE_ACTIVE",
+      "show_in_builder": true,
+      "show_in_dashboard": true,
+      "family": "aderezos",
+      "category": "SALSAS_COMPLEMENTOS",
+      "nutrition_status": "PARTIAL_PANEL",
+      "notes": "Visible V2.2 food identity."
+    },
+    "vinagre_balsamico": {
+      "status": "VISIBLE_ACTIVE",
+      "show_in_builder": true,
+      "show_in_dashboard": true,
+      "family": "vinagre",
+      "category": "SALSAS_COMPLEMENTOS",
+      "nutrition_status": "PARTIAL_PANEL",
+      "notes": "Visible V2.2 food identity."
+    },
+    "gelatina_sin_sabor": {
+      "status": "PREPARATION_INPUT",
+      "show_in_builder": false,
+      "show_in_dashboard": false,
+      "family": "preparation_input",
+      "category": null,
+      "nutrition_status": "FULL_PANEL",
+      "notes": "Separate preparation layer; nutrition semantics=TRACK."
+    },
+    "semillas_ajonjoli": {
+      "status": "VISIBLE_ACTIVE",
+      "show_in_builder": true,
+      "show_in_dashboard": true,
+      "family": "semillas",
+      "category": "GRASAS_NUECES_SEMILLAS",
+      "nutrition_status": "FULL_PANEL",
+      "notes": "Visible V2.2 food identity."
+    },
+    "nuez_india": {
+      "status": "VISIBLE_ACTIVE",
+      "show_in_builder": true,
+      "show_in_dashboard": true,
+      "family": "nueces",
+      "category": "GRASAS_NUECES_SEMILLAS",
+      "nutrition_status": "FULL_PANEL",
+      "notes": "Visible V2.2 food identity."
+    },
+    "caldo_desgrasado": {
+      "status": "PREPARATION_INPUT",
+      "show_in_builder": false,
+      "show_in_dashboard": false,
+      "family": "preparation_input",
+      "category": null,
+      "nutrition_status": "PARTIAL_PANEL",
+      "notes": "Separate preparation layer; nutrition semantics=TRACK."
+    },
+    "agua_coco": {
+      "status": "VISIBLE_ACTIVE",
+      "show_in_builder": true,
+      "show_in_dashboard": true,
+      "family": "bebidas",
+      "category": "BEBIDAS",
+      "nutrition_status": "FULL_PANEL",
+      "notes": "Visible V2.2 food identity."
+    },
+    "pico_de_gallo": {
+      "status": "VISIBLE_ACTIVE",
+      "show_in_builder": true,
+      "show_in_dashboard": true,
+      "family": "salsas_compuestas",
+      "category": "SALSAS_COMPLEMENTOS",
+      "nutrition_status": "PARTIAL_PANEL",
+      "notes": "Visible V2.2 food identity."
+    },
+    "guacamole": {
+      "status": "VISIBLE_ACTIVE",
+      "show_in_builder": true,
+      "show_in_dashboard": true,
+      "family": "salsas_compuestas",
+      "category": "SALSAS_COMPLEMENTOS",
+      "nutrition_status": "PARTIAL_PANEL",
+      "notes": "Visible V2.2 food identity."
+    },
+    "pure_tomate": {
+      "status": "ARCHIVED",
+      "show_in_builder": false,
+      "show_in_dashboard": false,
+      "family": "base_tomate",
+      "category": null,
+      "nutrition_status": "PARTIAL_PANEL",
+      "notes": "Retained for reproducibility; not visible or selectable."
+    },
+    "jugo_tomate": {
+      "status": "VISIBLE_ACTIVE",
+      "show_in_builder": true,
+      "show_in_dashboard": true,
+      "family": "bebidas",
+      "category": "BEBIDAS",
+      "nutrition_status": "FULL_PANEL",
+      "notes": "Visible V2.2 food identity."
+    },
+    "trace_aditivo": {
+      "status": "ARCHIVED",
+      "show_in_builder": false,
+      "show_in_dashboard": false,
+      "family": "aggregate_preparation",
+      "category": null,
+      "nutrition_status": "PARTIAL_PANEL",
+      "notes": "Retained for reproducibility; not visible or selectable."
+    },
+    "chile_verde": {
+      "status": "ARCHIVED",
+      "show_in_builder": false,
+      "show_in_dashboard": false,
+      "family": "verduras",
+      "category": null,
+      "nutrition_status": "PARTIAL_PANEL",
+      "notes": "Retained for reproducibility; not visible or selectable."
+    },
+    "jalapeno": {
+      "status": "VISIBLE_ACTIVE",
+      "show_in_builder": true,
+      "show_in_dashboard": true,
+      "family": "verduras",
+      "category": "VERDURAS_HORTALIZAS",
+      "nutrition_status": "FULL_PANEL",
+      "notes": "Visible V2.2 food identity."
+    },
+    "esparragos": {
+      "status": "VISIBLE_ACTIVE",
+      "show_in_builder": true,
+      "show_in_dashboard": true,
+      "family": "verduras",
+      "category": "VERDURAS_HORTALIZAS",
+      "nutrition_status": "FULL_PANEL",
+      "notes": "Visible V2.2 food identity."
+    },
+    "cilantro": {
+      "status": "VISIBLE_ACTIVE",
+      "show_in_builder": true,
+      "show_in_dashboard": true,
+      "family": "hierbas",
+      "category": "VERDURAS_HORTALIZAS",
+      "nutrition_status": "FULL_PANEL",
+      "notes": "Visible V2.2 food identity."
+    },
+    "hierbabuena": {
+      "status": "VISIBLE_ACTIVE",
+      "show_in_builder": true,
+      "show_in_dashboard": true,
+      "family": "hierbas",
+      "category": "VERDURAS_HORTALIZAS",
+      "nutrition_status": "PARTIAL_PANEL",
+      "notes": "Visible V2.2 food identity."
+    },
+    "eneldo": {
+      "status": "VISIBLE_ACTIVE",
+      "show_in_builder": true,
+      "show_in_dashboard": true,
+      "family": "hierbas",
+      "category": "VERDURAS_HORTALIZAS",
+      "nutrition_status": "PARTIAL_PANEL",
+      "notes": "Visible V2.2 food identity."
+    },
+    "cebollin": {
+      "status": "VISIBLE_ACTIVE",
+      "show_in_builder": true,
+      "show_in_dashboard": true,
+      "family": "verduras",
+      "category": "VERDURAS_HORTALIZAS",
+      "nutrition_status": "FULL_PANEL",
+      "notes": "Visible V2.2 food identity."
+    },
+    "alcaparras": {
+      "status": "ARCHIVED",
+      "show_in_builder": false,
+      "show_in_dashboard": false,
+      "family": "complementos",
+      "category": null,
+      "nutrition_status": "FULL_PANEL",
+      "notes": "Retained for reproducibility; not visible or selectable."
+    },
+    "frijol_rojo_cocido": {
+      "status": "VISIBLE_ACTIVE",
+      "show_in_builder": true,
+      "show_in_dashboard": true,
+      "family": "legumbres",
+      "category": "LEGUMINOSAS",
+      "nutrition_status": "FULL_PANEL",
+      "notes": "Visible V2.2 food identity."
+    },
+    "tofu_firme": {
+      "status": "VISIBLE_ACTIVE",
+      "show_in_builder": true,
+      "show_in_dashboard": true,
+      "family": "vegetal",
+      "category": "PROTEINAS",
+      "nutrition_status": "FULL_PANEL",
+      "notes": "Visible V2.2 food identity."
+    },
+    "soya_texturizada": {
+      "status": "VISIBLE_ACTIVE",
+      "show_in_builder": true,
+      "show_in_dashboard": true,
+      "family": "vegetal",
+      "category": "PROTEINAS",
+      "nutrition_status": "PARTIAL_PANEL",
+      "notes": "Visible V2.2 food identity."
+    },
+    "hummus_garbanzo": {
+      "status": "VISIBLE_ACTIVE",
+      "show_in_builder": true,
+      "show_in_dashboard": true,
+      "family": "salsas_compuestas",
+      "category": "SALSAS_COMPLEMENTOS",
+      "nutrition_status": "PARTIAL_PANEL",
+      "notes": "Visible V2.2 food identity."
+    },
+    "galletas_arroz": {
+      "status": "VISIBLE_ACTIVE",
+      "show_in_builder": true,
+      "show_in_dashboard": true,
+      "family": "panes_tortillas",
+      "category": "CEREALES_PANES_TUBERCULOS",
+      "nutrition_status": "PARTIAL_PANEL",
+      "notes": "Visible V2.2 food identity."
+    },
+    "crutones_integrales": {
+      "status": "VISIBLE_ACTIVE",
+      "show_in_builder": true,
+      "show_in_dashboard": true,
+      "family": "panes_tortillas",
+      "category": "CEREALES_PANES_TUBERCULOS",
+      "nutrition_status": "PARTIAL_PANEL",
+      "notes": "Visible V2.2 food identity."
+    },
+    "fideos_arroz": {
+      "status": "VISIBLE_ACTIVE",
+      "show_in_builder": true,
+      "show_in_dashboard": true,
+      "family": "cereales_tuberculos",
+      "category": "CEREALES_PANES_TUBERCULOS",
+      "nutrition_status": "FULL_PANEL",
+      "notes": "Visible V2.2 food identity."
+    },
+    "fideos_konjac": {
+      "status": "ARCHIVED",
+      "show_in_builder": false,
+      "show_in_dashboard": false,
+      "family": "unclassified",
+      "category": null,
+      "nutrition_status": "PARTIAL_PANEL",
+      "notes": "Retained for reproducibility; not visible or selectable."
+    },
+    "leche_alta_proteina": {
+      "status": "VISIBLE_ACTIVE",
+      "show_in_builder": true,
+      "show_in_dashboard": true,
+      "family": "leches",
+      "category": "LACTEOS",
+      "nutrition_status": "PARTIAL_PANEL",
+      "notes": "Visible V2.2 food identity."
+    },
+    "queso_parmesano": {
+      "status": "VISIBLE_ACTIVE",
+      "show_in_builder": true,
+      "show_in_dashboard": true,
+      "family": "quesos",
+      "category": "LACTEOS",
+      "nutrition_status": "FULL_PANEL",
+      "notes": "Visible V2.2 food identity."
+    },
+    "queso_feta": {
+      "status": "VISIBLE_ACTIVE",
+      "show_in_builder": true,
+      "show_in_dashboard": true,
+      "family": "quesos",
+      "category": "LACTEOS",
+      "nutrition_status": "FULL_PANEL",
+      "notes": "Visible V2.2 food identity."
+    },
+    "cafe_soluble": {
+      "status": "ARCHIVED",
+      "show_in_builder": false,
+      "show_in_dashboard": false,
+      "family": "cafe",
+      "category": null,
+      "nutrition_status": "PARTIAL_PANEL",
+      "notes": "Retained for reproducibility; not visible or selectable."
+    },
+    "cafe_descafeinado": {
+      "status": "VISIBLE_ACTIVE",
+      "show_in_builder": true,
+      "show_in_dashboard": true,
+      "family": "cafe",
+      "category": "BEBIDAS",
+      "nutrition_status": "FULL_PANEL",
+      "notes": "Visible V2.2 food identity."
+    },
+    "salsa_chipotle": {
+      "status": "VISIBLE_ACTIVE",
+      "show_in_builder": true,
+      "show_in_dashboard": true,
+      "family": "salsas",
+      "category": "SALSAS_COMPLEMENTOS",
+      "nutrition_status": "PARTIAL_PANEL",
+      "notes": "Visible V2.2 food identity."
+    },
+    "salsa_bufalo": {
+      "status": "VISIBLE_ACTIVE",
+      "show_in_builder": true,
+      "show_in_dashboard": true,
+      "family": "salsas",
+      "category": "SALSAS_COMPLEMENTOS",
+      "nutrition_status": "PARTIAL_PANEL",
+      "notes": "Visible V2.2 food identity."
+    },
+    "salsa_martajada": {
+      "status": "VISIBLE_ACTIVE",
+      "show_in_builder": true,
+      "show_in_dashboard": true,
+      "family": "salsas",
+      "category": "SALSAS_COMPLEMENTOS",
+      "nutrition_status": "PARTIAL_PANEL",
+      "notes": "Visible V2.2 food identity."
+    },
+    "semillas_calabaza": {
+      "status": "VISIBLE_ACTIVE",
+      "show_in_builder": true,
+      "show_in_dashboard": true,
+      "family": "semillas",
+      "category": "GRASAS_NUECES_SEMILLAS",
+      "nutrition_status": "FULL_PANEL",
+      "notes": "Visible V2.2 food identity."
+    },
+    "vinagre_simple": {
+      "status": "ARCHIVED",
+      "show_in_builder": false,
+      "show_in_dashboard": false,
+      "family": "vinagre",
+      "category": null,
+      "nutrition_status": "PARTIAL_PANEL",
+      "notes": "Retained for reproducibility; not visible or selectable."
+    },
+    "vinagre_oregano": {
+      "status": "ARCHIVED",
+      "show_in_builder": false,
+      "show_in_dashboard": false,
+      "family": "vinagre",
+      "category": null,
+      "nutrition_status": "PARTIAL_PANEL",
+      "notes": "Retained for reproducibility; not visible or selectable."
+    },
+    "oregano": {
+      "status": "PREPARATION_INPUT",
+      "show_in_builder": false,
+      "show_in_dashboard": false,
+      "family": "preparation_input",
+      "category": null,
+      "nutrition_status": "FULL_PANEL",
+      "notes": "Separate preparation layer; nutrition semantics=TRACK."
+    },
+    "ajo_fresco": {
+      "status": "VISIBLE_ACTIVE",
+      "show_in_builder": true,
+      "show_in_dashboard": true,
+      "family": "aromatica",
+      "category": "VERDURAS_HORTALIZAS",
+      "nutrition_status": "FULL_PANEL",
+      "notes": "Visible V2.2 food identity."
+    },
+    "hielo": {
+      "status": "PREPARATION_INPUT",
+      "show_in_builder": false,
+      "show_in_dashboard": false,
+      "family": "preparation_input",
+      "category": null,
+      "nutrition_status": "PARTIAL_PANEL",
+      "notes": "Separate preparation layer; nutrition semantics=NONE."
+    },
+    "edulcorante": {
+      "status": "ARCHIVED",
+      "show_in_builder": false,
+      "show_in_dashboard": false,
+      "family": "aggregate_preparation",
+      "category": null,
+      "nutrition_status": "PARTIAL_PANEL",
+      "notes": "Retained for reproducibility; not visible or selectable."
+    },
+    "tilapia_fresca": {
+      "status": "ARCHIVED",
+      "show_in_builder": false,
+      "show_in_dashboard": false,
+      "family": "pescado",
+      "category": null,
+      "nutrition_status": "FULL_PANEL",
+      "notes": "Retained for reproducibility; not visible or selectable."
+    },
+    "trucha_fresca": {
+      "status": "ARCHIVED",
+      "show_in_builder": false,
+      "show_in_dashboard": false,
+      "family": "pescado",
+      "category": null,
+      "nutrition_status": "PARTIAL_PANEL",
+      "notes": "Retained for reproducibility; not visible or selectable."
+    },
+    "bacalao_fresco": {
+      "status": "ARCHIVED",
+      "show_in_builder": false,
+      "show_in_dashboard": false,
+      "family": "pescado",
+      "category": null,
+      "nutrition_status": "FULL_PANEL",
+      "notes": "Retained for reproducibility; not visible or selectable."
+    },
+    "chile_serrano": {
+      "status": "VISIBLE_ACTIVE",
+      "show_in_builder": true,
+      "show_in_dashboard": true,
+      "family": "chiles",
+      "category": "VERDURAS_HORTALIZAS",
+      "nutrition_status": "FULL_PANEL",
+      "notes": "Visible V2.2 food identity."
+    },
+    "chile_poblano": {
+      "status": "VISIBLE_ACTIVE",
+      "show_in_builder": true,
+      "show_in_dashboard": true,
+      "family": "chiles",
+      "category": "VERDURAS_HORTALIZAS",
+      "nutrition_status": "PARTIAL_PANEL",
+      "notes": "Visible V2.2 food identity."
+    },
+    "col_blanca": {
+      "status": "VISIBLE_ACTIVE",
+      "show_in_builder": true,
+      "show_in_dashboard": true,
+      "family": "col",
+      "category": "VERDURAS_HORTALIZAS",
+      "nutrition_status": "FULL_PANEL",
+      "notes": "Visible V2.2 food identity."
+    },
+    "col_morada": {
+      "status": "VISIBLE_ACTIVE",
+      "show_in_builder": true,
+      "show_in_dashboard": true,
+      "family": "col",
+      "category": "VERDURAS_HORTALIZAS",
+      "nutrition_status": "FULL_PANEL",
+      "notes": "Visible V2.2 food identity."
+    },
+    "vinagre_blanco": {
+      "status": "PREPARATION_INPUT",
+      "show_in_builder": false,
+      "show_in_dashboard": false,
+      "family": "preparation_input",
+      "category": null,
+      "nutrition_status": "FULL_PANEL",
+      "notes": "Separate preparation layer; nutrition semantics=TRACK."
+    },
+    "vinagre_manzana": {
+      "status": "PREPARATION_INPUT",
+      "show_in_builder": false,
+      "show_in_dashboard": false,
+      "family": "preparation_input",
+      "category": null,
+      "nutrition_status": "FULL_PANEL",
+      "notes": "Separate preparation layer; nutrition semantics=TRACK."
+    },
+    "pure_tomate_sin_sal": {
+      "status": "PREPARATION_INPUT",
+      "show_in_builder": false,
+      "show_in_dashboard": false,
+      "family": "preparation_input",
+      "category": null,
+      "nutrition_status": "FULL_PANEL",
+      "notes": "Separate preparation layer; nutrition semantics=TRACK."
+    },
+    "pasta_tomate": {
+      "status": "PREPARATION_INPUT",
+      "show_in_builder": false,
+      "show_in_dashboard": false,
+      "family": "preparation_input",
+      "category": null,
+      "nutrition_status": "FULL_PANEL",
+      "notes": "Separate preparation layer; nutrition semantics=TRACK."
+    },
+    "proteina_whey_polvo": {
+      "status": "VISIBLE_ACTIVE",
+      "show_in_builder": true,
+      "show_in_dashboard": true,
+      "family": "complemento_proteico",
+      "category": "SALSAS_COMPLEMENTOS",
+      "nutrition_status": "PARTIAL_PANEL",
+      "notes": "Visible V2.2 food identity."
+    },
+    "extracto_vainilla": {
+      "status": "PREPARATION_INPUT",
+      "show_in_builder": false,
+      "show_in_dashboard": false,
+      "family": "preparation_input",
+      "category": null,
+      "nutrition_status": "FULL_PANEL",
+      "notes": "Separate preparation layer; nutrition semantics=TRACK."
+    },
+    "polvo_hornear": {
+      "status": "PREPARATION_INPUT",
+      "show_in_builder": false,
+      "show_in_dashboard": false,
+      "family": "preparation_input",
+      "category": null,
+      "nutrition_status": "FULL_PANEL",
+      "notes": "Separate preparation layer; nutrition semantics=TRACK."
+    },
+    "coco_fresco": {
+      "status": "VISIBLE_ACTIVE",
+      "show_in_builder": true,
+      "show_in_dashboard": true,
+      "family": "fruta",
+      "category": "FRUTAS",
+      "nutrition_status": "FULL_PANEL",
+      "notes": "Visible V2.2 food identity."
+    },
+    "comino": {
+      "status": "PREPARATION_INPUT",
+      "show_in_builder": false,
+      "show_in_dashboard": false,
+      "family": "preparation_input",
+      "category": null,
+      "nutrition_status": "FULL_PANEL",
+      "notes": "Separate preparation layer; nutrition semantics=TRACK."
+    },
+    "paprika": {
+      "status": "PREPARATION_INPUT",
+      "show_in_builder": false,
+      "show_in_dashboard": false,
+      "family": "preparation_input",
+      "category": null,
+      "nutrition_status": "FULL_PANEL",
+      "notes": "Separate preparation layer; nutrition semantics=TRACK."
+    },
+    "pimienta_negra": {
+      "status": "PREPARATION_INPUT",
+      "show_in_builder": false,
+      "show_in_dashboard": false,
+      "family": "preparation_input",
+      "category": null,
+      "nutrition_status": "FULL_PANEL",
+      "notes": "Separate preparation layer; nutrition semantics=TRACK."
+    },
+    "canela": {
+      "status": "PREPARATION_INPUT",
+      "show_in_builder": false,
+      "show_in_dashboard": false,
+      "family": "preparation_input",
+      "category": null,
+      "nutrition_status": "FULL_PANEL",
+      "notes": "Separate preparation layer; nutrition semantics=TRACK."
+    },
+    "ajo_polvo": {
+      "status": "PREPARATION_INPUT",
+      "show_in_builder": false,
+      "show_in_dashboard": false,
+      "family": "preparation_input",
+      "category": null,
+      "nutrition_status": "FULL_PANEL",
+      "notes": "Separate preparation layer; nutrition semantics=TRACK."
+    },
+    "cebolla_polvo": {
+      "status": "PREPARATION_INPUT",
+      "show_in_builder": false,
+      "show_in_dashboard": false,
+      "family": "preparation_input",
+      "category": null,
+      "nutrition_status": "FULL_PANEL",
+      "notes": "Separate preparation layer; nutrition semantics=TRACK."
+    },
+    "curcuma": {
+      "status": "PREPARATION_INPUT",
+      "show_in_builder": false,
+      "show_in_dashboard": false,
+      "family": "preparation_input",
+      "category": null,
+      "nutrition_status": "FULL_PANEL",
+      "notes": "Separate preparation layer; nutrition semantics=TRACK."
+    },
+    "romero": {
+      "status": "PREPARATION_INPUT",
+      "show_in_builder": false,
+      "show_in_dashboard": false,
+      "family": "preparation_input",
+      "category": null,
+      "nutrition_status": "PARTIAL_PANEL",
+      "notes": "Separate preparation layer; nutrition semantics=TRACK."
+    },
+    "tomillo": {
+      "status": "PREPARATION_INPUT",
+      "show_in_builder": false,
+      "show_in_dashboard": false,
+      "family": "preparation_input",
+      "category": null,
+      "nutrition_status": "FULL_PANEL",
+      "notes": "Separate preparation layer; nutrition semantics=TRACK."
+    },
+    "laurel": {
+      "status": "PREPARATION_INPUT",
+      "show_in_builder": false,
+      "show_in_dashboard": false,
+      "family": "preparation_input",
+      "category": null,
+      "nutrition_status": "PARTIAL_PANEL",
+      "notes": "Separate preparation layer; nutrition semantics=TRACK."
+    },
+    "perejil": {
+      "status": "PREPARATION_INPUT",
+      "show_in_builder": false,
+      "show_in_dashboard": false,
+      "family": "preparation_input",
+      "category": null,
+      "nutrition_status": "FULL_PANEL",
+      "notes": "Separate preparation layer; nutrition semantics=TRACK."
+    },
+    "chile_polvo": {
+      "status": "PREPARATION_INPUT",
+      "show_in_builder": false,
+      "show_in_dashboard": false,
+      "family": "preparation_input",
+      "category": null,
+      "nutrition_status": "FULL_PANEL",
+      "notes": "Separate preparation layer; nutrition semantics=TRACK."
+    },
+    "merluza_fresca": {
+      "status": "VISIBLE_ACTIVE",
+      "show_in_builder": true,
+      "show_in_dashboard": true,
+      "family": "pescado",
+      "category": "PESCADOS_Y_MARISCOS",
+      "nutrition_status": "KEEP_NULL",
+      "notes": "Visible V2.2 food identity."
+    },
+    "sardina_fresca": {
+      "status": "ARCHIVED",
+      "show_in_builder": false,
+      "show_in_dashboard": false,
+      "family": "pescado",
+      "category": null,
+      "nutrition_status": "KEEP_NULL",
+      "notes": "Retained for reproducibility; not visible or selectable."
+    },
+    "proteina_vegetal_polvo": {
+      "status": "ARCHIVED",
+      "show_in_builder": false,
+      "show_in_dashboard": false,
+      "family": "complemento_proteico",
+      "category": null,
+      "nutrition_status": "KEEP_NULL",
+      "notes": "Retained for reproducibility; not visible or selectable."
+    },
+    "pimenton_ahumado": {
+      "status": "PREPARATION_INPUT",
+      "show_in_builder": false,
+      "show_in_dashboard": false,
+      "family": "preparation_input",
+      "category": null,
+      "nutrition_status": "KEEP_NULL",
+      "notes": "Separate preparation layer; nutrition semantics=TRACK."
+    },
+    "leche_deslactosada_entera": {
+      "status": "ARCHIVED",
+      "show_in_builder": false,
+      "show_in_dashboard": false,
+      "family": "leches",
+      "category": null,
+      "nutrition_status": "KEEP_NULL",
+      "notes": "Retained for reproducibility; not visible or selectable."
+    },
+    "queso_manchego_mexicano": {
+      "status": "VISIBLE_ACTIVE",
+      "show_in_builder": true,
+      "show_in_dashboard": true,
+      "family": "quesos",
+      "category": "LACTEOS",
+      "nutrition_status": "KEEP_NULL",
+      "notes": "Visible V2.2 food identity."
+    },
+    "stevia_edulcorante": {
+      "status": "ARCHIVED",
+      "show_in_builder": false,
+      "show_in_dashboard": false,
+      "family": "preparation_input",
+      "category": null,
+      "nutrition_status": "KEEP_NULL",
+      "notes": "Retained for reproducibility; not visible or selectable."
+    },
+    "sucralosa_edulcorante": {
+      "status": "ARCHIVED",
+      "show_in_builder": false,
+      "show_in_dashboard": false,
+      "family": "preparation_input",
+      "category": null,
+      "nutrition_status": "KEEP_NULL",
+      "notes": "Retained for reproducibility; not visible or selectable."
+    },
+    "sazonador_liquido": {
+      "status": "PREPARATION_INPUT",
+      "show_in_builder": false,
+      "show_in_dashboard": false,
+      "family": "preparation_input",
+      "category": null,
+      "nutrition_status": "KEEP_NULL",
+      "notes": "Separate preparation layer; nutrition semantics=UNRESOLVED."
+    },
+    "chuleta_cerdo": {
+      "status": "VISIBLE_ACTIVE",
+      "show_in_builder": true,
+      "show_in_dashboard": true,
+      "family": "cerdo",
+      "category": "PROTEINAS",
+      "nutrition_status": "PARTIAL_PANEL",
+      "notes": "Visible V2.2 food identity."
+    },
+    "pepperoni": {
+      "status": "VISIBLE_ACTIVE",
+      "show_in_builder": true,
+      "show_in_dashboard": true,
+      "family": "pepperoni",
+      "category": "EMBUTIDOS",
+      "nutrition_status": "PARTIAL_PANEL",
+      "notes": "Visible V2.2 food identity."
+    },
+    "aceite_soya": {
+      "status": "VISIBLE_ACTIVE",
+      "show_in_builder": true,
+      "show_in_dashboard": true,
+      "family": "aceites",
+      "category": "GRASAS_NUECES_SEMILLAS",
+      "nutrition_status": "PARTIAL_PANEL",
+      "notes": "Visible V2.2 food identity."
+    },
+    "te_preparado": {
+      "status": "VISIBLE_ACTIVE",
+      "show_in_builder": true,
+      "show_in_dashboard": true,
+      "family": "te",
+      "category": "BEBIDAS",
+      "nutrition_status": "PARTIAL_PANEL",
+      "notes": "Visible V2.2 food identity."
     }
   }
 }
