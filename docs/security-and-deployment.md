@@ -1,5 +1,7 @@
 # Seguridad y deployment
 
+Consulta [Despliegue](../DEPLOYMENT.md) para el flujo vigente de GitHub y Vercel. Los resultados de auditoría, CLI y rendimiento de este documento corresponden a la integración inicial.
+
 ## Auditoría local
 
 - `npm audit`: 0 vulnerabilidades en dependencias instaladas.
@@ -12,9 +14,9 @@
 
 ## Antes del primer deployment
 
-1. Verificar las reglas de Firestore contra el `uid` autenticado. No están versionadas en este repo y no pudieron auditarse desde el código local.
+1. Revisar las reglas e índices versionados en `firestore.rules` y `firestore.indexes.json`. Confirmar por separado qué versión está desplegada en el entorno.
 2. Agregar el dominio final de Vercel a Firebase Authentication → Authorized domains.
-3. Confirmar Google y Facebook como proveedores habilitados y sus redirect URIs.
+3. Confirmar los proveedores de [la guía de Auth](auth-providers.md) que deban habilitarse y sus URI de redirección.
 4. Ejecutar `npm ci && npm run check`.
 5. Ejecutar `vercel pull` y `vercel build` con una sesión válida.
 6. Desplegar primero como Preview y completar `docs/device-lab.md` en dispositivos reales.

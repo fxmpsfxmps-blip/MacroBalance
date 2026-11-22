@@ -1,5 +1,7 @@
 # Calculadora Estándar y Calculadora de Precisión
 
+Este documento conserva el diseño de V2.1. La descripción de Estándar corresponde al bloque histórico P7. Consulta [Calculadoras y contratos](../../CALCULATORS.md) para la ruta Standard PATCH3 vigente y el estado de Precision en la interfaz.
+
 ## Estándar preservada
 
 La modalidad Estándar conserva las operaciones de P7:
